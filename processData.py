@@ -32,12 +32,12 @@ trail = (frontWheelRadius*np.sin(steerAxisTilt) - forkOffset)/np.cos(steerAxisTi
 print "Trail [m] =\n", trail
 # calculate the frame rotation angle
 satMat = np.array([steerAxisTilt, steerAxisTilt, steerAxisTilt])
-frameAngle = d['frameAngle']
-print "frameAngle =\n", frameAngle
-betaFrame = steerAxisTilt - frameAngle*np.pi/180
-print "betaFrame =\n", betaFrame*180./np.pi
-#betaFrame = frameAngle*np.pi/180 - np.pi/2.*np.ones_like(frameAngle) - steerAxisTilt
-#betaFrame = np.pi + steerAxisTilt - d['frameAngle']*np.pi/180
+alphaFrame = d['frameAngle']
+print "alphaFrame =\n", alphaFrame
+betaFrame = steerAxisTilt - alphaFrame*np.pi/180
+#betaFrame = alphaFrame*np.pi/180 - np.pi/2.*np.ones_like(alphaFrame) - steerAxisTilt
+#betaFrame = np.pi + steerAxisTilt - d['alphaFrame']*np.pi/180
+# this flips beta such that it is always in the first two quadrants
 #for i, row in enumerate(betaFrame):
 #    for j, v in enumerate(row):
 #        if v < 0:
@@ -50,10 +50,10 @@ print "betaFrame =\n", betaFrame*180./np.pi
 #            betaFrame[i, j] = v - np.pi
 #        else:
 #            pass
-print "Frame rotation angle [deg] =\n", betaFrame/np.pi*180.
+print "Frame rotation angle, beta [deg] =\n", betaFrame/np.pi*180.
 # calculate the slope of the CoM line
-frameM = np.tan(betaFrame-np.pi/2)
-#frameM = -np.tan(betaFrame)
+frameM = -np.tan(betaFrame)
+#frameM = np.tan(betaFrame-np.pi/2)
 print "Frame CoM line slope =\n", frameM
 # calculate the z-intercept of the CoM line
 print "Frame CoM distance =\n", d['frameMassDist']
