@@ -11,7 +11,6 @@ def space_out_camel_case(s):
         >>> space_out_camel_case('DMLSServicesOtherBSTextLLC')
         'DMLS Services Other BS Text LLC'
         """
-
         return re.sub('((?=[A-Z][a-z])|(?<=[a-z])(?=[A-Z]))', ' ', s)
 tor = np.zeros((12, 8))
 com = np.zeros((4, 8))

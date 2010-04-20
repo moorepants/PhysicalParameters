@@ -9,25 +9,32 @@ import pickle as p
 # load the main data file into a dictionary
 d = {}
 mio.loadmat('data/data.mat', mdict=d)
+# the number of different bikes
 nBk = len(d['bikes'])
+print "Number of bikes =", nBk
+# make a list of the bikes' names
 bikeNames = []
 for bike in d['bikes']:
+    # get rid of the weird matlab unicoding
     bikeNames.append(bike[0][0].encode('ascii'))
-print "Number of bikes =", nBk
+print "List of bikes:\n", bikeNames
 # calculate the wheel radii
 rearWheelRadius = d['rearWheelDist'][0]/2/np.pi/d['rearWheelRot'][0]
-print "Rear wheel radii =\n", rearWheelRadius
+print "Rear wheel radii [m] =\n", rearWheelRadius
 frontWheelRadius = d['frontWheelDist'][0]/2/np.pi/d['frontWheelRot'][0]
-print "Front wheel radii =\n", frontWheelRadius
+print "Front wheel radii [m] =\n", frontWheelRadius
 # steer axis tilt in radians
 steerAxisTilt = np.pi/180*(90-d['headTubeAngle'][0])
 print "Steer axis tilt [deg] =\n", steerAxisTilt*180./np.pi
 # calculate the front wheel trail
-trail = (frontWheelRadius*np.sin(steerAxisTilt) - d['forkOffset'][0])/np.cos(steerAxisTilt)
-print "Trail =\n", trail
+forkOffset = d['forkOffset'][0]
+trail = (frontWheelRadius*np.sin(steerAxisTilt) - forkOffset)/np.cos(steerAxisTilt)
+print "Trail [m] =\n", trail
 # calculate the frame rotation angle
 satMat = np.array([steerAxisTilt, steerAxisTilt, steerAxisTilt])
-betaFrame = d['frameAngle']*np.pi/180 - np.pi/2.*np.ones_like(d['frameAngle']) - satMat
+frameAngle = d['frameAngle']
+betaFrame = steerAxisTilt - frameAngle
+#betaFrame = frameAngle*np.pi/180 - np.pi/2.*np.ones_like(frameAngle) - steerAxisTilt
 #betaFrame = np.pi + steerAxisTilt - d['frameAngle']*np.pi/180
 #for i, row in enumerate(betaFrame):
 #    for j, v in enumerate(row):
