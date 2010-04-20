@@ -33,7 +33,9 @@ print "Trail [m] =\n", trail
 # calculate the frame rotation angle
 satMat = np.array([steerAxisTilt, steerAxisTilt, steerAxisTilt])
 frameAngle = d['frameAngle']
-betaFrame = steerAxisTilt - frameAngle
+print "frameAngle =\n", frameAngle
+betaFrame = steerAxisTilt - frameAngle*np.pi/180
+print "betaFrame =\n", betaFrame*180./np.pi
 #betaFrame = frameAngle*np.pi/180 - np.pi/2.*np.ones_like(frameAngle) - steerAxisTilt
 #betaFrame = np.pi + steerAxisTilt - d['frameAngle']*np.pi/180
 #for i, row in enumerate(betaFrame):
