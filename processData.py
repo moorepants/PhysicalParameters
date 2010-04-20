@@ -52,8 +52,7 @@ betaFrame = steerAxisTilt - alphaFrame*np.pi/180
 #            pass
 print "Frame rotation angle, beta [deg] =\n", betaFrame/np.pi*180.
 # calculate the slope of the CoM line
-frameM = -np.tan(betaFrame)
-#frameM = np.tan(betaFrame-np.pi/2)
+frameM = -np.tan(betaFrame-np.pi/2)
 print "Frame CoM line slope =\n", frameM
 # calculate the z-intercept of the CoM line
 print "Frame CoM distance =\n", d['frameMassDist']
