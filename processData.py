@@ -54,56 +54,60 @@ wheelBase = d['wheelbase'][0]
 forkMassDist = d['forkMassDist']
 forkB = - frontWheelRadius + forkMassDist/np.cos(betaFork) + wheelBase*np.tan(betaFork)
 print "Fork CoM line intercept =\n", frameB
-plt.figure()
 # plot the CoM lines
+plt.figure()
+# intialize the matrices for the center of mass locations
 frameCoM = np.zeros((2, np.shape(frameM)[1]))
 forkCoM = np.zeros((2, np.shape(forkM)[1]))
+# for each of the bikes...
 for i in range(np.shape(frameM)[1]):
     comb = np.array([[0, 1], [0, 2], [1, 2]])
     # calculate the frame center of mass position
+    # initialize the matrix to store the line intersections
     lineX = np.zeros((3, 2))
+    # for each line intersection...
     for j, row in enumerate(comb):
         a = np.vstack([-frameM[row, i], np.ones((2))]).T
         b = frameB[row, i]
         lineX[j] = np.linalg.solve(a, b)
     frameCoM[:, i] = np.mean(lineX, axis=0)
     # calculate the fork center of mass position
-    plt.subplot(2, 4, i + 1)
+    # reinitialize the matrix to store the line intersections
     lineX = np.zeros((3, 2))
+    # for each line intersection...
     for j, row in enumerate(comb):
         a = np.vstack([-forkM[row, i], np.ones((2))]).T
         b = forkB[row, i]
         lineX[j] = np.linalg.solve(a, b)
     forkCoM[:, i] = np.mean(lineX, axis=0)
+    # make a subplot for this bike
+    plt.subplot(2, 4, i + 1)
     # plot the rear wheel
     c=plt.Circle((0, rearWheelRadius[i]), radius=rearWheelRadius[i])
     plt.gca().add_patch(c)
     # plot the front wheel
     c=plt.Circle((d['wheelbase'][0][i], frontWheelRadius[i]), radius=frontWheelRadius[i])
     plt.gca().add_patch(c)
+    # plot the lines (pendulum axes)
     x = np.linspace(-rearWheelRadius[i], d['wheelbase'][0][i] +
             frontWheelRadius[i], 2)
+    # for each line...
     for j in range(len(frameM)):
         framey = -frameM[j, i]*x - frameB[j, i]
         forky = -forkM[j, i]*x - forkB[j, i]
         plt.plot(x,framey, 'r')
         plt.plot(x,forky, 'g')
+    # plot the ground line
     plt.plot(x, np.zeros_like(x), 'k')
+    # plot the centers of mass
     plt.plot(frameCoM[0, i], -frameCoM[1, i], 'k+', markersize=12)
     plt.plot(forkCoM[0, i], -forkCoM[1, i], 'k+', markersize=12)
     plt.axis('equal')
     plt.ylim((0, 1))
-    plt.title(d['bikes'][i])
+    plt.title(bikeNames[i])
 plt.show()
 print "Frame CoM =\n", frameCoM
 print "Fork CoM =\n", forkCoM
-#m = forkM[:, i]
-#b = forkB[:, i]
-# least squares test
-#x_lsq = (3.*(-m[0]*b[1]-m[1]*b[1]-m[2]*b[2])+(m[0]+m[1]+m[2])*(b[0]+b[1]+b[2]))/(3.*(m[0]**2+m[1]**2+m[2]**2)-(-m[0]-m[1]-m[2])**2)
-#y_lsq = ((m[0]+m[1]+m[2])*(-m[0]*b[0]-m[1]*b[1]-m[2]*b[2])+(m[0]**2+m[1]**2+m[2]**2)*(b[0]+b[1]+b[2])/(3.*(m[0]**2+m[1]**2+m[2]**2)-(-m[0]-m[1]-m[2])**2))
-#x_avg = 1./3.*((b[0]-b[1])/(-m[0]+m[1])+(b[0]-b[2])/(-m[0]+m[2])+(b[1]-b[2])/(-m[1]+m[2]))
-#y_avg = 1./3.*((m[1]*b[0]-m[0]*b[1])/(-m[0]+m[1])+(m[2]*b[0]-m[0]*b[2])/(-m[0]+m[2])+(m[2]*b[1]-m[1]*b[2])/(-m[1]+m[2]))
 f = open('avgPer.p', 'r')
 avgPer = p.load(f)
 f.close()
