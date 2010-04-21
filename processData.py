@@ -61,9 +61,6 @@ forkCoM = np.zeros((2, np.shape(forkM)[1]))
 for i in range(np.shape(frameM)[1]):
     comb = np.array([[0, 1], [0, 2], [1, 2]])
     # calculate the frame center of mass position
-    #a = np.vstack([-frameM[:, i], np.ones((3))]).T
-    #b = frameB[:, i]
-    #frameCoM[:, i] = np.linalg.lstsq(a, b)[0]
     lineX = np.zeros((3, 2))
     for j, row in enumerate(comb):
         a = np.vstack([-frameM[row, i], np.ones((2))]).T
@@ -71,10 +68,13 @@ for i in range(np.shape(frameM)[1]):
         lineX[j] = np.linalg.solve(a, b)
     frameCoM[:, i] = np.mean(lineX, axis=0)
     # calculate the fork center of mass position
-    a = np.vstack([-forkM[:, i], np.ones((3))]).T
-    b = forkB[:, i]
-    forkCoM[:, i] = np.linalg.lstsq(a, b)[0]
     plt.subplot(2, 4, i + 1)
+    lineX = np.zeros((3, 2))
+    for j, row in enumerate(comb):
+        a = np.vstack([-forkM[row, i], np.ones((2))]).T
+        b = forkB[row, i]
+        lineX[j] = np.linalg.solve(a, b)
+    forkCoM[:, i] = np.mean(lineX, axis=0)
     # plot the rear wheel
     c=plt.Circle((0, rearWheelRadius[i]), radius=rearWheelRadius[i])
     plt.gca().add_patch(c)
