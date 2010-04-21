@@ -31,58 +31,45 @@ forkOffset = d['forkOffset'][0]
 trail = (frontWheelRadius*np.sin(steerAxisTilt) - forkOffset)/np.cos(steerAxisTilt)
 print "Trail [m] =\n", trail
 # calculate the frame rotation angle
-satMat = np.array([steerAxisTilt, steerAxisTilt, steerAxisTilt])
 alphaFrame = d['frameAngle']
 print "alphaFrame =\n", alphaFrame
 betaFrame = steerAxisTilt - alphaFrame*np.pi/180
-#betaFrame = alphaFrame*np.pi/180 - np.pi/2.*np.ones_like(alphaFrame) - steerAxisTilt
-#betaFrame = np.pi + steerAxisTilt - d['alphaFrame']*np.pi/180
-# this flips beta such that it is always in the first two quadrants
-#for i, row in enumerate(betaFrame):
-#    for j, v in enumerate(row):
-#        if v < 0:
-#            betaFrame[i, j] = v + np.pi
-#        else:
-#            pass
-#for i, row in enumerate(betaFrame):
-#    for j, v in enumerate(row):
-#        if v > np.pi:
-#            betaFrame[i, j] = v - np.pi
-#        else:
-#            pass
 print "Frame rotation angle, beta [deg] =\n", betaFrame/np.pi*180.
 # calculate the slope of the CoM line
 frameM = -np.tan(betaFrame)
 print "Frame CoM line slope =\n", frameM
 # calculate the z-intercept of the CoM line
-print "Frame CoM distance =\n", d['frameMassDist']
-#rwrMat =  np.array([rearWheelRadius, rearWheelRadius, rearWheelRadius])
-#frameB = -d['frameMassDist']/np.sin(betaFrame) - rwrMat
 frameMassDist = d['frameMassDist']
+print "Frame CoM distance =\n", d['frameMassDist']
 frameB = frameMassDist/np.cos(betaFrame) - rearWheelRadius
-#frameB = d['frameMassDist']/np.cos(betaFrame) - rearWheelRadius
 print "Frame CoM line intercept =\n", frameB
 # calculate the fork rotation angle
-betaFork = d['forkAngle']*np.pi/180-np.pi/2*np.ones_like(d['forkAngle']) - satMat
-#betaFork = np.pi + steerAxisTilt - d['forkAngle']*np.pi/180
+betaFork = steerAxisTilt - d['forkAngle']*np.pi/180.
 print "Fork rotation angle [deg] =\n", betaFork*180./np.pi
 # calculate the slope of the fork CoM line
-forkM = np.tan(betaFork - np.pi/2)
+forkM = -np.tan(betaFork)
 print "Fork CoM line slope =\n", frameM
 # calculate the z-intercept of the CoM line
-wbMat = np.array([d['wheelbase'][0], d['wheelbase'][0], d['wheelbase'][0]])
-fwrMat =  np.array([frontWheelRadius, frontWheelRadius, frontWheelRadius])
-forkB = wbMat/np.tan(betaFork) - d['forkMassDist']/np.sin(betaFork) - fwrMat
+wheelBase = d['wheelbase'][0]
+forkMassDist = d['forkMassDist']
+forkB = - frontWheelRadius + forkMassDist/np.cos(betaFork) + wheelBase*np.tan(betaFork)
 print "Fork CoM line intercept =\n", frameB
 plt.figure()
 # plot the CoM lines
 frameCoM = np.zeros((2, np.shape(frameM)[1]))
 forkCoM = np.zeros((2, np.shape(forkM)[1]))
 for i in range(np.shape(frameM)[1]):
+    comb = np.array([[0, 1], [0, 2], [1, 2]])
     # calculate the frame center of mass position
-    a = np.vstack([-frameM[:, i], np.ones((3))]).T
-    b = frameB[:, i]
-    frameCoM[:, i] = np.linalg.lstsq(a, b)[0]
+    #a = np.vstack([-frameM[:, i], np.ones((3))]).T
+    #b = frameB[:, i]
+    #frameCoM[:, i] = np.linalg.lstsq(a, b)[0]
+    lineX = np.zeros((3, 2))
+    for j, row in enumerate(comb):
+        a = np.vstack([-frameM[row, i], np.ones((2))]).T
+        b = frameB[row, i]
+        lineX[j] = np.linalg.solve(a, b)
+    frameCoM[:, i] = np.mean(lineX, axis=0)
     # calculate the fork center of mass position
     a = np.vstack([-forkM[:, i], np.ones((3))]).T
     b = forkB[:, i]
