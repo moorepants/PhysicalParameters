@@ -52,13 +52,14 @@ betaFrame = steerAxisTilt - alphaFrame*np.pi/180
 #            pass
 print "Frame rotation angle, beta [deg] =\n", betaFrame/np.pi*180.
 # calculate the slope of the CoM line
-frameM = -np.tan(betaFrame-np.pi/2)
+frameM = -np.tan(betaFrame)
 print "Frame CoM line slope =\n", frameM
 # calculate the z-intercept of the CoM line
 print "Frame CoM distance =\n", d['frameMassDist']
 #rwrMat =  np.array([rearWheelRadius, rearWheelRadius, rearWheelRadius])
 #frameB = -d['frameMassDist']/np.sin(betaFrame) - rwrMat
-frameB = d['frameMassDist']/np.sin(betaFrame) - rearWheelRadius
+frameMassDist = d['frameMassDist']
+frameB = frameMassDist/np.cos(betaFrame) - rearWheelRadius
 #frameB = d['frameMassDist']/np.cos(betaFrame) - rearWheelRadius
 print "Frame CoM line intercept =\n", frameB
 # calculate the fork rotation angle
