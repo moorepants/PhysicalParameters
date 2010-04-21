@@ -56,8 +56,9 @@ frameM = -np.tan(betaFrame-np.pi/2)
 print "Frame CoM line slope =\n", frameM
 # calculate the z-intercept of the CoM line
 print "Frame CoM distance =\n", d['frameMassDist']
-rwrMat =  np.array([rearWheelRadius, rearWheelRadius, rearWheelRadius])
-frameB = -d['frameMassDist']/np.sin(betaFrame) - rwrMat
+#rwrMat =  np.array([rearWheelRadius, rearWheelRadius, rearWheelRadius])
+#frameB = -d['frameMassDist']/np.sin(betaFrame) - rwrMat
+frameB = d['frameMassDist']/np.sin(betaFrame) - rearWheelRadius
 #frameB = d['frameMassDist']/np.cos(betaFrame) - rearWheelRadius
 print "Frame CoM line intercept =\n", frameB
 # calculate the fork rotation angle
@@ -72,7 +73,7 @@ wbMat = np.array([d['wheelbase'][0], d['wheelbase'][0], d['wheelbase'][0]])
 fwrMat =  np.array([frontWheelRadius, frontWheelRadius, frontWheelRadius])
 forkB = wbMat/np.tan(betaFork) - d['forkMassDist']/np.sin(betaFork) - fwrMat
 print "Fork CoM line intercept =\n", frameB
-#plt.figure()
+plt.figure()
 # plot the CoM lines
 frameCoM = np.zeros((2, np.shape(frameM)[1]))
 forkCoM = np.zeros((2, np.shape(forkM)[1]))
@@ -105,7 +106,7 @@ for i in range(np.shape(frameM)[1]):
     plt.axis('equal')
     plt.ylim((0, 1))
     plt.title(d['bikes'][i])
-#plt.show()
+plt.show()
 print "Frame CoM =\n", frameCoM
 print "Fork CoM =\n", forkCoM
 #m = forkM[:, i]
