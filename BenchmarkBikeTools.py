@@ -3,18 +3,11 @@ def bmp2cm(filename):
     import numpy as np
     f = open(filename, 'r')
     p = {}
-    p['var'] = []
-    p['val'] = []
     for i, line in enumerate(f):
         list = line[:-1].split(',')
         pi = np.pi
         p[list[0]] = eval(list[1])
-        #p['var'].append(list[0])
-        #try:
-        #    p['val'].append(float(list[1]))
-        #except ValueError:
-        #    pi = np.pi
-        #    p['val'].append(eval(list[1]))
+        p['var'].append(list[0])
     w = p['w']
     c = p['c']
     l = p['lambda']
@@ -45,7 +38,7 @@ def bmp2cm(filename):
     mT = mR + mB + mH + mF
     xT = (xB*mB + xH*mH + w*mF)/mT
     zT = (-rR*mR + zB*mB + zH*mH - rF*mF)/mT
-    ITxx = IRxx + IBxx + IHxx + IFxx +mR*rR**2 + mb*zB**2 + mH*zH**2 + mF*rF**2
+    ITxx = IRxx + IBxx + IHxx + IFxx +mR*rR**2 + mB*zB**2 + mH*zH**2 + mF*rF**2
     ITxz = IBxz + IHxz - mB*xB*zB - mH*xH*zH + mF*w*rF
     IRzz = IRxx
     IFzz = IFxx
@@ -60,7 +53,7 @@ def bmp2cm(filename):
     IAll = mA*uA**2 + IAxx*np.sin(l)**2 + 2*IAxz*np.sin(l)*np.cos(l) + IAzz*np.cos(l)**2
     IAlx = -mA*uA*zA + IAxx*np.sin(l) + IAxz*np.cos(l)
     IAlz = mA*uA*xA + IAxz*np.sin(l) + IAzz*np.cos(l)
-    mu = c/w*cos(l)
+    mu = c/w*np.cos(l)
     SR = IRyy/rR
     SF = IFyy/rF
     ST = SR + SF
@@ -85,4 +78,4 @@ def bmp2cm(filename):
     C1dp = -(mu*ST + SF*np.cos(l))
     C1dd = IAlz/w*np.cos(l) + mu*(SA + ITzz/w*np.cos(l))
     C1 = np.array([[C1pp, C1pd], [C1dp, C1dd]])
-    return M
+    return p
