@@ -62,7 +62,7 @@ def bmp2cm(filename):
     Mdp = Mpd
     Mdd = IAll + 2*mu*IAlz + mu**2*ITzz
     M = np.array([[Mpp, Mpd], [Mdp, Mdd]])
-    K0pp = mT*zT
+    K0pp = mT*zT # this value only reports to 13 digit precision?
     K0pd = -SA
     K0dp = K0pd
     K0dd = -SA*np.sin(l)
@@ -77,4 +77,16 @@ def bmp2cm(filename):
     C1dp = -(mu*ST + SF*np.cos(l))
     C1dd = IAlz/w*np.cos(l) + mu*(SA + ITzz/w*np.cos(l))
     C1 = np.array([[C1pp, C1pd], [C1dp, C1dd]])
-    return M, K0, K2, C1
+    return M, K0, K2, C1, p
+
+def aMatrix(M, K0, K2, C1, p):
+    '''Calculates the A matrix from the canonical matrices for the benchmark
+    bicycle'''
+    import numpy as np
+    a11 = -p['v']*C1
+    a12 = -(p['g']*K0 + p['v']**2*K2)
+    a21 = np.eye(2)
+    a22 = np.zeros((2, 2))
+    A = np.vstack((np.dot(np.linalg.inv(M), np.hstack((a11, a12))), np.hstack((a21, a22))))
+    #A = np.vstack((np.hstack((a11, a12)), np.hstack((a21, a22))))
+    return A
