@@ -7,7 +7,6 @@ def bmp2cm(filename):
         list = line[:-1].split(',')
         pi = np.pi
         p[list[0]] = eval(list[1])
-        p['var'].append(list[0])
     w = p['w']
     c = p['c']
     l = p['lambda']
@@ -45,7 +44,7 @@ def bmp2cm(filename):
     ITzz = IRzz + IBzz + IHzz + IFzz + mB*xB**2 + mH*xH**2 + mF*w**2
     mA = mH + mF
     xA = (xH*mH + w*mF)/mA
-    zA = (zH*mH - rF*mH)/mA
+    zA = (zH*mH - rF*mF)/mA
     IAxx = IHxx + IFxx + mH*(zH - zA)**2 + mF*(rF + zA)**2
     IAxz = IHxz - mH*(xH - xA)*(zH - zA) + mF*(w - xA)*(rF + zA)
     IAzz = IHzz + IFzz + mH*(xH - xA)**2 + mF*(w - xA)**2
@@ -78,4 +77,4 @@ def bmp2cm(filename):
     C1dp = -(mu*ST + SF*np.cos(l))
     C1dd = IAlz/w*np.cos(l) + mu*(SA + ITzz/w*np.cos(l))
     C1 = np.array([[C1pp, C1pd], [C1dp, C1dd]])
-    return p
+    return M, K0, K2, C1
