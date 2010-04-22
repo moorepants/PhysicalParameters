@@ -11,49 +11,49 @@ d = {}
 mio.loadmat('data/data.mat', mdict=d)
 # the number of different bikes
 nBk = len(d['bikes'])
-print "Number of bikes =", nBk
+#print "Number of bikes =", nBk
 # make a list of the bikes' names
 bikeNames = []
 for bike in d['bikes']:
     # get rid of the weird matlab unicoding
     bikeNames.append(bike[0][0].encode('ascii'))
-print "List of bikes:\n", bikeNames
+#print "List of bikes:\n", bikeNames
 # calculate the wheel radii
 rearWheelRadius = d['rearWheelDist'][0]/2/np.pi/d['rearWheelRot'][0]
-print "Rear wheel radii [m] =\n", rearWheelRadius
+#print "Rear wheel radii [m] =\n", rearWheelRadius
 frontWheelRadius = d['frontWheelDist'][0]/2/np.pi/d['frontWheelRot'][0]
-print "Front wheel radii [m] =\n", frontWheelRadius
+#print "Front wheel radii [m] =\n", frontWheelRadius
 # steer axis tilt in radians
 steerAxisTilt = np.pi/180*(90-d['headTubeAngle'][0])
-print "Steer axis tilt [deg] =\n", steerAxisTilt*180./np.pi
+#print "Steer axis tilt [deg] =\n", steerAxisTilt*180./np.pi
 # calculate the front wheel trail
 forkOffset = d['forkOffset'][0]
 trail = (frontWheelRadius*np.sin(steerAxisTilt) - forkOffset)/np.cos(steerAxisTilt)
-print "Trail [m] =\n", trail
+#print "Trail [m] =\n", trail
 # calculate the frame rotation angle
 alphaFrame = d['frameAngle']
-print "alphaFrame =\n", alphaFrame
+#print "alphaFrame =\n", alphaFrame
 betaFrame = steerAxisTilt - alphaFrame*np.pi/180
-print "Frame rotation angle, beta [deg] =\n", betaFrame/np.pi*180.
+#print "Frame rotation angle, beta [deg] =\n", betaFrame/np.pi*180.
 # calculate the slope of the CoM line
 frameM = -np.tan(betaFrame)
-print "Frame CoM line slope =\n", frameM
+#print "Frame CoM line slope =\n", frameM
 # calculate the z-intercept of the CoM line
 frameMassDist = d['frameMassDist']
-print "Frame CoM distance =\n", d['frameMassDist']
+#print "Frame CoM distance =\n", d['frameMassDist']
 frameB = frameMassDist/np.cos(betaFrame) - rearWheelRadius
-print "Frame CoM line intercept =\n", frameB
+#print "Frame CoM line intercept =\n", frameB
 # calculate the fork rotation angle
 betaFork = steerAxisTilt - d['forkAngle']*np.pi/180.
-print "Fork rotation angle [deg] =\n", betaFork*180./np.pi
+#print "Fork rotation angle [deg] =\n", betaFork*180./np.pi
 # calculate the slope of the fork CoM line
 forkM = -np.tan(betaFork)
-print "Fork CoM line slope =\n", frameM
+#print "Fork CoM line slope =\n", frameM
 # calculate the z-intercept of the CoM line
 wheelBase = d['wheelbase'][0]
 forkMassDist = d['forkMassDist']
 forkB = - frontWheelRadius + forkMassDist/np.cos(betaFork) + wheelBase*np.tan(betaFork)
-print "Fork CoM line intercept =\n", frameB
+#print "Fork CoM line intercept =\n", frameB
 # plot the CoM lines
 plt.figure()
 # intialize the matrices for the center of mass locations
@@ -106,11 +106,13 @@ for i in range(np.shape(frameM)[1]):
     plt.ylim((0, 1))
     plt.title(bikeNames[i])
 plt.show()
-print "Frame CoM =\n", frameCoM
-print "Fork CoM =\n", forkCoM
+#print "Frame CoM =\n", frameCoM
+#print "Fork CoM =\n", forkCoM
+# load the average period data
 f = open('avgPer.p', 'r')
 avgPer = p.load(f)
 f.close()
+# torsional, compound and rod periods
 tor = avgPer['tor']
 com = avgPer['com']
 tRod = avgPer['rodPer']

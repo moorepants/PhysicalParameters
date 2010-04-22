@@ -12,6 +12,7 @@ def space_out_camel_case(s):
         'DMLS Services Other BS Text LLC'
         """
         return re.sub('((?=[A-Z][a-z])|(?<=[a-z])(?=[A-Z]))', ' ', s)
+
 tor = np.zeros((12, 8))
 com = np.zeros((4, 8))
 bN = ['Browser', 'Browserins', 'Crescendo', 'Fisher', 'Pista', 'Stratos',
@@ -21,6 +22,7 @@ fffr = ['Frame', 'Fork', 'Fwheel', 'Rwheel']
 tc = ['Torsional', 'Compound']
 # average the periods
 for k, v in period.items():
+    # substitute names so the camel case function works
     km = re.sub('BrowserIns', 'Browserins', k)
     km = re.sub('YellowRev', 'Yellowrev', km)
     desc = space_out_camel_case(km).split()
