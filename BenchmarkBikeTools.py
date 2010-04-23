@@ -55,10 +55,39 @@ def bmp2cm(filename):
 def aMatrix(M, K0, K2, C1, p):
     '''Calculates the A matrix from the canonical matrices for the benchmark
     bicycle'''
-    import numpy as np
+    from numpy import eye, zeros, vstack, hstack, dot
+    from numpy.linalg import inv
     a11 = -p['v']*C1
     a12 = -(p['g']*K0 + p['v']**2*K2)
-    a21 = np.eye(2)
-    a22 = np.zeros((2, 2))
-    A = np.vstack((np.dot(np.linalg.inv(M), np.hstack((a11, a12))), np.hstack((a21, a22))))
+    a21 = eye(2)
+    a22 = zeros((2, 2))
+    A = vstack((dot(inv(M), hstack((a11, a12))), hstack((a21, a22))))
     return A
+
+def tor_inertia(k, T):
+    '''Calculates the moment of interia for an ideal torsional pendulm'''
+    from math import pi
+    I = k*T**2/4./pi
+    return I
+
+def com_inertia(m, g, l, T):
+    '''Calculates the moment of inertia for an object hung from a compound
+    pendulum'''
+    from math import pi
+    I = (T/2./pi)**2*m*g*l - m*l**2
+    return I
+
+def tube_inertia(l, m, ro, ri):
+    '''Calculates the moment of inertia for a tube (or rod) where the x axis is
+    aligned with the tube's axis'''
+    from numpy import array
+    Ix = m/2.*(ro**2 + ri**2)
+    Iy = m/12.*(3*ro**2 + 3*ri**2 + l**2) 
+    Iz = Iy
+    return array([Ix, Iy, Iz])
+
+def tor_stiffness(I, T):
+    '''Calculates the stiffness of a torsional pendulum with a know moment of
+    inertia'''
+    from math import pi
+    k = 4.*I*pi**2/T**2
