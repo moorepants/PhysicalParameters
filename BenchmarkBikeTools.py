@@ -67,7 +67,7 @@ def aMatrix(M, K0, K2, C1, p):
 def tor_inertia(k, T):
     '''Calculates the moment of interia for an ideal torsional pendulm'''
     from math import pi
-    I = k*T**2/4./pi
+    I = k*T**2/4./pi**2
     return I
 
 def com_inertia(m, g, l, T):
@@ -87,7 +87,8 @@ def tube_inertia(l, m, ro, ri):
     return array([Ix, Iy, Iz])
 
 def tor_stiffness(I, T):
-    '''Calculates the stiffness of a torsional pendulum with a know moment of
+    '''Calculates the stiffness of a torsional pendulum with a known moment of
     inertia'''
     from math import pi
     k = 4.*I*pi**2/T**2
+    return k
