@@ -96,13 +96,11 @@ def tor_stiffness(I, T):
 def inertia_components(I, alpha):
     '''Calculates the 2D orthongonal inertia tensor when at least three moments
     of inertia and their axis orientations are specified'''
-    from numpy import sin, cos, vstack
+    from numpy import sin, cos, vstack, array
     from numpy.linalg import lstsq
     sa = sin(alpha)
-    print sa
     ca = cos(alpha)
-    print ca
     A = vstack((ca**2, 2*sa*ca, sa**2)).T
-    print A
     Iorth = lstsq(A, I)[0]
-    return Iorth
+    Inew = array([[Iorth[0], -Iorth[1]], [-Iorth[1], Iorth[2]]])
+    return Inew
