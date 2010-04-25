@@ -19,22 +19,23 @@ for bike in d['bikes']:
     # get rid of the weird matlab unicoding
     bikeNames.append(bike[0][0].encode('ascii'))
 #print "List of bikes:\n", bikeNames
+par = {}
 # calculate the wheel radii
-rearWheelRadius = d['rearWheelDist'][0]/2/np.pi/d['rearWheelRot'][0]
-#print "Rear wheel radii [m] =\n", rearWheelRadius
-frontWheelRadius = d['frontWheelDist'][0]/2/np.pi/d['frontWheelRot'][0]
-#print "Front wheel radii [m] =\n", frontWheelRadius
+par['rR'] = d['rearWheelDist'][0]/2/np.pi/d['rearWheelRot'][0]
+#print "Rear wheel radii [m] =\n", par['rR']
+par['rF'] = d['frontWheelDist'][0]/2/np.pi/d['frontWheelRot'][0]
+#print "Front wheel radii [m] =\n", par['rF']
 # steer axis tilt in radians
-steerAxisTilt = np.pi/180*(90-d['headTubeAngle'][0])
-#print "Steer axis tilt [deg] =\n", steerAxisTilt*180./np.pi
+par['lambda'] = np.pi/180*(90-d['headTubeAngle'][0])
+#print "Steer axis tilt [deg] =\n", par['lambda']*180./np.pi
 # calculate the front wheel trail
 forkOffset = d['forkOffset'][0]
-trail = (frontWheelRadius*np.sin(steerAxisTilt) - forkOffset)/np.cos(steerAxisTilt)
-#print "Trail [m] =\n", trail
+par['c'] = (par['rF']*np.sin(par['lambda']) - forkOffset)/np.cos(par['lambda'])
+#print "Trail [m] =\n", par['c']
 # calculate the frame rotation angle
 alphaFrame = d['frameAngle']
 #print "alphaFrame =\n", alphaFrame
-betaFrame = steerAxisTilt - alphaFrame*np.pi/180
+betaFrame = par['lambda'] - alphaFrame*np.pi/180
 #print "Frame rotation angle, beta [deg] =\n", betaFrame/np.pi*180.
 # calculate the slope of the CoM line
 frameM = -np.tan(betaFrame)
@@ -42,18 +43,18 @@ frameM = -np.tan(betaFrame)
 # calculate the z-intercept of the CoM line
 frameMassDist = d['frameMassDist']
 #print "Frame CoM distance =\n", d['frameMassDist']
-frameB = frameMassDist/np.cos(betaFrame) - rearWheelRadius
+frameB = frameMassDist/np.cos(betaFrame) - par['rR']
 #print "Frame CoM line intercept =\n", frameB
 # calculate the fork rotation angle
-betaFork = steerAxisTilt - d['forkAngle']*np.pi/180.
+betaFork = par['lambda'] - d['forkAngle']*np.pi/180.
 #print "Fork rotation angle [deg] =\n", betaFork*180./np.pi
 # calculate the slope of the fork CoM line
 forkM = -np.tan(betaFork)
 #print "Fork CoM line slope =\n", frameM
 # calculate the z-intercept of the CoM line
-wheelBase = d['wheelbase'][0]
+par['w'] = d['wheelbase'][0]
 forkMassDist = d['forkMassDist']
-forkB = - frontWheelRadius + forkMassDist/np.cos(betaFork) + wheelBase*np.tan(betaFork)
+forkB = - par['rF'] + forkMassDist/np.cos(betaFork) + par['w']*np.tan(betaFork)
 #print "Fork CoM line intercept =\n", frameB
 # plot the CoM lines
 plt.figure()
@@ -84,14 +85,14 @@ for i in range(np.shape(frameM)[1]):
     # make a subplot for this bike
     plt.subplot(2, 4, i + 1)
     # plot the rear wheel
-    c=plt.Circle((0, rearWheelRadius[i]), radius=rearWheelRadius[i])
+    c=plt.Circle((0, par['rR'][i]), radius=par['rR'][i])
     plt.gca().add_patch(c)
     # plot the front wheel
-    c=plt.Circle((d['wheelbase'][0][i], frontWheelRadius[i]), radius=frontWheelRadius[i])
+    c=plt.Circle((par['w'][i], par['rF'][i]), radius=par['rF'][i])
     plt.gca().add_patch(c)
     # plot the lines (pendulum axes)
-    x = np.linspace(-rearWheelRadius[i], d['wheelbase'][0][i] +
-            frontWheelRadius[i], 2)
+    x = np.linspace(-par['rR'][i], par['w'][i] +
+            par['rF'][i], 2)
     # for each line...
     for j in range(len(frameM)):
         framey = -frameM[j, i]*x - frameB[j, i]
@@ -133,9 +134,9 @@ IFxx = tor_inertia(k, tor[9, :])
 # calculate the y inertias for the frame and fork
 com[1, 0] = com[1, 1]
 com[0, 7] = com[0, 6]
-framePendLength = np.sqrt(frameCoM[0, :]**2 + (frameCoM[1, :] + rearWheelRadius)**2)
+framePendLength = np.sqrt(frameCoM[0, :]**2 + (frameCoM[1, :] + par['rR'])**2)
 IByy = com_inertia(d['frameMass'][0], g, framePendLength, com[0, :])
-forkPendLength = np.sqrt((forkCoM[0, :] - d['wheelbase'][0])**2 + (forkCoM[1, ] + frontWheelRadius)**2)
+forkPendLength = np.sqrt((forkCoM[0, :] - d['wheelbase'][0])**2 + (forkCoM[1, ] + par['rF'])**2)
 IHyy = com_inertia(d['forkMass'][0], g, forkPendLength, com[1, :])
 # calculate the fork in-plane moments of inertia
 Ipend = tor_inertia(k, tor)
@@ -163,6 +164,6 @@ IBxx = np.array(IBxx)
 IBxz = np.array(IBxz)
 IBzz = np.array(IBzz)
 # write the parameter files
-for i, name in enumerate(bikeNames):
-    file = open(''.join(name.split() + 'Par.txt', 'w'))
+#for i, name in enumerate(bikeNames):
+#    file = open(''.join(name.split() + 'Par.txt', 'w'))
 
