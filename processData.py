@@ -5,6 +5,7 @@ import scipy.optimize as op
 import os
 import re
 import pickle as p
+from BenchmarkBikeTools import *
 
 # load the main data file into a dictionary
 d = {}
@@ -120,20 +121,48 @@ tRod = avgPer['rodPer']
 mRod = 5.56 # mass of the calibration rod [kg]
 lRod = 1.05 # length of the calibration rod [m]
 rRod = 0.015 # radius of the calibration rod [m]
-iRod = 1./12.*mRod*(3*rRod**2 + lRod**2)
-k = 4.*iRod*np.pi**2/tRod**2
+iRod = tube_inertia(lRod, mRod, rRod, 0.)[1]
+k = tor_stiffness(iRod, tRod)
 # calculate the wheel y inertias
 g = 9.81
-IRyy = (com[3, :]/2./np.pi)**2*d['rearWheelMass']*g*d['rWheelPendLength']-d['rearWheelMass']*d['rWheelPendLength']**2
-IFyy = (com[2, :]/2./np.pi)**2*d['frontWheelMass']*g*d['fWheelPendLength']-d['frontWheelMass']*d['fWheelPendLength']**2
+IRyy = com_inertia(d['rearWheelMass'], g, d['rWheelPendLength'], com[3, :])
+IFyy = com_inertia(d['frontWheelMass'], g, d['fWheelPendLength'], com[2, :])
 # calculate the wheel x/z inertias
-IRxx = k*tor[6, :]**2/4./np.pi**2
-IFxx = k*tor[9, :]**2/4./np.pi**2
+IRxx = tor_inertia(k, tor[6, :])
+IFxx = tor_inertia(k, tor[9, :])
 # calculate the y inertias for the frame and fork
 com[1, 0] = com[1, 1]
 com[0, 7] = com[0, 6]
 framePendLength = np.sqrt(frameCoM[0, :]**2 + (frameCoM[1, :] + rearWheelRadius)**2)
-IByy = (com[0, :]/2./np.pi)**2*d['frameMass'][0]*g*framePendLength-d['frameMass'][0]*framePendLength**2
+IByy = com_inertia(d['frameMass'][0], g, framePendLength, com[0, :])
 forkPendLength = np.sqrt((forkCoM[0, :] - d['wheelbase'][0])**2 + (forkCoM[1, ] + frontWheelRadius)**2)
-IHyy = (com[1, :]/2./np.pi)**2*d['forkMass'][0]*g*forkPendLength-d['forkMass'][0]*forkPendLength**2
+IHyy = com_inertia(d['forkMass'][0], g, forkPendLength, com[1, :])
+# calculate the fork in-plane moments of inertia
+Ipend = tor_inertia(k, tor)
+IHxx = []
+IHxz = []
+IHzz = []
+for i, row in enumerate(Ipend[3:6, :].T):
+    Imat = inertia_components(row, betaFork[:, i])
+    IHxx.append(Imat[0, 0])
+    IHxz.append(Imat[0, 1])
+    IHzz.append(Imat[1, 1])
+IHxx = np.array(IHxx)
+IHxz = np.array(IHxz)
+IHzz = np.array(IHzz)
+# calculate the frame in-plane moments of inertia
+IBxx = []
+IBxz = []
+IBzz = []
+for i, row in enumerate(Ipend[:3, :].T):
+    Imat = inertia_components(row, betaFrame[:, i])
+    IBxx.append(Imat[0, 0])
+    IBxz.append(Imat[0, 1])
+    IBzz.append(Imat[1, 1])
+IBxx = np.array(IBxx)
+IBxz = np.array(IBxz)
+IBzz = np.array(IBzz)
+# write the parameter files
+for i, name in enumerate(bikeNames):
+    file = open(''.join(name.split() + 'Par.txt', 'w'))
 
