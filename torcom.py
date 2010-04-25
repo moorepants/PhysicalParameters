@@ -15,10 +15,14 @@ def space_out_camel_case(s):
 
 tor = np.zeros((12, 8))
 com = np.zeros((4, 8))
+# list of bike names (only first letter is capatilized)
 bN = ['Browser', 'Browserins', 'Crescendo', 'Fisher', 'Pista', 'Stratos',
         'Yellow', 'Yellowrev']
+# list of the orientation angles
 fst = ['First', 'Second', 'Third']
+# list of the bicycle parts
 fffr = ['Frame', 'Fork', 'Fwheel', 'Rwheel']
+# list of type of pendulums
 tc = ['Torsional', 'Compound']
 # average the periods
 for k, v in period.items():

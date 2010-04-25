@@ -9,6 +9,7 @@ dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
 file = open('period.txt', 'w')
 filenames.sort()
 period = {}
+#for name in ['YellowRevForkTorsionalFirst1.mat']:
 #for name in ['StratosFrameCompoundFirst2.mat']:
 for name in filenames:
     pendDat = {}
@@ -36,20 +37,27 @@ for name in filenames:
     SSR = np.sum((lscurve - np.mean(y))**2)
     SST = np.sum((y - np.mean(y))**2)
     rsq = SSR/SST
+    # add a star in the R value is low
     if rsq <= 0.99:
         rsq = str(rsq) + '*'
     else:
         pass
+    # frequency and period
     wo = p1[4]
     f = wo/2./np.pi
     T = 1./f
+    # include the notes for the experiment
     note = pendDat['notes']
     line = name + ',' + str(T) + ',' + str(rsq) + ',' + str(note) + '\n'
     file.write(line)
     print line
+    # if the filename is already in the period dictionary...
     if name[:-5] in period.keys():
+        # append the period to the list
         period[name[:-5]].append(T)
+    # else if the filename isn't in the period dictionary...
     else:
+        # start a new list
         period[name[:-5]] = [T]
 file.close()
 file = open('period.p', 'w')

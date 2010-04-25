@@ -121,6 +121,22 @@ f.close()
 # torsional, compound and rod periods
 tor = avgPer['tor']
 com = avgPer['com']
+# the yellow bikes have the same frame
+tor[:3, 7] = tor[:3, 6]
+com[0, 7] = com[0, 6]
+# the browser's have the same fork
+tor[3:6, 0] = tor[3:6, 1]
+com[1, 0] = com[1, 1]
+# the browsers have the same front and rear wheels
+tor[6, 1] = tor[6, 0]
+tor[9, 1] = tor[9, 0]
+com[2, 1] = com[2, 0]
+com[3, 1] = com[3, 0]
+# the yellow bikes have the same front and rear wheels
+tor[6, 7] = tor[6, 6]
+tor[9, 7] = tor[9, 6]
+com[2, 7] = com[2, 6]
+com[3, 7] = com[3, 6]
 tRod = avgPer['rodPer']
 # calculate the stiffness of the torsional pendulum
 mRod = 5.56 # mass of the calibration rod [kg]
@@ -141,8 +157,6 @@ par['IFyy'] = com_inertia(par['mF'], par['g'], d['fWheelPendLength'][0], com[2, 
 par['IRxx'] = tor_inertia(k, tor[6, :])
 par['IFxx'] = tor_inertia(k, tor[9, :])
 # calculate the y inertias for the frame and fork
-com[1, 0] = com[1, 1]
-com[0, 7] = com[0, 6]
 framePendLength = np.sqrt(frameCoM[0, :]**2 + (frameCoM[1, :] + par['rR'])**2)
 par['IByy'] = com_inertia(par['mB'], par['g'], framePendLength, com[0, :])
 forkPendLength = np.sqrt((forkCoM[0, :] - par['w'])**2 + (forkCoM[1, ] + par['rF'])**2)
@@ -177,8 +191,6 @@ par['v'] = np.ones_like(par['rR'])
 for i, name in enumerate(bikeNames):
     file = open(''.join(name.split()) + 'Par.txt', 'w')
     for k, v in par.items():
-        print v
-        print v[i]
         line = k + ',' + str(v[i]) + '\n'
         file.write(line)
     file.close()
