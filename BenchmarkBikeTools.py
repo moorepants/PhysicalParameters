@@ -104,3 +104,16 @@ def inertia_components(I, alpha):
     Iorth = lstsq(A, I)[0]
     Inew = array([[Iorth[0], -Iorth[1]], [-Iorth[1], Iorth[2]]])
     return Inew
+
+def parallel_axis(Ic, m, d):
+    '''Parallel axis thereom. Takes the moment of inertia about the rigid
+    body's center of mass and translates it to a new reference frame that is
+    the distance, d, from the center of mass.'''
+    from numpy import array
+    a = d[0]
+    b = d[1]
+    c = d[2]
+    dMat[0] = array([b**2 + c**2, -a*b, -a*c])
+    dMat[1] = array([-a*b, c**2 + a**2, -b*c])
+    dMat[2] = array([-a*c, -b*c, a**2 + b**2])
+    return Ic + m*dMat

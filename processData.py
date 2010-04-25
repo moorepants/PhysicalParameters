@@ -194,4 +194,20 @@ for i, name in enumerate(bikeNames):
         line = k + ',' + str(v[i]) + '\n'
         file.write(line)
     file.close()
-
+# Jason's parameters (sitting on the browser)
+IBJ = np.array([[7.9985, 0 , -1.9272], [0, 8.0689, 0], [ -1.9272, 0, 2.3624]])
+mBJ = 72.
+xBJ = 0.2909
+zBJ = -1.1091
+# compute the total mass
+mB = par['mB'] + mBJ
+# compute the new CoM
+xB = (mBJ*xBJ + par['mB']*par['xB'])/mB
+zB = (mBJ*zBJ + par['mB']*par['zB'])/mB
+# compute the new moment of inertia
+dJ = np.vstack((xB, np.zeros(8), zB)) - np.vstack((xBJ, 0., zBJ))
+IB[0] = np.array([par['IBxx'], 0., par['IBxz']])
+IB[1] = np.array([0., par['IByy'], 0.])
+IB[2] = np.array([par['IBxz'], 0., par['IBzz']])
+dB = np.array([xB, 0., zB] - np.array([par['xB'], 0., par['zB']]))
+I = parallel_axis(IBJ, mBJ, dJ) + parallel_axis(IB, par['mB'], dB)
