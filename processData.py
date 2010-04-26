@@ -189,10 +189,17 @@ par['IBzz'] = np.array(par['IBzz'])
 par['v'] = np.ones_like(par['rR'])
 # write the parameter files
 for i, name in enumerate(bikeNames):
-    file = open(''.join(name.split()) + 'Par.txt', 'w')
+    fname = ''.join(name.split()) + 'Par.txt'
+    file = open(fname, 'w')
     for k, v in par.items():
         line = k + ',' + str(v[i]) + '\n'
         file.write(line)
+    file.close()
+    M, K0, K2, C1, p = bmp2cm(fname)
+    file = open(fname[:-7] + 'Can.txt', 'w')
+    for mat in ['M', 'K0', 'K2', 'C1']:
+        file.write(mat + '\n')
+        file.write(str(eval(mat)) + '\n')
     file.close()
 # Jason's parameters (sitting on the browser)
 IBJ = np.array([[7.9985, 0 , -1.9272], [0, 8.0689, 0], [ -1.9272, 0, 2.3624]])
@@ -223,8 +230,15 @@ for i in range(nBk):
     par['zB'][i] = zB[i]
 # write the parameter files
 for i, name in enumerate(bikeNames):
-    file = open(''.join(name.split()) + 'RiderPar.txt', 'w')
+    fname = ''.join(name.split()) + 'RiderPar.txt'
+    file = open(fname, 'w')
     for k, v in par.items():
         line = k + ',' + str(v[i]) + '\n'
         file.write(line)
+    file.close()
+    M, K0, K2, C1, p = bmp2cm(fname)
+    file = open(fname[:-7] + 'Can.txt', 'w')
+    for mat in ['M', 'K0', 'K2', 'C1']:
+        file.write(mat + '\n')
+        file.write(str(eval(mat)) + '\n')
     file.close()
