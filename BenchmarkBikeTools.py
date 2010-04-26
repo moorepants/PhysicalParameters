@@ -109,10 +109,11 @@ def parallel_axis(Ic, m, d):
     '''Parallel axis thereom. Takes the moment of inertia about the rigid
     body's center of mass and translates it to a new reference frame that is
     the distance, d, from the center of mass.'''
-    from numpy import array
+    from numpy import array, zeros
     a = d[0]
     b = d[1]
     c = d[2]
+    dMat = zeros((3, 3))
     dMat[0] = array([b**2 + c**2, -a*b, -a*c])
     dMat[1] = array([-a*b, c**2 + a**2, -b*c])
     dMat[2] = array([-a*c, -b*c, a**2 + b**2])

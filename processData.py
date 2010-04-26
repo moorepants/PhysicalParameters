@@ -205,9 +205,26 @@ mB = par['mB'] + mBJ
 xB = (mBJ*xBJ + par['mB']*par['xB'])/mB
 zB = (mBJ*zBJ + par['mB']*par['zB'])/mB
 # compute the new moment of inertia
-dJ = np.vstack((xB, np.zeros(8), zB)) - np.vstack((xBJ, 0., zBJ))
-IB[0] = np.array([par['IBxx'], 0., par['IBxz']])
-IB[1] = np.array([0., par['IByy'], 0.])
-IB[2] = np.array([par['IBxz'], 0., par['IBzz']])
-dB = np.array([xB, 0., zB] - np.array([par['xB'], 0., par['zB']]))
-I = parallel_axis(IBJ, mBJ, dJ) + parallel_axis(IB, par['mB'], dB)
+dJ = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((xBJ, 0., zBJ))
+dB = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((par['xB'], np.zeros(nBk), par['zB']))
+IB = np.zeros((3, 3))
+for i in range(nBk):
+    IB[0] = np.array([par['IBxx'][i], 0., par['IBxz'][i]])
+    IB[1] = np.array([0., par['IByy'][i], 0.])
+    IB[2] = np.array([par['IBxz'][i], 0., par['IBzz'][i]])
+    I = parallel_axis(IBJ, mBJ, dJ[:, i]) + parallel_axis(IB, par['mB'][i], dB[:, i])
+    print I
+    par['IBxx'][i] = I[0, 0]
+    par['IBxz'][i] = I[0, 2]
+    par['IByy'][i] = I[1, 1]
+    par['IBzz'][i] = I[2, 2]
+    par['mB'][i] = mB[i]
+    par['xB'][i] = xB[i]
+    par['zB'][i] = zB[i]
+# write the parameter files
+for i, name in enumerate(bikeNames):
+    file = open(''.join(name.split()) + 'RiderPar.txt', 'w')
+    for k, v in par.items():
+        line = k + ',' + str(v[i]) + '\n'
+        file.write(line)
+    file.close()
