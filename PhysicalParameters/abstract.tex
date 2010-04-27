@@ -58,24 +58,100 @@ The bicycles were chosen for both variety and convience. The six bicycles are as
         bike was measured in two configurations, the second being the fork was
         rotated in the headtube 180 degrees for larger trail.
 \end{description}
-\subsection{Geometry}
+\subsection*{Geometry}
 The benchmark bicycle needs five basic geometric measurements: the wheelbase
 $w$, steer axis tilt $\lambda$, trail $c$, and the wheel radii $r_\mathrm{F}$
 and $r_\mathrm{R}$. The wheelbase and steer axis tilt were measured directly
 with a scale and a digital level, respectively. The trail and wheel radii were
 measured indirectly by fork offset and loaded wheel circumference.
-\subsection{Mass}
+\subsection*{Mass}
 The mass of each of the rigid bodies were measured with a precision scale.
-\subsection{Mass location}
+\subsection*{Mass location}
 The center's of mass of each of the rigid bodies were measured by hanging the
 rigid bodies through their centers of mass and assuming symmetry. The
 orientation angle of the headtube angle and the point of suspension were
 measured and the center's of mass of the frame and fork were calculated from
 these values. The wheel centers of mass were assumed to be in their ideal
 geometric center.
-\subsection{Mass Distribution}
+\subsection*{Mass Distribution}
 The moment's of inertia of the rigid bodies were measured with both a torsional
-pendulum and a compound pendulum.
+pendulum and a compound pendulum. Once again the assumed symmetry of the
+bicycle was utlized to reduce the amount of measurements needed. The
+in-symmetric-plane moments of inertia were calculated from measurements of the
+rigid bodies period of oscillation when hung from a torsional pendulum at
+different orienatation angles. The out of plane moments of inertia were
+measured by swinging the rigid bodies as a compound pendulum.
+\subsection*{Results}
+Parameter sets for all six bicycles (and all eight
+configurations)~\ref{tab:par}  will be
+presented, along with basic comparisons of the open loop dynamics of the
+different types of bicycles. By examining the mass, damping and stiffness
+matrices of the system and the eigenvalues at different speeds anedoctal
+descriptions of handling are compared to the dynamics.
+\begin{table*}[tb]
+\centering
+\caption{COMBINED BICYCLE AND RIDER PARAMETER VALUES FOR THE BATAVUS BROWSER.}
+{\small
+\begin{tabular}{lcl}
+&&\\
+\hline
+Parameter & Symbol & Value \\
+\hline
+wheel base & $w$ & 1.121 m \\
+trail & $c$ & 0.069 m \\
+steer axis tilt & \emph{$\lambda$} & 0.400 rad \\
+gravity & \emph{g} & 9.81 N kg$^{-1}$ \\
+forward speed & \emph{v} & various m s$^{-1}$ \\
+
+\multicolumn{3}{l}{\textbf{R}\emph{ear wheel R}}\\
+radius & \emph{$r_\mathrm{R}$} & 0.341 m\\
+mass & \emph{$m_\mathrm{R}$} &  3.11 kg \\
+mass moments of inertia & \emph{$(I_{\mathrm{R}xx},\
+I_{\mathrm{R}yy})$} &
+(0.088,\ 0.152) $\mathrm{kg\ m}^2$ \\
+
+\multicolumn{3}{l}{\emph{rear} \textbf{B}\emph{ody and frame B}}\\
+position center of mass & \emph{$(x_\mathrm{B},\ z_\mathrm{B})$} &
+($0.276$,\ $-0.538$) m\\
+mass & \emph{$m_\mathrm{B}$} & 9.86 kg \\
+mass moments of inertia & $\left[ \begin{array}{ccc}
+I_{\mathrm{B}xx} &  0 & I_{\mathrm{B}xz}\\
+0 & I_{\mathrm{B}yy} & 0 \\
+I_{\mathrm{B}xz} & 0 & I_{\mathrm{B}zz}
+\end{array} \right] $ &
+$\left[ \begin{array}{ccc}
+0.527 &  0 & -0.114\\
+0 & 1.317 & 0 \\
+-0.114 & 0 & 0.759
+\end{array} \right] \ \mathrm{kg\ m}^{2}$\\
+
+\multicolumn{3}{l}{\emph{front} \textbf{H}\emph{andlebar and fork assembly H}}\\
+position center of mass & \emph{$(x_\mathrm{H},\ z_\mathrm{H})$} &
+($0.867$,\ $-0.748$) m\\
+mass & \emph{$m_\mathrm{H}$} & 3.22 kg \\
+mass moments of inertia & $\left[ \begin{array}{ccc}
+I_{\mathrm{H}xx} &  0 & I_{\mathrm{H}xz}\\
+0 & I_{\mathrm{H}yy} & 0 \\
+I_{\mathrm{H}xz} & 0 & I_{\mathrm{H}zz}
+\end{array} \right] $ &
+$\left[ \begin{array}{ccc}
+    0.253  &       0  & -0.072\\
+         0  & 0.246   &  0\\
+   -0.072  &       0  &  0.096
+\end{array} \right] \ \mathrm{kg\ m}^{2}$\\
+
+\multicolumn{3}{l}{\textbf{F}\emph{ront wheel F}}\\
+radius & \emph{$r_\mathrm{F}$} & 0.344 m\\
+mass & \emph{$m_\mathrm{F}$} & 2.02 kg \\
+mass moments of inertia & \emph{$(I_{\mathrm{F}xx},\
+I_{\mathrm{F}yy})$} &
+(0.090,\ 0.149) $\mathrm{kg\ m}^2$ \\
+\hline
+\end{tabular}
+}
+\label{tab:par}
+\end{table*}
+
 \bibliographystyle{acm}
 \bibliography{bicycle}
 \end{document}
