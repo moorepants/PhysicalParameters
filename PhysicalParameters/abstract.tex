@@ -1,0 +1,81 @@
+\documentclass{bmd2010a}
+
+\begin{document}
+
+\begin{flushleft}
+{\fontsize{16pt}{20pt}\selectfont%
+  An Accurate Method of Measuring a Bicycle's Physical Parameters\\}
+{\fontsize{16pt}{20pt}\selectfont%
+  Motorcycle Dynamics Symposium\\}
+\end{flushleft}
+
+%%%%%%%%%%%%%%%% authors %%%%%%%%%%%%%%%
+\begin{flushleft}
+  {\fontsize{12}{14}{Jason K. Moore}\\}
+  \textit{Mechanical and Aerospace Engineering\\
+          University of California, Davis\\
+          One Shields Avenue, Davis, CA 95616, USA\\
+          e-mail: jkmoor@ucdavis.edu
+}\vspace{10pt}\\
+  {\fontsize{12}{14}{Mont Hubbard}\\}
+  \textit{Affiliation}\vspace{10pt}\\
+  {\fontsize{12}{14}{D. E. Author}\\}
+  \textit{Affiliation}\vspace{10pt}\\
+\end{flushleft}
+
+\section*{Abstract}
+Accurate measurments of a bicycle's physical parameters are required for
+realistic dynamic simulations. For the most basic models the geometry, mass,
+mass location and mass distributions must be measured. More complex models
+require measurements of tire characteristics, stiffness, damping, etc. This
+paper concerns itself with the measurement of bicycle parameters required for
+simulations of the benchmark bicycle presented in \cite{Meijaard2007}. This
+bicycle model is made of four rigid bodies, has ideal rolling, frictionless joints,
+and is assumed to be symmetric about the frame center plane. A set of 25
+physical parameters are used to describe the geometry, mass, mass location and
+mass distribution of each of the rigid bodies. These parameters are presented
+relative to a reference frame when the bicycle is in the nominal upright
+configuration. The methods described herein are based primarily off of the work
+done in \cite{Kooijman2006} but have been refined for improved accuracy and
+methodology. \cite{Roland1971} measured an experimental bicycle frame in a
+similar fashion and both \cite{Dohring1953} and \cite{Singh1971} have used
+similar techniques with scooters. We measure the characteristics of six
+different bicycles, two of which are setup in two different configurations, for
+a total of eight different parameter sets that can be used with, but not
+limited, to the benchmark bicycle model. The parameters set is also complete
+for non-linear benchmark bicycle model.
+
+The bicycles were chosen for both variety and convience. The six bicycles are as follows:
+\begin{description}
+    \item[Batavus Browser] A Dutch style city bicycle. The bicycle was measured
+        in two configurations. One with the instrumentation described in
+        \cite{Kooijman2009a} and one as from the manufacturer.
+    \item[Batavus Stratos Deluxe] A Dutch style city bicycle
+    \item[Batavus Crescendo Deluxe] A Dutch style city bicycle
+    \item[Gary Fisher Mountain Bike] A hardtail mountain bicycle
+    \item[Bianchi Pista] A modern steel frame track racing bicycle
+    \item[Yellow Bicycle] A stripped down aluminum frame road bicycle. This
+        bike was measured in two configurations, the second being the fork was
+        rotated in the headtube 180 degrees for larger trail.
+\end{description}
+\subsection{Geometry}
+The benchmark bicycle needs five basic geometric measurements: the wheelbase
+$w$, steer axis tilt $\lambda$, trail $c$, and the wheel radii $r_\mathrm{F}$
+and $r_\mathrm{R}$. The wheelbase and steer axis tilt were measured directly
+with a scale and a digital level, respectively. The trail and wheel radii were
+measured indirectly by fork offset and loaded wheel circumference.
+\subsection{Mass}
+The mass of each of the rigid bodies were measured with a precision scale.
+\subsection{Mass location}
+The center's of mass of each of the rigid bodies were measured by hanging the
+rigid bodies through their centers of mass and assuming symmetry. The
+orientation angle of the headtube angle and the point of suspension were
+measured and the center's of mass of the frame and fork were calculated from
+these values. The wheel centers of mass were assumed to be in their ideal
+geometric center.
+\subsection{Mass Distribution}
+The moment's of inertia of the rigid bodies were measured with both a torsional
+pendulum and a compound pendulum.
+\bibliographystyle{acm}
+\bibliography{bicycle}
+\end{document}
