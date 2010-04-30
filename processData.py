@@ -189,17 +189,20 @@ par['IBzz'] = np.array(par['IBzz'])
 par['v'] = np.ones_like(par['rR'])
 # write the parameter files
 for i, name in enumerate(bikeNames):
+    dir = 'bikeParameters/'
     fname = ''.join(name.split()) + 'Par.txt'
-    file = open(fname, 'w')
+    file = open(dir + fname, 'w')
     for k, v in par.items():
-        line = k + ',' + str(v[i]) + '\n'
+        line = k + ',' + str(v[i]) + '\r\n'
         file.write(line)
     file.close()
-    M, K0, K2, C1, p = bmp2cm(fname)
-    file = open(fname[:-7] + 'Can.txt', 'w')
-    for mat in ['M', 'K0', 'K2', 'C1']:
-        file.write(mat + '\n')
-        file.write(str(eval(mat)) + '\n')
+    M, C1, K0, K2, p = bmp2cm(dir + fname)
+    A = aMatrix(M, C1, K0, K2, p)
+    dir = 'bikeCanonical/'
+    file = open(dir + fname[:-7] + 'Can.txt', 'w')
+    for mat in ['M','C1', 'K0', 'K2', 'A']:
+        file.write(mat + '\r\n')
+        file.write(str(eval(mat)) + '\r\n')
     file.close()
 # Jason's parameters (sitting on the browser)
 IBJ = np.array([[7.9985, 0 , -1.9272], [0, 8.0689, 0], [ -1.9272, 0, 2.3624]])
@@ -220,7 +223,6 @@ for i in range(nBk):
     IB[1] = np.array([0., par['IByy'][i], 0.])
     IB[2] = np.array([par['IBxz'][i], 0., par['IBzz'][i]])
     I = parallel_axis(IBJ, mBJ, dJ[:, i]) + parallel_axis(IB, par['mB'][i], dB[:, i])
-    print I
     par['IBxx'][i] = I[0, 0]
     par['IBxz'][i] = I[0, 2]
     par['IByy'][i] = I[1, 1]
@@ -230,15 +232,18 @@ for i in range(nBk):
     par['zB'][i] = zB[i]
 # write the parameter files
 for i, name in enumerate(bikeNames):
+    dir = 'bikeRiderParameters/'
     fname = ''.join(name.split()) + 'RiderPar.txt'
-    file = open(fname, 'w')
+    file = open(dir + fname, 'w')
     for k, v in par.items():
-        line = k + ',' + str(v[i]) + '\n'
+        line = k + ',' + str(v[i]) + '\r\n'
         file.write(line)
     file.close()
-    M, K0, K2, C1, p = bmp2cm(fname)
-    file = open(fname[:-7] + 'Can.txt', 'w')
-    for mat in ['M', 'K0', 'K2', 'C1']:
-        file.write(mat + '\n')
-        file.write(str(eval(mat)) + '\n')
+    M, C1, K0, K2, p = bmp2cm(dir + fname)
+    A = aMatrix(M, C1, K0, K2, p)
+    dir = 'bikeRiderCanonical/'
+    file = open(dir + fname[:-7] + 'Can.txt', 'w')
+    for mat in ['M','C1', 'K0', 'K2', 'A']:
+        file.write(mat + '\r\n')
+        file.write(str(eval(mat)) + '\r\n')
     file.close()

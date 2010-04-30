@@ -4,7 +4,7 @@ def bmp2cm(filename):
     f = open(filename, 'r')
     p = {}
     for i, line in enumerate(f):
-        list = line[:-1].split(',')
+        list = line[:-3].split(',')
         pi = np.pi
         p[list[0]] = eval(list[1])
     mT = p['mR'] + p['mB'] + p['mH'] + p['mF']
@@ -50,9 +50,9 @@ def bmp2cm(filename):
     C1dp = -(mu*ST + SF*np.cos(p['lambda']))
     C1dd = IAlz/p['w']*np.cos(p['lambda']) + mu*(SA + ITzz/p['w']*np.cos(p['lambda']))
     C1 = np.array([[C1pp, C1pd], [C1dp, C1dd]])
-    return M, K0, K2, C1, p
+    return M, C1, K0, K2, p
 
-def aMatrix(M, K0, K2, C1, p):
+def aMatrix(M, C1, K0, K2, p):
     '''Calculates the A matrix from the canonical matrices for the benchmark
     bicycle'''
     from numpy import eye, zeros, vstack, hstack, dot
