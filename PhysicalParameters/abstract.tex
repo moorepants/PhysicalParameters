@@ -13,13 +13,13 @@
   \textit{Mechanical and Aerospace Engineering\\
           University of California, Davis\\
           One Shields Avenue, Davis, CA 95616, USA\\
-          e-mail: jkmoor@ucdavis.edu and mhubbard@ucdavis.edu
+          e-mail: jkmoor@ucdavis.edu, mhubbard@ucdavis.edu
   }\vspace{10pt}\\
   {\fontsize{12}{14}{A. L. Schwab and J. D. G. Kooijman}\\}
   \textit{Laboratory for Engineering Mechanics\\
           Delft University of Technology, Mekelweg 2, 2628CD Delft, The
           Netherlands\\
-          e-mail: a.l.schwab@tudelft.nl and jodikooijman@gmail.com
+          e-mail: a.l.schwab@tudelft.nl, jodikooijman@gmail.com
   }\vspace{10pt}\\
 \end{flushleft}
 
@@ -32,65 +32,66 @@ paper concerns the measurement of bicycle parameters required for
 simulations of the benchmark bicycle presented in \cite{Meijaard2007}. This
 model is composed of four rigid bodies, has ideal rolling and frictionless joints,
 and is assumed to be laterally symmetric. A set of 25
-physical parameters are used to describe the geometry, mass, mass location and
+physical parameters is used to describe the geometry, mass, mass location and
 mass distribution of each of the rigid bodies. These parameters are presented
 relative to a reference frame when the bicycle is in the nominal upright
-configuration. The methods described herein are based primarily off of the work
+configuration. The methods described herein are based primarily on the work
 done in \cite{Kooijman2006} but have been refined for improved accuracy and
-methodology. \cite{Roland1971} measured an experimental bicycle frame in a
+methodology. Previously, \cite{Roland1971} measured an experimental bicycle frame in a
 similar fashion and both \cite{Dohring1953} and \cite{Singh1971} have used
-similar techniques with scooters. We measure the characteristics of six
-different bicycles, two of which are setup in two different configurations, for
-a total of eight different parameter sets that can be used with, but not
-limited, to the benchmark bicycle model. The parameters set is also complete
+similar techniques with scooters. We measured the characteristics of six
+different bicycles, two of which were set up in two different configurations.
+This is a total of eight different parameter sets that can be used with, but not
+limited to, the benchmark bicycle model. The parameters set is also complete
 for non-linear benchmark bicycle model.
 
-The bicycles were chosen for both variety and convience. The six bicycles are as follows:
+The six bicycles, chosen for both variety and convenience, are as follows:
 \begin{description}
-    \item[Batavus Browser] A Dutch style city bicycle. The bicycle was measured
+    \item[Batavus Browser] The Dutch style city bicycle was measured
         in two configurations. One with the instrumentation described in
-        \cite{Kooijman2009a} and one as from the manufacturer.
-    \item[Batavus Stratos Deluxe] A Dutch style city bicycle
-    \item[Batavus Crescendo Deluxe] A Dutch style city bicycle
-    \item[Gary Fisher Mountain Bike] A hardtail mountain bicycle
-    \item[Bianchi Pista] A modern steel frame track racing bicycle
+        \cite{Kooijman2009a} and one as received from the manufacturer.
+    \item[Batavus Stratos Deluxe] A Dutch style sporty city bicycle.
+    \item[Batavus Crescendo Deluxe] A Dutch style city bicycle with a
+        suspension fork.
+    \item[Gary Fisher Mountain Bike] A hardtail mountain bicycle.
+    \item[Bianchi Pista] A modern steel frame track racing bicycle.
     \item[Yellow Bicycle] A stripped down aluminum frame road bicycle. This
-        bike was measured in two configurations, the second being the fork was
+        bike was measured in two configurations, the second with the fork
         rotated in the headtube 180 degrees for larger trail.
 \end{description}
 \subsection*{Geometry}
-The benchmark bicycle needs five basic geometric measurements: the wheelbase
-$w$, steer axis tilt $\lambda$, trail $c$, and the wheel radii $r_\mathrm{F}$
+The benchmark bicycle requires five basic geometric measurements: wheelbase
+$w$, steer axis tilt $\lambda$, trail $c$, and wheel radii $r_\mathrm{F}$
 and $r_\mathrm{R}$. The wheelbase and steer axis tilt were measured directly
-with a scale and a digital level, respectively. The trail and wheel radii were
-measured indirectly by fork offset and loaded wheel circumference.
-\subsection*{Mass}
+with a meter scale and a digital level, respectively. The trail and wheel radii were
+measured indirectly using fork offset and loaded wheel circumference.
+\subsection*{Mass, Mass Center Location and Mass Distribution}
 The mass of each of the rigid bodies were measured with a precision scale.
-\subsection*{Mass location}
-The center's of mass of each of the rigid bodies were measured by hanging the
-rigid bodies through their centers of mass and assuming symmetry. The
-orientation angle of the headtube angle and the point of suspension were
-measured and the center's of mass of the frame and fork were calculated from
-these values. The wheel centers of mass were assumed to be in their ideal
+The centers of mass of each of the rigid bodies were measured by hanging each
+rigid body at the mass center and assuming lateral symmetry. The mass centers
+were calculated from the orientation angle of the headtube and the location of
+the point of suspension relative to the wheel center.
+The wheel centers of mass were assumed to be in their ideal
 geometric center.
-\subsection*{Mass Distribution}
-The moment's of inertia of the rigid bodies were measured with both a torsional
-pendulum and a compound pendulum. Once again the assumed symmetry of the
-bicycle was utlized to reduce the amount of measurements needed. The
+
+The moments of inertia of the rigid bodies were measured in both torsional
+pendulum and compound pendulum configurations. Again the assumed symmetry of the
+bicycle was utilized to reduce the number of measurements needed. The
 in-symmetric-plane moments of inertia were calculated from measurements of the
-rigid bodies period of oscillation when hung from a torsional pendulum at
-different orienatation angles. The out of plane moments of inertia were
+rigid bodies' periods of oscillation when hung as a torsional pendulum at
+different orienatation angles. The out-of-plane moments of inertia were
 measured by swinging the rigid bodies as a compound pendulum.
 \subsection*{Results}
-Parameter sets for all six bicycles (and all eight
-configurations)~\ref{tab:par}  will be
-presented, along with basic comparisons of the open loop dynamics of the
-different types of bicycles. By examining the mass, damping and stiffness
-matrices of the system and the eigenvalues at different speeds anedoctal
-descriptions of handling are compared to the dynamics.
+Parameter sets for all six bicycles and all eight
+configurations, example in Table~\ref{tab:par},  will be
+presented, together with basic comparisons of the open loop dynamics of the
+different types of bicycles. The physical parameters, the mass, damping and stiffness
+matrices of the system, the eigenvalues and open loop transfer functions at
+different speeds will be compared with typical anedoctal
+descriptions of handling.
 \begin{table*}[tb]
 \centering
-\caption{COMBINED BICYCLE AND RIDER PARAMETER VALUES FOR THE BATAVUS BROWSER.}
+\caption{PARAMETER VALUES FOR THE BATAVUS BROWSER.}
 {\small
 \begin{tabular}{lcl}
 &&\\
