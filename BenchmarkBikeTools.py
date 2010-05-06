@@ -12,9 +12,10 @@ def bmp2cm(filename):
         p is a dictionary of the parameters. the keys are the variable names
 
         '''
-    from numpy import pi
+    from numpy import pi, cos, sin, array
     f = open(filename, 'r')
     p = {}
+    # parse the text file
     for i, line in enumerate(f):
         list = line[:-3].split(',')
         p[list[0]] = eval(list[1])
@@ -32,11 +33,11 @@ def bmp2cm(filename):
     IAxx = p['IHxx'] + p['IFxx'] + p['mH']*(p['zH'] - zA)**2 + p['mF']*(p['rF'] + zA)**2
     IAxz = p['IHxz'] - p['mH']*(p['xH'] - xA)*(p['zH'] - zA) + p['mF']*(p['w'] - xA)*(p['rF'] + zA)
     IAzz = p['IHzz'] + p['IFzz'] + p['mH']*(p['xH'] - xA)**2 + p['mF']*(p['w'] - xA)**2
-    uA = (xA - p['w'] - p['c'])*np.cos(p['lambda']) - zA*np.sin(p['lambda'])
-    IAll = mA*uA**2 + IAxx*np.sin(p['lambda'])**2 + 2*IAxz*np.sin(p['lambda'])*np.cos(p['lambda']) + IAzz*np.cos(p['lambda'])**2
-    IAlx = -mA*uA*zA + IAxx*np.sin(p['lambda']) + IAxz*np.cos(p['lambda'])
-    IAlz = mA*uA*xA + IAxz*np.sin(p['lambda']) + IAzz*np.cos(p['lambda'])
-    mu = p['c']/p['w']*np.cos(p['lambda'])
+    uA = (xA - p['w'] - p['c'])*cos(p['lambda']) - zA*sin(p['lambda'])
+    IAll = mA*uA**2 + IAxx*sin(p['lambda'])**2 + 2*IAxz*sin(p['lambda'])*cos(p['lambda']) + IAzz*cos(p['lambda'])**2
+    IAlx = -mA*uA*zA + IAxx*sin(p['lambda']) + IAxz*cos(p['lambda'])
+    IAlz = mA*uA*xA + IAxz*sin(p['lambda']) + IAzz*cos(p['lambda'])
+    mu = p['c']/p['w']*cos(p['lambda'])
     SR = p['IRyy']/p['rR']
     SF = p['IFyy']/p['rF']
     ST = SR + SF
@@ -45,22 +46,22 @@ def bmp2cm(filename):
     Mpd = IAlx + mu*ITxz
     Mdp = Mpd
     Mdd = IAll + 2*mu*IAlz + mu**2*ITzz
-    M = np.array([[Mpp, Mpd], [Mdp, Mdd]])
+    M = array([[Mpp, Mpd], [Mdp, Mdd]])
     K0pp = mT*zT # this value only reports to 13 digit precision it seems?
     K0pd = -SA
     K0dp = K0pd
-    K0dd = -SA*np.sin(p['lambda'])
-    K0 = np.array([[K0pp, K0pd], [K0dp, K0dd]])
+    K0dd = -SA*sin(p['lambda'])
+    K0 = array([[K0pp, K0pd], [K0dp, K0dd]])
     K2pp = 0
     K2pd = (ST - mT*zT)/p['w']*np.cos(p['lambda'])
     K2dp = 0
     K2dd = (SA + SF*np.sin(p['lambda']))/p['w']*np.cos(p['lambda'])
-    K2 = np.array([[K2pp, K2pd], [K2dp, K2dd]])
+    K2 = array([[K2pp, K2pd], [K2dp, K2dd]])
     C1pp = 0
     C1pd = mu*ST + SF*np.cos(p['lambda']) + ITxz/p['w']*np.cos(p['lambda']) - mu*mT*zT
     C1dp = -(mu*ST + SF*np.cos(p['lambda']))
     C1dd = IAlz/p['w']*np.cos(p['lambda']) + mu*(SA + ITzz/p['w']*np.cos(p['lambda']))
-    C1 = np.array([[C1pp, C1pd], [C1dp, C1dd]])
+    C1 = array([[C1pp, C1pd], [C1dp, C1dd]])
     return M, C1, K0, K2, p
 
 def aMatrix(M, C1, K0, K2, p):
