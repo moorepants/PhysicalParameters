@@ -1,11 +1,22 @@
 def bmp2cm(filename):
-    ''' Converts the benchmark bicycle parameters to the canonical matrices'''
-    import numpy as np
+    '''Return the benchmark canonical matrices from the bicycle parameters. Formulated from Meijaard et al. 2007.
+
+    Input:
+        filename is a text file with the 27 parameters listed in csv format. One
+        parameter per line in the form: lamba, 10/pi
+    Output:
+        M is the mass matrix
+        C1 is the damping like matrix that is proportional to v
+        K0 is the stiffness matrix proportional to gravity
+        K2 is the stiffness matrix proportional to v**2
+        p is a dictionary of the parameters. the keys are the variable names
+
+        '''
+    from numpy import pi
     f = open(filename, 'r')
     p = {}
     for i, line in enumerate(f):
         list = line[:-3].split(',')
-        pi = np.pi
         p[list[0]] = eval(list[1])
     mT = p['mR'] + p['mB'] + p['mH'] + p['mF']
     xT = (p['xB']*p['mB'] + p['xH']*p['mH'] + p['w']*p['mF'])/mT
@@ -35,7 +46,7 @@ def bmp2cm(filename):
     Mdp = Mpd
     Mdd = IAll + 2*mu*IAlz + mu**2*ITzz
     M = np.array([[Mpp, Mpd], [Mdp, Mdd]])
-    K0pp = mT*zT # this value only reports to 13 digit precision?
+    K0pp = mT*zT # this value only reports to 13 digit precision it seems?
     K0pd = -SA
     K0dp = K0pd
     K0dd = -SA*np.sin(p['lambda'])
