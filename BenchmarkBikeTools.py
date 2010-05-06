@@ -64,8 +64,18 @@ def bmp2cm(filename):
     return M, C1, K0, K2, p
 
 def aMatrix(M, C1, K0, K2, p):
-    '''Calculates the A matrix from the canonical matrices for the benchmark
-    bicycle'''
+    '''Calculate the A and B matrices for the benchmark bicycle
+
+    Input:
+        M is the mass matrix
+        C1 is the damping like matrix that is proportional to v
+        K0 is the stiffness matrix proportional to gravity
+        K2 is the stiffness matrix proportional to v**2
+        p is a dictionary of the parameters. the keys are the variable names
+    Returns:
+        A system dynamic matrix
+        B control matrix
+    '''
     from numpy import eye, zeros, vstack, hstack, dot
     from numpy.linalg import inv
     a11 = -p['v']*C1
@@ -73,7 +83,8 @@ def aMatrix(M, C1, K0, K2, p):
     a21 = eye(2)
     a22 = zeros((2, 2))
     A = vstack((dot(inv(M), hstack((a11, a12))), hstack((a21, a22))))
-    return A
+    B = vstack(inv(M), zeros((2, 2)))
+    return A, B
 
 def tor_inertia(k, T):
     '''Calculates the moment of interia for an ideal torsional pendulm'''
