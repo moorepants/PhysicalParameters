@@ -3,7 +3,8 @@ def bmp2cm(filename):
 
     Input:
         filename is a text file with the 27 parameters listed in csv format. One
-        parameter per line in the form: lamba, 10/pi
+        parameter per line in the form: 'lamba,10/pi' or 'v,5'. Use the
+        benchmark paper's units!
     Output:
         M is the mass matrix
         C1 is the damping like matrix that is proportional to v
@@ -53,18 +54,18 @@ def bmp2cm(filename):
     K0dd = -SA*sin(p['lambda'])
     K0 = array([[K0pp, K0pd], [K0dp, K0dd]])
     K2pp = 0
-    K2pd = (ST - mT*zT)/p['w']*np.cos(p['lambda'])
+    K2pd = (ST - mT*zT)/p['w']*cos(p['lambda'])
     K2dp = 0
-    K2dd = (SA + SF*np.sin(p['lambda']))/p['w']*np.cos(p['lambda'])
+    K2dd = (SA + SF*sin(p['lambda']))/p['w']*cos(p['lambda'])
     K2 = array([[K2pp, K2pd], [K2dp, K2dd]])
     C1pp = 0
-    C1pd = mu*ST + SF*np.cos(p['lambda']) + ITxz/p['w']*np.cos(p['lambda']) - mu*mT*zT
-    C1dp = -(mu*ST + SF*np.cos(p['lambda']))
-    C1dd = IAlz/p['w']*np.cos(p['lambda']) + mu*(SA + ITzz/p['w']*np.cos(p['lambda']))
+    C1pd = mu*ST + SF*cos(p['lambda']) + ITxz/p['w']*cos(p['lambda']) - mu*mT*zT
+    C1dp = -(mu*ST + SF*cos(p['lambda']))
+    C1dd = IAlz/p['w']*cos(p['lambda']) + mu*(SA + ITzz/p['w']*cos(p['lambda']))
     C1 = array([[C1pp, C1pd], [C1dp, C1dd]])
     return M, C1, K0, K2, p
 
-def aMatrix(M, C1, K0, K2, p):
+def abMatrix(M, C1, K0, K2, p):
     '''Calculate the A and B matrices for the benchmark bicycle
 
     Input:
@@ -84,40 +85,69 @@ def aMatrix(M, C1, K0, K2, p):
     a21 = eye(2)
     a22 = zeros((2, 2))
     A = vstack((dot(inv(M), hstack((a11, a12))), hstack((a21, a22))))
-    B = vstack(inv(M), zeros((2, 2)))
+    B = vstack((inv(M), zeros((2, 2))))
     return A, B
 
 def tor_inertia(k, T):
-    '''Calculates the moment of interia for an ideal torsional pendulm'''
+    '''Calculate the moment of interia for an ideal torsional pendulm
+
+    k: torsional stiffness
+    T: period
+    I: moment of inertia
+
+    '''
     from math import pi
     I = k*T**2/4./pi**2
     return I
 
 def com_inertia(m, g, l, T):
-    '''Calculates the moment of inertia for an object hung from a compound
-    pendulum'''
+    '''Calculate the moment of inertia for an object hung as a compound
+    pendulum
+
+    m: mass
+    g: gravity
+    l: length
+    T: period
+    I: moment of interia
+
+    '''
     from math import pi
     I = (T/2./pi)**2*m*g*l - m*l**2
     return I
 
 def tube_inertia(l, m, ro, ri):
-    '''Calculates the moment of inertia for a tube (or rod) where the x axis is
-    aligned with the tube's axis'''
+    '''Calculate the moment of inertia for a tube (or rod) where the x axis is
+    aligned with the tube's axis
+
+    l: length
+    m: mass
+    ro: outer radius
+    ri: inner radius
+    Ix: moment of inertia about tube axis
+    Iy, Iz: moment of inertia about normal axis
+
+    '''
     from numpy import array
     Ix = m/2.*(ro**2 + ri**2)
-    Iy = m/12.*(3*ro**2 + 3*ri**2 + l**2) 
+    Iy = m/12.*(3*ro**2 + 3*ri**2 + l**2)
     Iz = Iy
     return array([Ix, Iy, Iz])
 
 def tor_stiffness(I, T):
-    '''Calculates the stiffness of a torsional pendulum with a known moment of
-    inertia'''
+    '''Calculate the stiffness of a torsional pendulum with a known moment of
+    inertia
+
+    I: moment of inertia
+    T: period
+    k: stiffness
+
+    '''
     from math import pi
     k = 4.*I*pi**2/T**2
     return k
 
 def inertia_components(I, alpha):
-    '''Calculates the 2D orthongonal inertia tensor when at least three moments
+    '''Calculate the 2D orthongonal inertia tensor when at least three moments
     of inertia and their axis orientations are specified'''
     from numpy import sin, cos, vstack, array
     from numpy.linalg import lstsq
@@ -125,7 +155,7 @@ def inertia_components(I, alpha):
     ca = cos(alpha)
     A = vstack((ca**2, 2*sa*ca, sa**2)).T
     Iorth = lstsq(A, I)[0]
-    Inew = array([[Iorth[0], -Iorth[1]], [-Iorth[1], Iorth[2]]])
+    Inew = array([[Iorth[0], Iorth[1]], [Iorth[1], Iorth[2]]])
     return Inew
 
 def parallel_axis(Ic, m, d):
