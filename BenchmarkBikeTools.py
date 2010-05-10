@@ -88,41 +88,45 @@ def abMatrix(M, C1, K0, K2, p):
     B = vstack((inv(M), zeros((2, 2))))
     return A, B
 
-def tor_inertia(k, T, sk=0., sT=0.):
+def tor_inertia(k, T):
     '''Calculate the moment of interia for an ideal torsional pendulm
 
     Parameters:
     -----------
     k: torsional stiffness
     T: period
-    sk: standard deviation of k
-    sT: stadard deviation of T
 
     Returns:
     --------
-    I: moment of inertia (and its standard deviation)
+    I: moment of inertia
 
     '''
     from math import pi
-    from uncertainties import num_with_uncert
-    k = num_with_uncert((k, sk))
-    T = num_with_uncert((T, sT))
+
     I = k*T**2./4./pi**2.
-    return I.nominal_value, I.std_dev()
+
+    return I
 
 def com_inertia(m, g, l, T):
     '''Calculate the moment of inertia for an object hung as a compound
     pendulum
 
+    Parameters:
+    -----------
     m: mass
     g: gravity
     l: length
     T: period
+
+    Returns:
+    --------
     I: moment of interia
 
     '''
     from math import pi
-    I = (T/2./pi)**2*m*g*l - m*l**2
+
+    I = (T/2./pi)**2.*m*g*l - m*l**2.
+
     return I
 
 def tube_inertia(l, m, ro, ri):
