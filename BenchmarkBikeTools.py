@@ -88,17 +88,27 @@ def abMatrix(M, C1, K0, K2, p):
     B = vstack((inv(M), zeros((2, 2))))
     return A, B
 
-def tor_inertia(k, T):
+def tor_inertia(k, T, sk=0., sT=0.):
     '''Calculate the moment of interia for an ideal torsional pendulm
 
+    Parameters:
+    -----------
     k: torsional stiffness
     T: period
-    I: moment of inertia
+    sk: standard deviation of k
+    sT: stadard deviation of T
+
+    Returns:
+    --------
+    I: moment of inertia (and its standard deviation)
 
     '''
     from math import pi
-    I = k*T**2/4./pi**2
-    return I
+    from uncertainties import num_with_uncert
+    k = num_with_uncert((k, sk))
+    T = num_with_uncert((T, sT))
+    I = k*T**2./4./pi**2.
+    return I.nominal_value, I.std_dev()
 
 def com_inertia(m, g, l, T):
     '''Calculate the moment of inertia for an object hung as a compound
@@ -137,9 +147,14 @@ def tor_stiffness(I, T):
     '''Calculate the stiffness of a torsional pendulum with a known moment of
     inertia
 
-    I: moment of inertia
-    T: period
-    k: stiffness
+    Parameters
+    ----------
+    I : moment of inertia
+    T : period
+
+    Returns
+    -------
+    k : stiffness
 
     '''
     from math import pi
@@ -147,8 +162,26 @@ def tor_stiffness(I, T):
     return k
 
 def inertia_components(I, alpha):
-    '''Calculate the 2D orthongonal inertia tensor when at least three moments
-    of inertia and their axis orientations are specified'''
+    '''Calculate the 2D orthongonal inertia tensor
+
+    When at least three moments of inertia and their axes orientations are
+    known relative to a common inertial frame, the moments of inertia relative
+    the frame are computed.
+
+    Parameters
+    ----------
+
+    I : A vector of at least three moments of inertia
+
+    alpha : A vector of orientation angles corresponding to the moments of
+            inertia
+
+    Returns
+    -------
+
+    Inew : An inertia tensor
+
+    '''
     from numpy import sin, cos, vstack, array
     from numpy.linalg import lstsq
     sa = sin(alpha)

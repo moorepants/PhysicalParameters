@@ -13,49 +13,60 @@ mio.loadmat('data/data.mat', mdict=d)
 # the number of different bikes
 nBk = len(d['bikes'])
 #print "Number of bikes =", nBk
+
 # make a list of the bikes' names
 bikeNames = []
 for bike in d['bikes']:
     # get rid of the weird matlab unicoding
     bikeNames.append(bike[0][0].encode('ascii'))
 #print "List of bikes:\n", bikeNames
+
 par = {}
 # calculate the wheel radii
 par['rR'] = d['rearWheelDist'][0]/2/np.pi/d['rearWheelRot'][0]
 #print "Rear wheel radii [m] =\n", par['rR']
 par['rF'] = d['frontWheelDist'][0]/2/np.pi/d['frontWheelRot'][0]
 #print "Front wheel radii [m] =\n", par['rF']
+
 # steer axis tilt in radians
 par['lambda'] = np.pi/180*(90-d['headTubeAngle'][0])
 #print "Steer axis tilt [deg] =\n", par['lambda']*180./np.pi
+
 # calculate the front wheel trail
 forkOffset = d['forkOffset'][0]
 par['c'] = (par['rF']*np.sin(par['lambda']) - forkOffset)/np.cos(par['lambda'])
 #print "Trail [m] =\n", par['c']
+
 # calculate the frame rotation angle
 alphaFrame = d['frameAngle']
 #print "alphaFrame =\n", alphaFrame
 betaFrame = par['lambda'] - alphaFrame*np.pi/180
 #print "Frame rotation angle, beta [deg] =\n", betaFrame/np.pi*180.
+
 # calculate the slope of the CoM line
 frameM = -np.tan(betaFrame)
 #print "Frame CoM line slope =\n", frameM
+
 # calculate the z-intercept of the CoM line
 frameMassDist = d['frameMassDist']
 #print "Frame CoM distance =\n", d['frameMassDist']
 frameB = frameMassDist/np.cos(betaFrame) - par['rR']
 #print "Frame CoM line intercept =\n", frameB
+
 # calculate the fork rotation angle
 betaFork = par['lambda'] - d['forkAngle']*np.pi/180.
 #print "Fork rotation angle [deg] =\n", betaFork*180./np.pi
+
 # calculate the slope of the fork CoM line
 forkM = -np.tan(betaFork)
 #print "Fork CoM line slope =\n", frameM
+
 # calculate the z-intercept of the CoM line
 par['w'] = d['wheelbase'][0]
 forkMassDist = d['forkMassDist']
 forkB = - par['rF'] + forkMassDist/np.cos(betaFork) + par['w']*np.tan(betaFork)
 #print "Fork CoM line intercept =\n", frameB
+
 # plot the CoM lines
 plt.figure()
 # intialize the matrices for the center of mass locations
