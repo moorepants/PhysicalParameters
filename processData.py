@@ -21,13 +21,27 @@ for bike in d['bikes']:
     # get rid of the weird matlab unicoding
     bikeNames.append(bike[0][0].encode('ascii'))
 #print "List of bikes:\n", bikeNames
+d['bikes'] = bikeNames
+del(d['__globals__'], d['__header__'], d['__version__'])
+for k, v in d.items():
+    if np.shape(v)[0] == 1:
+        d[k] = v[0]
 
+# make a dictionary for the measurement standard deviations
 dU = {}
 f = open('MeasUncert.txt', 'r')
 for line in f:
     l = line.split(',')
     dU[l[0]] = eval(l[1])
+f.close()
 
+ddU = {}
+for k, v in dU.items():
+    for pair in zip(d[k].flatten(), np.ones_like(d[k].flatten())*v):
+        if k in ddU.keys():
+            ddU[k].append(u.num_with_uncert((float(pair[0]), pair[1])))
+        else:
+            ddU[k] = []
 par = {}
 # calculate the wheel radii
 par['rR'] = d['rearWheelDist'][0]/2/np.pi/d['rearWheelRot'][0]
