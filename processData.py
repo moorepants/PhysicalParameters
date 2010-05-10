@@ -1,11 +1,12 @@
 import scipy.io.matlab.mio as mio
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.optimize as op
 import os
 import re
 import pickle as p
+import uncertainties as u
 from BenchmarkBikeTools import *
+from math import pi
 
 # load the main data file into a dictionary
 d = {}
@@ -20,6 +21,12 @@ for bike in d['bikes']:
     # get rid of the weird matlab unicoding
     bikeNames.append(bike[0][0].encode('ascii'))
 #print "List of bikes:\n", bikeNames
+
+dU = {}
+f = open('MeasUncert.txt', 'r')
+for line in f:
+    l = line.split(',')
+    dU[l[0]] = eval(l[1])
 
 par = {}
 # calculate the wheel radii
