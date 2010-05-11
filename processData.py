@@ -5,12 +5,14 @@ import os
 import re
 import pickle as p
 import uncertainties as u
+import uncertainties.umath as umath
 from BenchmarkBikeTools import *
 from math import pi
 
 # load the main data file into a dictionary
 d = {}
 mio.loadmat('data/data.mat', mdict=d)
+
 # the number of different bikes
 nBk = len(d['bikes'])
 #print "Number of bikes =", nBk
@@ -21,6 +23,8 @@ for bike in d['bikes']:
     # get rid of the weird matlab unicoding
     bikeNames.append(bike[0][0].encode('ascii'))
 #print "List of bikes:\n", bikeNames
+
+# clean up the matlab imports
 d['bikes'] = bikeNames
 del(d['__globals__'], d['__header__'], d['__version__'])
 for k, v in d.items():
@@ -35,6 +39,7 @@ for line in f:
     dU[l[0]] = eval(l[1])
 f.close()
 
+# add the uncertainties to the data
 ddU = {}
 for k, v in dU.items():
     for pair in zip(d[k].flatten(), np.ones_like(d[k].flatten())*v):
@@ -42,36 +47,49 @@ for k, v in dU.items():
             ddU[k].append(u.num_with_uncert((float(pair[0]), pair[1])))
         else:
             ddU[k] = []
+            ddU[k].append(u.num_with_uncert((float(pair[0]), pair[1])))
+    ddU[k] = np.array(ddU[k])
+    if ddU[k].shape[0] > 8:
+        ddU[k] = ddU[k].reshape((ddU[k].shape[0]/8, -1))
+
 par = {}
 # calculate the wheel radii
-par['rR'] = d['rearWheelDist'][0]/2/np.pi/d['rearWheelRot'][0]
+par['rR'] = ddU['rearWheelDist']/2./pi/ddU['rearWheelRot']
 #print "Rear wheel radii [m] =\n", par['rR']
-par['rF'] = d['frontWheelDist'][0]/2/np.pi/d['frontWheelRot'][0]
+par['rF'] = ddU['frontWheelDist']/2./pi/ddU['frontWheelRot']
 #print "Front wheel radii [m] =\n", par['rF']
 
 # steer axis tilt in radians
-par['lambda'] = np.pi/180*(90-d['headTubeAngle'][0])
+par['lambda'] = pi/180.*(90.-ddU['headTubeAngle'])
 #print "Steer axis tilt [deg] =\n", par['lambda']*180./np.pi
 
 # calculate the front wheel trail
-forkOffset = d['forkOffset'][0]
-par['c'] = (par['rF']*np.sin(par['lambda']) - forkOffset)/np.cos(par['lambda'])
+forkOffset = ddU['forkOffset']
+par['c'] = np.zeros_like(forkOffset)
+for i, v in enumerate(par['rF']):
+    par['c'][i] = (par['rF'][i]*umath.sin(par['lambda'][i]) - forkOffset[i])/umath.cos(par['lambda'][i])
 #print "Trail [m] =\n", par['c']
 
 # calculate the frame rotation angle
-alphaFrame = d['frameAngle']
+alphaFrame = ddU['frameAngle']
 #print "alphaFrame =\n", alphaFrame
-betaFrame = par['lambda'] - alphaFrame*np.pi/180
+betaFrame = par['lambda'] - alphaFrame*pi/180
 #print "Frame rotation angle, beta [deg] =\n", betaFrame/np.pi*180.
 
 # calculate the slope of the CoM line
-frameM = -np.tan(betaFrame)
+frameM = np.zeros_like(betaFrame)
+for i, row in enumerate(betaFrame):
+    for j, v in enumerate(row):
+        frameM[i, j] = -umath.tan(v)
 #print "Frame CoM line slope =\n", frameM
 
 # calculate the z-intercept of the CoM line
 frameMassDist = d['frameMassDist']
 #print "Frame CoM distance =\n", d['frameMassDist']
-frameB = frameMassDist/np.cos(betaFrame) - par['rR']
+frameB = np.zeros_like(frameMassDist)
+for i, row in enumerate(frameB):
+    for j, column in enumerate(row):
+        frameB[i, j] = frameMassDist[i, j]/umath.cos(betaFrame[i, j]) - par['rR'][j]
 #print "Frame CoM line intercept =\n", frameB
 
 # calculate the fork rotation angle
@@ -83,7 +101,7 @@ forkM = -np.tan(betaFork)
 #print "Fork CoM line slope =\n", frameM
 
 # calculate the z-intercept of the CoM line
-par['w'] = d['wheelbase'][0]
+par['w'] = d['wheelbase']
 forkMassDist = d['forkMassDist']
 forkB = - par['rF'] + forkMassDist/np.cos(betaFork) + par['w']*np.tan(betaFork)
 #print "Fork CoM line intercept =\n", frameB
