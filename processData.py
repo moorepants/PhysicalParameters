@@ -115,51 +115,50 @@ for i, row in enumerate(forkMassDist):
 # plot the CoM lines
 plt.figure()
 # intialize the matrices for the center of mass locations
-frameCoM = np.zeros((2, np.shape(frameM)[1]))
-forkCoM = np.zeros((2, np.shape(forkM)[1]))
+frameCoM = np.zeros((2, np.shape(frameM)[1]), dtype='object')
+forkCoM = np.zeros((2, np.shape(forkM)[1]), dtype='object')
 # for each of the bikes...
 for i in range(np.shape(frameM)[1]):
     comb = np.array([[0, 1], [0, 2], [1, 2]])
     # calculate the frame center of mass position
     # initialize the matrix to store the line intersections
-    lineX = np.zeros((3, 2))
+    lineX = np.zeros((3, 2), dtype='object')
     # for each line intersection...
     for j, row in enumerate(comb):
-        a = np.vstack([-frameM[row, i], np.ones((2))]).T
+        a = np.matrix(np.vstack([-frameM[row, i], np.ones((2))]).T)
         b = frameB[row, i]
-        lineX[j] = np.linalg.solve(a, b)
+        lineX[j] = np.dot(a.I, b)
     frameCoM[:, i] = np.mean(lineX, axis=0)
     # calculate the fork center of mass position
     # reinitialize the matrix to store the line intersections
-    lineX = np.zeros((3, 2))
+    lineX = np.zeros((3, 2), dtype='object')
     # for each line intersection...
     for j, row in enumerate(comb):
-        a = np.vstack([-forkM[row, i], np.ones((2))]).T
+        a = np.matrix(np.vstack([-forkM[row, i], np.ones((2))]).T)
         b = forkB[row, i]
-        lineX[j] = np.linalg.solve(a, b)
+        lineX[j] = np.dot(a.I, b)
     forkCoM[:, i] = np.mean(lineX, axis=0)
     # make a subplot for this bike
     plt.subplot(2, 4, i + 1)
     # plot the rear wheel
-    c=plt.Circle((0, par['rR'][i]), radius=par['rR'][i])
+    c=plt.Circle((0, par['rR'][i].nominal_value), radius=par['rR'][i].nominal_value)
     plt.gca().add_patch(c)
     # plot the front wheel
-    c=plt.Circle((par['w'][i], par['rF'][i]), radius=par['rF'][i])
+    c=plt.Circle((par['w'][i].nominal_value, par['rF'][i].nominal_value), radius=par['rF'][i].nominal_value)
     plt.gca().add_patch(c)
     # plot the lines (pendulum axes)
-    x = np.linspace(-par['rR'][i], par['w'][i] +
-            par['rF'][i], 2)
+    x = np.linspace(-par['rR'][i].nominal_value, par['w'][i].nominal_value + par['rF'][i].nominal_value, 2)
     # for each line...
     for j in range(len(frameM)):
-        framey = -frameM[j, i]*x - frameB[j, i]
-        forky = -forkM[j, i]*x - forkB[j, i]
+        framey = -frameM[j, i].nominal_value*x - frameB[j, i].nominal_value
+        forky = -forkM[j, i].nominal_value*x - forkB[j, i].nominal_value
         plt.plot(x,framey, 'r')
         plt.plot(x,forky, 'g')
     # plot the ground line
     plt.plot(x, np.zeros_like(x), 'k')
     # plot the centers of mass
-    plt.plot(frameCoM[0, i], -frameCoM[1, i], 'k+', markersize=12)
-    plt.plot(forkCoM[0, i], -forkCoM[1, i], 'k+', markersize=12)
+    plt.plot(frameCoM[0, i].nominal_value, -frameCoM[1, i].nominal_value, 'k+', markersize=12)
+    plt.plot(forkCoM[0, i].nominal_value, -forkCoM[1, i].nominal_value, 'k+', markersize=12)
     plt.axis('equal')
     plt.ylim((0, 1))
     plt.title(bikeNames[i])
