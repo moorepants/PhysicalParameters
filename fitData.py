@@ -37,7 +37,7 @@ for name in filenames:
     SSR = np.sum((lscurve - np.mean(y))**2)
     SST = np.sum((y - np.mean(y))**2)
     rsq = SSR/SST
-    sigma = (SST-SSR)/(len(y)-len(p0)) # DoF for non-lin fit may be different
+    sigma = np.sqrt((SST-SSR)/(len(y)-len(p0))) # DoF for non-lin fit may be different
     # add a star in the R value is low
     if rsq <= 0.99:
         rsq = str(rsq) + '*'
