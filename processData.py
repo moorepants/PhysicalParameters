@@ -200,10 +200,10 @@ rRod = 0.015 # radius of the calibration rod [m]
 iRod = tube_inertia(lRod, mRod, rRod, 0.)[1]
 k = tor_stiffness(iRod, tRod)
 # masses
-par['mR'] = d['rearWheelMass'][0]
-par['mF'] = d['frontWheelMass'][0]
-par['mB'] = d['frameMass'][0]
-par['mH'] = d['forkMass'][0]
+par['mR'] = ddU['rearWheelMass']
+par['mF'] = ddU['frontWheelMass']
+par['mB'] = ddU['frameMass']
+par['mH'] = ddU['forkMass']
 # calculate the wheel y inertias
 par['g'] = 9.81*np.ones_like(par['rR'])
 par['IRyy'] = com_inertia(par['mR'], par['g'], d['rWheelPendLength'][0], com[3, :])
