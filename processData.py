@@ -60,7 +60,7 @@ par['rF'] = ddU['frontWheelDist']/2./pi/ddU['frontWheelRot']
 #print "Front wheel radii [m] =\n", par['rF']
 
 # steer axis tilt in radians
-par['lambda'] = pi/180.*(90.-ddU['headTubeAngle'])
+par['lambda'] = pi/180.*(90. - ddU['headTubeAngle'])
 #print "Steer axis tilt [deg] =\n", par['lambda']*180./np.pi
 
 # calculate the front wheel trail
@@ -84,27 +84,33 @@ for i, row in enumerate(betaFrame):
 #print "Frame CoM line slope =\n", frameM
 
 # calculate the z-intercept of the CoM line
-frameMassDist = d['frameMassDist']
+frameMassDist = ddU['frameMassDist']
 #print "Frame CoM distance =\n", d['frameMassDist']
 frameB = np.zeros_like(frameMassDist)
-for i, row in enumerate(frameB):
-    for j, column in enumerate(row):
+for i, row in enumerate(frameMassDist):
+    for j, col in enumerate(row):
         frameB[i, j] = frameMassDist[i, j]/umath.cos(betaFrame[i, j]) - par['rR'][j]
 #print "Frame CoM line intercept =\n", frameB
 
 # calculate the fork rotation angle
-betaFork = par['lambda'] - d['forkAngle']*np.pi/180.
+betaFork = par['lambda'] - ddU['forkAngle']*np.pi/180.
 #print "Fork rotation angle [deg] =\n", betaFork*180./np.pi
 
 # calculate the slope of the fork CoM line
-forkM = -np.tan(betaFork)
-#print "Fork CoM line slope =\n", frameM
+forkM = np.zeros_like(betaFork)
+for i, row in enumerate(betaFork):
+    for j, v in enumerate(row):
+        forkM[i, j] = -umath.tan(v)
+#print "Fork CoM line slope =\n", forkM
 
 # calculate the z-intercept of the CoM line
-par['w'] = d['wheelbase']
-forkMassDist = d['forkMassDist']
-forkB = - par['rF'] + forkMassDist/np.cos(betaFork) + par['w']*np.tan(betaFork)
-#print "Fork CoM line intercept =\n", frameB
+par['w'] = ddU['wheelbase']
+forkMassDist = ddU['forkMassDist']
+forkB = np.zeros_like(forkMassDist)
+for i, row in enumerate(forkMassDist):
+    for j, col in enumerate(row):
+        forkB[i, j] = - par['rF'][j] + forkMassDist[i, j]/umath.cos(betaFork[i, j]) + par['w'][j]*umath.tan(betaFork[i, j])
+#print "Fork CoM line intercept =\n", forkB
 
 # plot the CoM lines
 plt.figure()
