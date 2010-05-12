@@ -10,8 +10,8 @@ dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
 file = open('period.txt', 'w')
 filenames.sort()
 period = {}
-#for name in ['YellowRevForkTorsionalFirst1.mat']:
-for name in ['StratosFrameCompoundFirst2.mat']:
+for name in ['YellowRevForkTorsionalFirst1.mat']:
+#for name in ['StratosFrameCompoundFirst2.mat']:
 #for name in filenames:
     pendDat = {}
     mio.loadmat('data/pendDat/' + name, mdict=pendDat)
@@ -63,12 +63,28 @@ for name in ['StratosFrameCompoundFirst2.mat']:
     for i in range(L.shape[0]): # for each time step
         for j in range(L.shape[1]): # for each parameter
             dx = np.zeros(len(p1))
-            dx[j] = 1e-5
+            dx[j] = 10e-8 #np.sqrt(2.2e-16)*.001
             perturb = np.hstack((p1 + dx, x[i]))
             L[i, j] = (f(perturb) - f(np.hstack((p1, x[i]))))/dx[j]
     H = np.dot(L.T, L)
     U = sigma**2.*np.linalg.inv(H)
     def jac_fitfunc(p, t):
+        '''
+        Calculate the Jacobian of a decaying oscillation function.
+
+        Uses the analytical formulations of the partial derivatives.
+
+        Parameters:
+        -----------
+        p : the five parameters of the equation
+        t : time
+
+        Returns:
+        --------
+        jac : the partial of the vector function with respect to the parameters
+        vector. A 5 x N matrix where N is the number of time steps.
+
+        '''
         jac = np.zeros((len(p), len(t)))
         e = np.exp(-p[3]*p[4]*t)
         dampsq = np.sqrt(1 - p[3]**2)
@@ -77,10 +93,10 @@ for name in ['StratosFrameCompoundFirst2.mat']:
         jac[0] = np.ones_like(t)
         jac[1] = e*s
         jac[2] = e*c
-        jac[3] = -p[4]*t*e*(p[1]*s + p[2]*c) + e*(-p[1]*p[3]*p[4]*t/dampsq*c + p[2]*p[3]*p[4]*t/dampsq*s)
+        jac[3] = -p[4]*t*e*(p[1]*s + p[2]*c) + e*(-p[1]*p[3]*p[4]*t/dampsq*c
+                + p[2]*p[3]*p[4]*t/dampsq*s)
         jac[4] = -p[3]*t*e*(p[1]*s + p[2]*c) + e*dampsq*t*(p[1]*c - p[2]*s)
-        jac = jac.T
-        return jac
+        return jac.T
     jac = jac_fitfunc(p1, x)
     subtract = L - jac
     print np.sum(subtract, axis=1)
