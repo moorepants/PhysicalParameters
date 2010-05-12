@@ -4,14 +4,15 @@ import matplotlib.pyplot as plt
 import scipy.optimize as op
 import os
 import pickle as p
+from scipy.optimize import approx_fprime
 
 dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
 file = open('period.txt', 'w')
 filenames.sort()
 period = {}
 #for name in ['YellowRevForkTorsionalFirst1.mat']:
-#for name in ['StratosFrameCompoundFirst2.mat']:
-for name in filenames:
+for name in ['StratosFrameCompoundFirst2.mat']:
+#for name in filenames:
     pendDat = {}
     mio.loadmat('data/pendDat/' + name, mdict=pendDat)
     y = pendDat['data'].ravel()
@@ -38,6 +39,35 @@ for name in filenames:
     SST = np.sum((y - np.mean(y))**2)
     rsq = SSR/SST
     sigma = np.sqrt((SST-SSR)/(len(y)-len(p0))) # DoF for non-lin fit may be different
+    # calculate the Jacobian
+    def f(x):
+        '''
+        Exponential decay
+
+        Parameters:
+        -----------
+        x[0] : shift
+        x[1] : cosine constant
+        x[2] : sine constant
+        x[3] : damping ratio
+        x[4] : frequency
+        x[5] : t
+
+        Returns:
+        --------
+        y : f(x)
+
+        '''
+        return x[0] + np.exp(-x[3]*x[4]*x[5])*(x[1]*np.cos(x[4]*np.sqrt(1-x[3]**2)*x[5]) + x[2]*np.sin(x[4]*np.sqrt(1-x[3]**2)*x[5]))
+    L = np.zeros((len(x), len(p1))) # time steps x parameters
+    for i in range(L.shape[0]): # for each time step
+        for j in range(L.shape[1]): # for each parameter
+            dx = np.zeros(len(p1))
+            dx[j] = 1e-5
+            perturb = np.hstack((p1 + dx, x[i]))
+            L[i, j] = (f(perturb) - f(np.hstack((p1, x[i]))))/dx[j]
+    H = np.dot(L.T, L)
+    U = sigma**2.*np.linalg.inv(H)
     # add a star in the R value is low
     if rsq <= 0.99:
         rsq = str(rsq) + '*'
