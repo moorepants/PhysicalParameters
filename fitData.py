@@ -20,9 +20,9 @@ for name in ['StratosFrameCompoundFirst2.mat']:
     # plot the original data
     plt.plot(x, y, '.')
     # decaying oscillating exponential function
-    fitfunc = lambda p, t: p[0] + np.exp(-p[3]*p[4]*t)*(p[1]*np.cos(p[4]*np.sqrt(1-p[3]**2)*t) + p[2]*np.sin(p[4]*np.sqrt(1-p[3]**2)*t))
+    fitfunc = lambda p, t: p[0] + np.exp(-p[3]*p[4]*t)*(p[1]*np.sin(p[4]*np.sqrt(1-p[3]**2)*t) + p[2]*np.cos(p[4]*np.sqrt(1-p[3]**2)*t))
     # initial guesses
-    p0 = np.array([1.35, -.75, -.5, 0.01, 3.93])
+    p0 = np.array([1.35, -.5, -.75, 0.01, 3.93])
     # create the error function
     errfunc = lambda p, t, y: fitfunc(p, t) - y
     # minimize the error function
@@ -58,7 +58,7 @@ for name in ['StratosFrameCompoundFirst2.mat']:
         y : f(x)
 
         '''
-        return x[0] + np.exp(-x[3]*x[4]*x[5])*(x[1]*np.cos(x[4]*np.sqrt(1-x[3]**2)*x[5]) + x[2]*np.sin(x[4]*np.sqrt(1-x[3]**2)*x[5]))
+        return x[0] + np.exp(-x[3]*x[4]*x[5])*(x[1]*np.sin(x[4]*np.sqrt(1-x[3]**2)*x[5]) + x[2]*np.cos(x[4]*np.sqrt(1-x[3]**2)*x[5]))
     L = np.zeros((len(x), len(p1))) # time steps x parameters
     for i in range(L.shape[0]): # for each time step
         for j in range(L.shape[1]): # for each parameter
@@ -68,6 +68,22 @@ for name in ['StratosFrameCompoundFirst2.mat']:
             L[i, j] = (f(perturb) - f(np.hstack((p1, x[i]))))/dx[j]
     H = np.dot(L.T, L)
     U = sigma**2.*np.linalg.inv(H)
+    def jac_fitfunc(p, t):
+        jac = np.zeros((len(p), len(t)))
+        e = np.exp(-p[3]*p[4]*t)
+        dampsq = np.sqrt(1 - p[3]**2)
+        s = np.sin(dampsq*p[4]*t)
+        c = np.cos(dampsq*p[4]*t)
+        jac[0] = np.ones_like(t)
+        jac[1] = e*s
+        jac[2] = e*c
+        jac[3] = -p[4]*t*e*(p[1]*s + p[2]*c) + e*(-p[1]*p[3]*p[4]*t/dampsq*c + p[2]*p[3]*p[4]*t/dampsq*s)
+        jac[4] = -p[3]*t*e*(p[1]*s + p[2]*c) + e*dampsq*t*(p[1]*c - p[2]*s)
+        jac = jac.T
+        return jac
+    jac = jac_fitfunc(p1, x)
+    subtract = L - jac
+    print np.sum(subtract, axis=1)
     # add a star in the R value is low
     if rsq <= 0.99:
         rsq = str(rsq) + '*'
