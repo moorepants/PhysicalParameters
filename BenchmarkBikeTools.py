@@ -195,6 +195,42 @@ def inertia_components(I, alpha):
     Inew = array([[Iorth[0], Iorth[1]], [Iorth[1], Iorth[2]]])
     return Inew
 
+def inertia_components_uncert(I, alpha):
+    '''Calculate the 2D orthongonal inertia tensor
+
+    When at least three moments of inertia and their axes orientations are
+    known relative to a common inertial frame, the moments of inertia relative
+    the frame are computed.
+
+    Parameters
+    ----------
+
+    I : A vector of at least three moments of inertia
+
+    alpha : A vector of orientation angles corresponding to the moments of
+            inertia
+
+    Returns
+    -------
+
+    Inew : An inertia tensor
+
+    '''
+    from numpy import sin, cos, vstack, array, matrix, dot, zeros_like
+    from numpy.linalg import lstsq
+    from uncertainties import umath
+    sa = zeros_like(alpha)
+    ca = zeros_like(alpha)
+    for i in range(len(alpha)):
+        sa[i] = umath.sin(alpha[i])
+        ca[i] = umath.cos(alpha[i])
+    A = matrix(vstack((ca**2, 2*sa*ca, sa**2)).T)
+    Iorth = dot(dot(dot(A.T, A).I, A.T), I)[0]
+    Iorth = Iorth.T
+    #Iorth = lstsq(A, I)[0]
+    Inew = array([[Iorth[0], Iorth[1]], [Iorth[1], Iorth[2]]])
+    return Inew
+
 def parallel_axis(Ic, m, d):
     '''Parallel axis thereom. Takes the moment of inertia about the rigid
     body's center of mass and translates it to a new reference frame that is

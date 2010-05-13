@@ -206,15 +206,15 @@ par['mB'] = ddU['frameMass']
 par['mH'] = ddU['forkMass']
 # calculate the wheel y inertias
 par['g'] = 9.81*np.ones_like(par['rR'])
-par['IRyy'] = com_inertia(par['mR'], par['g'], d['rWheelPendLength'][0], com[3, :])
-par['IFyy'] = com_inertia(par['mF'], par['g'], d['fWheelPendLength'][0], com[2, :])
+par['IRyy'] = com_inertia(par['mR'], par['g'], ddU['rWheelPendLength'], com[3, :])
+par['IFyy'] = com_inertia(par['mF'], par['g'], ddU['fWheelPendLength'], com[2, :])
 # calculate the wheel x/z inertias
 par['IRxx'] = tor_inertia(k, tor[6, :])
 par['IFxx'] = tor_inertia(k, tor[9, :])
 # calculate the y inertias for the frame and fork
-framePendLength = np.sqrt(frameCoM[0, :]**2 + (frameCoM[1, :] + par['rR'])**2)
+framePendLength = (frameCoM[0, :]**2 + (frameCoM[1, :] + par['rR'])**2)**(0.5)
 par['IByy'] = com_inertia(par['mB'], par['g'], framePendLength, com[0, :])
-forkPendLength = np.sqrt((forkCoM[0, :] - par['w'])**2 + (forkCoM[1, ] + par['rF'])**2)
+forkPendLength = ((forkCoM[0, :] - par['w'])**2 + (forkCoM[1, ] + par['rF'])**2)**(0.5)
 par['IHyy'] = com_inertia(par['mH'], par['g'], forkPendLength, com[1, :])
 # calculate the fork in-plane moments of inertia
 Ipend = tor_inertia(k, tor)
@@ -222,7 +222,7 @@ par['IHxx'] = []
 par['IHxz'] = []
 par['IHzz'] = []
 for i, row in enumerate(Ipend[3:6, :].T):
-    Imat = inertia_components(row, betaFork[:, i])
+    Imat = inertia_components_uncert(row, betaFork[:, i])
     par['IHxx'].append(Imat[0, 0])
     par['IHxz'].append(Imat[0, 1])
     par['IHzz'].append(Imat[1, 1])
@@ -234,7 +234,7 @@ par['IBxx'] = []
 par['IBxz'] = []
 par['IBzz'] = []
 for i, row in enumerate(Ipend[:3, :].T):
-    Imat = inertia_components(row, betaFrame[:, i])
+    Imat = inertia_components_uncert(row, betaFrame[:, i])
     par['IBxx'].append(Imat[0, 0])
     par['IBxz'].append(Imat[0, 1])
     par['IBzz'].append(Imat[1, 1])
