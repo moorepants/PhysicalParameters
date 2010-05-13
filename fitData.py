@@ -6,6 +6,30 @@ import os
 import pickle as p
 from scipy.optimize import approx_fprime
 
+def fit_goodness(ym, yp):
+    '''
+    Calculate the goodness of fit.
+
+    Parameters:
+    ----------
+    ym : vector of measured values
+    yp : vector of predicted values
+
+    Returns:
+    --------
+    rsq: r squared value of the fit
+    SSE: error sum of squares
+    SST: total sum of squares
+    SSR: regression sum of squares
+
+    '''
+    from numpy import sum, mean
+    SSR = sum((yp - mean(ym))**2)
+    SST = sum((ym - mean(ym))**2)
+    SSE = SST - SSR
+    rsq = SSR/SST
+    return rsq, SSE, SST, SSR
+
 dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
 file = open('period.txt', 'w')
 filenames.sort()
@@ -35,39 +59,8 @@ for name in ['YellowRevForkTorsionalFirst1.mat']:
     #plt.show()
     plt.savefig('data/pendDat/graphs/' + name[:-4] + '.png')
     plt.close()
-    SSR = np.sum((lscurve - np.mean(y))**2)
-    SST = np.sum((y - np.mean(y))**2)
-    rsq = SSR/SST
-    sigma = np.sqrt((SST-SSR)/(len(y)-len(p0))) # DoF for non-lin fit may be different
-    # calculate the Jacobian
-    def f(x):
-        '''
-        Exponential decay
-
-        Parameters:
-        -----------
-        x[0] : shift
-        x[1] : cosine constant
-        x[2] : sine constant
-        x[3] : damping ratio
-        x[4] : frequency
-        x[5] : t
-
-        Returns:
-        --------
-        y : f(x)
-
-        '''
-        return x[0] + np.exp(-x[3]*x[4]*x[5])*(x[1]*np.sin(x[4]*np.sqrt(1-x[3]**2)*x[5]) + x[2]*np.cos(x[4]*np.sqrt(1-x[3]**2)*x[5]))
-    L = np.zeros((len(x), len(p1))) # time steps x parameters
-    for i in range(L.shape[0]): # for each time step
-        for j in range(L.shape[1]): # for each parameter
-            dx = np.zeros(len(p1))
-            dx[j] = 10e-8 #np.sqrt(2.2e-16)*.001
-            perturb = np.hstack((p1 + dx, x[i]))
-            L[i, j] = (f(perturb) - f(np.hstack((p1, x[i]))))/dx[j]
-    H = np.dot(L.T, L)
-    U = sigma**2.*np.linalg.inv(H)
+    rsq, SSE, SST, SSR = fit_goodness(y, lscurve)
+    sigma = np.sqrt((SSE/(len(y)-len(p0))) # DoF for non-lin fit may be different
     def jac_fitfunc(p, t):
         '''
         Calculate the Jacobian of a decaying oscillation function.
@@ -97,9 +90,9 @@ for name in ['YellowRevForkTorsionalFirst1.mat']:
                 + p[2]*p[3]*p[4]*t/dampsq*s)
         jac[4] = -p[3]*t*e*(p[1]*s + p[2]*c) + e*dampsq*t*(p[1]*c - p[2]*s)
         return jac.T
-    jac = jac_fitfunc(p1, x)
-    subtract = L - jac
-    print np.sum(subtract, axis=1)
+    L = jac_fitfunc(p1, x)
+    H = np.dot(L.T, L)
+    U = sigma**2.*np.linalg.inv(H)
     # add a star in the R value is low
     if rsq <= 0.99:
         rsq = str(rsq) + '*'
