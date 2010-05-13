@@ -5,6 +5,7 @@ import scipy.optimize as op
 import os
 import pickle as p
 from scipy.optimize import approx_fprime
+from uncertainties import num_with_uncert
 
 def fit_goodness(ym, yp):
     '''
@@ -29,6 +30,36 @@ def fit_goodness(ym, yp):
     SSE = SST - SSR
     rsq = SSR/SST
     return rsq, SSE, SST, SSR
+
+def jac_fitfunc(p, t):
+    '''
+    Calculate the Jacobian of a decaying oscillation function.
+
+    Uses the analytical formulations of the partial derivatives.
+
+    Parameters:
+    -----------
+    p : the five parameters of the equation
+    t : time
+
+    Returns:
+    --------
+    jac : the partial of the vector function with respect to the parameters
+    vector. A 5 x N matrix where N is the number of time steps.
+
+    '''
+    jac = np.zeros((len(p), len(t)))
+    e = np.exp(-p[3]*p[4]*t)
+    dampsq = np.sqrt(1 - p[3]**2)
+    s = np.sin(dampsq*p[4]*t)
+    c = np.cos(dampsq*p[4]*t)
+    jac[0] = np.ones_like(t)
+    jac[1] = e*s
+    jac[2] = e*c
+    jac[3] = -p[4]*t*e*(p[1]*s + p[2]*c) + e*(-p[1]*p[3]*p[4]*t/dampsq*c
+            + p[2]*p[3]*p[4]*t/dampsq*s)
+    jac[4] = -p[3]*t*e*(p[1]*s + p[2]*c) + e*dampsq*t*(p[1]*c - p[2]*s)
+    return jac.T
 
 dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
 file = open('period.txt', 'w')
@@ -60,47 +91,25 @@ for name in ['YellowRevForkTorsionalFirst1.mat']:
     plt.savefig('data/pendDat/graphs/' + name[:-4] + '.png')
     plt.close()
     rsq, SSE, SST, SSR = fit_goodness(y, lscurve)
-    sigma = np.sqrt((SSE/(len(y)-len(p0))) # DoF for non-lin fit may be different
-    def jac_fitfunc(p, t):
-        '''
-        Calculate the Jacobian of a decaying oscillation function.
-
-        Uses the analytical formulations of the partial derivatives.
-
-        Parameters:
-        -----------
-        p : the five parameters of the equation
-        t : time
-
-        Returns:
-        --------
-        jac : the partial of the vector function with respect to the parameters
-        vector. A 5 x N matrix where N is the number of time steps.
-
-        '''
-        jac = np.zeros((len(p), len(t)))
-        e = np.exp(-p[3]*p[4]*t)
-        dampsq = np.sqrt(1 - p[3]**2)
-        s = np.sin(dampsq*p[4]*t)
-        c = np.cos(dampsq*p[4]*t)
-        jac[0] = np.ones_like(t)
-        jac[1] = e*s
-        jac[2] = e*c
-        jac[3] = -p[4]*t*e*(p[1]*s + p[2]*c) + e*(-p[1]*p[3]*p[4]*t/dampsq*c
-                + p[2]*p[3]*p[4]*t/dampsq*s)
-        jac[4] = -p[3]*t*e*(p[1]*s + p[2]*c) + e*dampsq*t*(p[1]*c - p[2]*s)
-        return jac.T
+    sigma = np.sqrt(SSE/(len(y)-len(p0))) # DoF for non-lin fit may be different
+    # calculate the jacobian
     L = jac_fitfunc(p1, x)
+    # the Hessian
     H = np.dot(L.T, L)
+    # the covariance matrix
     U = sigma**2.*np.linalg.inv(H)
+    # the standard deviations
+    sigp = np.sqrt(U.diagonal())
     # add a star in the R value is low
     if rsq <= 0.99:
         rsq = str(rsq) + '*'
     else:
         pass
     # frequency and period
-    wo = p1[4]
-    f = wo/2./np.pi
+    wo = num_with_uncert((p1[4], sigp[4]))
+    zeta = num_with_uncert((p1[3], sigp[3]))
+    wd = (1. - zeta**2.)**(1./2.)*wo
+    f = wd/2./np.pi
     T = 1./f
     # include the notes for the experiment
     note = pendDat['notes']
