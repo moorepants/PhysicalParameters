@@ -13,8 +13,8 @@ def space_out_camel_case(s):
         """
         return re.sub('((?=[A-Z][a-z])|(?<=[a-z])(?=[A-Z]))', ' ', s)
 
-tor = np.zeros((12, 8))
-com = np.zeros((4, 8))
+tor = np.zeros((12, 8), dtype='object')
+com = np.zeros((4, 8), dtype='object')
 # list of bike names (only first letter is capatilized)
 bN = ['Browser', 'Browserins', 'Crescendo', 'Fisher', 'Pista', 'Stratos',
         'Yellow', 'Yellowrev']

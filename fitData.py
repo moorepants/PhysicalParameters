@@ -40,20 +40,21 @@ def jac_fitfunc(p, t):
     Parameters:
     -----------
     p : the five parameters of the equation
-    t : time
+    t : time vector
 
     Returns:
     --------
-    jac : the partial of the vector function with respect to the parameters
-    vector. A 5 x N matrix where N is the number of time steps.
+    jac : The jacobian, the partial of the vector function with respect to the
+    parameters vector. A 5 x N matrix where N is the number of time steps.
 
     '''
-    jac = np.zeros((len(p), len(t)))
-    e = np.exp(-p[3]*p[4]*t)
-    dampsq = np.sqrt(1 - p[3]**2)
-    s = np.sin(dampsq*p[4]*t)
-    c = np.cos(dampsq*p[4]*t)
-    jac[0] = np.ones_like(t)
+    from numpy import zeros, exp, sqrt, sin, cos, ones_like
+    jac = zeros((len(p), len(t)))
+    e = exp(-p[3]*p[4]*t)
+    dampsq = sqrt(1 - p[3]**2)
+    s = sin(dampsq*p[4]*t)
+    c = cos(dampsq*p[4]*t)
+    jac[0] = ones_like(t)
     jac[1] = e*s
     jac[2] = e*c
     jac[3] = -p[4]*t*e*(p[1]*s + p[2]*c) + e*(-p[1]*p[3]*p[4]*t/dampsq*c
@@ -65,9 +66,9 @@ dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
 file = open('period.txt', 'w')
 filenames.sort()
 period = {}
-for name in ['YellowRevForkTorsionalFirst1.mat']:
+#for name in ['YellowRevForkTorsionalFirst1.mat']:
 #for name in ['StratosFrameCompoundFirst2.mat']:
-#for name in filenames:
+for name in filenames:
     pendDat = {}
     mio.loadmat('data/pendDat/' + name, mdict=pendDat)
     y = pendDat['data'].ravel()
