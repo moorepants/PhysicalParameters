@@ -225,9 +225,8 @@ def inertia_components_uncert(I, alpha):
         sa[i] = umath.sin(alpha[i])
         ca[i] = umath.cos(alpha[i])
     A = matrix(vstack((ca**2, 2*sa*ca, sa**2)).T)
-    Iorth = dot(dot(dot(A.T, A).I, A.T), I)[0]
-    Iorth = Iorth.T
-    #Iorth = lstsq(A, I)[0]
+    Iorth = dot(dot(dot(A.T, A).I, A.T), I)
+    Iorth = array([Iorth[0, 0], Iorth[0, 1], Iorth[0, 2]], dtype='object')
     Inew = array([[Iorth[0], Iorth[1]], [Iorth[1], Iorth[2]]])
     return Inew
 
