@@ -1,0 +1,29 @@
+These are some tools for caluculating the physical parameters of a bicycle.
+
+You will need this software to run the code (hopefully indpendent of the
+version):
+python 2.6.5
+numpy 1.3.0
+scipy 0.7.0
+uncertainties 1.4.5
+
+Download the data files from:
+
+****will add this once I upload all the data files****
+
+Then run these files sequentially:
+
+1. fitData.py: Calculates the period of each moment of inertia oscillation
+experiment.
+
+2. torcom.py: This averages the periods and tries to format them a little better
+for use in processData.py.
+
+3. processData.py: This does all the calculations and outputs the data in some
+text files.
+
+Contact
+-------
+
+Jason Moore
+moorepants@gmail.com
