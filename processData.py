@@ -67,7 +67,8 @@ par['lambda'] = pi/180.*(90. - ddU['headTubeAngle'])
 forkOffset = ddU['forkOffset']
 par['c'] = np.zeros_like(forkOffset)
 for i, v in enumerate(par['rF']):
-    par['c'][i] = (par['rF'][i]*umath.sin(par['lambda'][i]) - forkOffset[i])/umath.cos(par['lambda'][i])
+    par['c'][i] = (par['rF'][i]*umath.sin(par['lambda'][i])
+                  - forkOffset[i])/umath.cos(par['lambda'][i])
 #print "Trail [m] =\n", par['c']
 
 # calculate the frame rotation angle
@@ -89,7 +90,8 @@ frameMassDist = ddU['frameMassDist']
 frameB = np.zeros_like(frameMassDist)
 for i, row in enumerate(frameMassDist):
     for j, col in enumerate(row):
-        frameB[i, j] = frameMassDist[i, j]/umath.cos(betaFrame[i, j]) - par['rR'][j]
+        cb = umath.cos(betaFrame[i, j])
+        frameB[i, j] = frameMassDist[i, j]/cb - par['rR'][j]
 #print "Frame CoM line intercept =\n", frameB
 
 # calculate the fork rotation angle
@@ -109,7 +111,9 @@ forkMassDist = ddU['forkMassDist']
 forkB = np.zeros_like(forkMassDist)
 for i, row in enumerate(forkMassDist):
     for j, col in enumerate(row):
-        forkB[i, j] = - par['rF'][j] + forkMassDist[i, j]/umath.cos(betaFork[i, j]) + par['w'][j]*umath.tan(betaFork[i, j])
+        cb = umath.cos(betaFork[i, j])
+        tb = umath.tan(betaFork[i, j])
+        forkB[i, j] = - par['rF'][j] + forkMassDist[i, j]/cb + par['w'][j]*tb
 #print "Fork CoM line intercept =\n", forkB
 
 # plot the CoM lines
@@ -141,10 +145,10 @@ for i in range(np.shape(frameM)[1]):
     # make a subplot for this bike
     plt.subplot(2, 4, i + 1)
     # plot the rear wheel
-    c=plt.Circle((0, par['rR'][i].nominal_value), radius=par['rR'][i].nominal_value)
+    c = plt.Circle((0, par['rR'][i].nominal_value), radius=par['rR'][i].nominal_value)
     plt.gca().add_patch(c)
     # plot the front wheel
-    c=plt.Circle((par['w'][i].nominal_value, par['rF'][i].nominal_value), radius=par['rF'][i].nominal_value)
+    c = plt.Circle((par['w'][i].nominal_value, par['rF'][i].nominal_value), radius=par['rF'][i].nominal_value)
     plt.gca().add_patch(c)
     # plot the lines (pendulum axes)
     x = np.linspace(-par['rR'][i].nominal_value, par['w'][i].nominal_value + par['rF'][i].nominal_value, 2)
@@ -162,7 +166,7 @@ for i in range(np.shape(frameM)[1]):
     plt.axis('equal')
     plt.ylim((0, 1))
     plt.title(bikeNames[i])
-plt.show()
+#plt.show()
 par['xB'] = frameCoM[0, :]
 par['zB'] = frameCoM[1, :]
 par['xH'] = forkCoM[0, :]
@@ -241,64 +245,79 @@ for i, row in enumerate(Ipend[:3, :].T):
 par['IBxx'] = np.array(par['IBxx'])
 par['IBxz'] = np.array(par['IBxz'])
 par['IBzz'] = np.array(par['IBzz'])
-par['v'] = np.ones_like(par['rR'])
+par['v'] = np.ones_like(d['forkMass'])
 # write the parameter files
 for i, name in enumerate(bikeNames):
     dir = 'bikeParameters/'
     fname = ''.join(name.split()) + 'Par.txt'
     file = open(dir + fname, 'w')
     for k, v in par.items():
-        line = k + ',' + str(v[i]) + '\r\n'
+        if type(v[i]) == type(par['rF'][0]) or type(v[i]) == type(par['mF'][0]):
+            line = k + ',' + str(v[i].nominal_value) + ',' + str(v[i].std_dev()) + '\n'
+        else:
+            line = k + ',' + str(v[i]) + ',' + '0.0' + '\n'
         file.write(line)
     file.close()
     M, C1, K0, K2, p = bmp2cm(dir + fname)
     A, B = abMatrix(M, C1, K0, K2, p)
     dir = 'bikeCanonical/'
     file = open(dir + fname[:-7] + 'Can.txt', 'w')
-    for mat in ['M','C1', 'K0', 'K2', 'A']:
-        file.write(mat + '\r\n')
-        file.write(str(eval(mat)) + '\r\n')
+    for mat in ['M','C1', 'K0', 'K2', 'A', 'B']:
+        if mat == 'A' or mat == 'B':
+            file.write(mat + ' (v = ' + str(par['v'][i]) + ')\n')
+        else:
+            file.write(mat + '\n')
+        file.write(str(eval(mat)) + '\n')
     file.close()
+par_n = {}
+for k, v in par.items():
+    if type(v[i]) == type(par['rF'][0]) or type(v[i]) == type(par['mF'][0]):
+        par_n[k] = u.nominal_values(v)
+    else:
+        par_n[k] = par[k]
 # Jason's parameters (sitting on the browser)
 IBJ = np.array([[7.9985, 0 , -1.9272], [0, 8.0689, 0], [ -1.9272, 0, 2.3624]])
 mBJ = 72.
 xBJ = 0.2909
 zBJ = -1.1091
 # compute the total mass
-mB = par['mB'] + mBJ
+mB = par_n['mB'] + mBJ
 # compute the new CoM
-xB = (mBJ*xBJ + par['mB']*par['xB'])/mB
-zB = (mBJ*zBJ + par['mB']*par['zB'])/mB
+xB = (mBJ*xBJ + par_n['mB']*par_n['xB'])/mB
+zB = (mBJ*zBJ + par_n['mB']*par_n['zB'])/mB
 # compute the new moment of inertia
 dJ = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((xBJ, 0., zBJ))
-dB = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((par['xB'], np.zeros(nBk), par['zB']))
+dB = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((par_n['xB'], np.zeros(nBk), par_n['zB']))
 IB = np.zeros((3, 3))
 for i in range(nBk):
-    IB[0] = np.array([par['IBxx'][i], 0., par['IBxz'][i]])
-    IB[1] = np.array([0., par['IByy'][i], 0.])
-    IB[2] = np.array([par['IBxz'][i], 0., par['IBzz'][i]])
-    I = parallel_axis(IBJ, mBJ, dJ[:, i]) + parallel_axis(IB, par['mB'][i], dB[:, i])
-    par['IBxx'][i] = I[0, 0]
-    par['IBxz'][i] = I[0, 2]
-    par['IByy'][i] = I[1, 1]
-    par['IBzz'][i] = I[2, 2]
-    par['mB'][i] = mB[i]
-    par['xB'][i] = xB[i]
-    par['zB'][i] = zB[i]
-# write the parameter files
+    IB[0] = np.array([par_n['IBxx'][i], 0., par_n['IBxz'][i]])
+    IB[1] = np.array([0., par_n['IByy'][i], 0.])
+    IB[2] = np.array([par_n['IBxz'][i], 0., par_n['IBzz'][i]])
+    I = parallel_axis(IBJ, mBJ, dJ[:, i]) + parallel_axis(IB, par_n['mB'][i], dB[:, i])
+    par_n['IBxx'][i] = I[0, 0]
+    par_n['IBxz'][i] = I[0, 2]
+    par_n['IByy'][i] = I[1, 1]
+    par_n['IBzz'][i] = I[2, 2]
+    par_n['mB'][i] = mB[i]
+    par_n['xB'][i] = xB[i]
+    par_n['zB'][i] = zB[i]
+# write the par_nameter files
 for i, name in enumerate(bikeNames):
     dir = 'bikeRiderParameters/'
     fname = ''.join(name.split()) + 'RiderPar.txt'
     file = open(dir + fname, 'w')
-    for k, v in par.items():
-        line = k + ',' + str(v[i]) + '\r\n'
+    for k, v in par_n.items():
+        line = k + ',' + str(v[i]) + '\n'
         file.write(line)
     file.close()
     M, C1, K0, K2, p = bmp2cm(dir + fname)
     A, B = abMatrix(M, C1, K0, K2, p)
     dir = 'bikeRiderCanonical/'
     file = open(dir + fname[:-7] + 'Can.txt', 'w')
-    for mat in ['M','C1', 'K0', 'K2', 'A']:
-        file.write(mat + '\r\n')
-        file.write(str(eval(mat)) + '\r\n')
+    for mat in ['M','C1', 'K0', 'K2', 'A', 'B']:
+        if mat == 'A' or mat == 'B':
+            file.write(mat + ' (v = ' + str(par['v'][i]) + ')\n')
+        else:
+            file.write(mat + '\n')
+        file.write(str(eval(mat)) + '\n')
     file.close()

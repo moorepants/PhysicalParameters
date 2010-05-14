@@ -18,8 +18,8 @@ def bmp2cm(filename):
     p = {}
     # parse the text file
     for i, line in enumerate(f):
-        list = line[:-3].split(',')
-        p[list[0]] = eval(list[1])
+        list1 = line[:-2].split(',')
+        p[list1[0]] = eval(list1[1])
     mT = p['mR'] + p['mB'] + p['mH'] + p['mF']
     xT = (p['xB']*p['mB'] + p['xH']*p['mH'] + p['w']*p['mF'])/mT
     zT = (-p['rR']*p['mR'] + p['zB']*p['mB'] + p['zH']*p['mH'] - p['rF']*p['mF'])/mT
