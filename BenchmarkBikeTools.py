@@ -1,3 +1,23 @@
+def plot_bike_eig(M, C1, K0, K2, v, g):
+    '''
+    Return a pretty figure of the eigenvalues of the benchmark bicycle.
+
+    Parameters:
+    -----------
+    M : a 2x2 array mass matrix
+    C1 : a 2x2 array damping like matrix
+    K0 : a 2x2 stiffness matrix proportional to gravity
+    K2 : a 2x2 stiffness matrix proportional to the square of velocity
+    v : an array of speeds
+    g : local accelartion due to gravity
+
+    Returns:
+    --------
+    A matplotlib figure instance
+
+    '''
+
+
 def bmp2cm(filename):
     '''Return the benchmark canonical matrices from the bicycle parameters. Formulated from Meijaard et al. 2007.
 
@@ -65,7 +85,7 @@ def bmp2cm(filename):
     C1 = array([[C1pp, C1pd], [C1dp, C1dd]])
     return M, C1, K0, K2, p
 
-def abMatrix(M, C1, K0, K2, p):
+def abMatrix(M, C1, K0, K2, v, g):
     '''Calculate the A and B matrices for the benchmark bicycle
 
     Input:
@@ -73,15 +93,16 @@ def abMatrix(M, C1, K0, K2, p):
         C1 is the damping like matrix that is proportional to v
         K0 is the stiffness matrix proportional to gravity
         K2 is the stiffness matrix proportional to v**2
-        p is a dictionary of the parameters. the keys are the variable names
+        v : speed
+        g : acceleration due to gravity
     Returns:
         A system dynamic matrix
         B control matrix
     '''
     from numpy import eye, zeros, vstack, hstack, dot
     from numpy.linalg import inv
-    a11 = -p['v']*C1
-    a12 = -(p['g']*K0 + p['v']**2*K2)
+    a11 = -v*C1
+    a12 = -(g*K0 + v**2*K2)
     a21 = eye(2)
     a22 = zeros((2, 2))
     A = vstack((dot(inv(M), hstack((a11, a12))), hstack((a21, a22))))

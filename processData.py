@@ -259,7 +259,7 @@ for i, name in enumerate(bikeNames):
         file.write(line)
     file.close()
     M, C1, K0, K2, p = bmp2cm(dir + fname)
-    A, B = abMatrix(M, C1, K0, K2, p)
+    A, B = abMatrix(M, C1, K0, K2, p['v'], p['g'])
     dir = 'bikeCanonical/'
     file = open(dir + fname[:-7] + 'Can.txt', 'w')
     for mat in ['M','C1', 'K0', 'K2', 'A', 'B']:
@@ -311,7 +311,7 @@ for i, name in enumerate(bikeNames):
         file.write(line)
     file.close()
     M, C1, K0, K2, p = bmp2cm(dir + fname)
-    A, B = abMatrix(M, C1, K0, K2, p)
+    A, B = abMatrix(M, C1, K0, K2, p['v'], p['g'])
     dir = 'bikeRiderCanonical/'
     file = open(dir + fname[:-7] + 'Can.txt', 'w')
     for mat in ['M','C1', 'K0', 'K2', 'A', 'B']:
