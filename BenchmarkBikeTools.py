@@ -1,39 +1,41 @@
-def plot_bike_eig(M, C1, K0, K2, v, g):
+def bike_eig(M, C1, K0, K2, v, g):
     '''
-    Return a pretty figure of the eigenvalues of the benchmark bicycle.
+    Return eigenvalues and eigenvectors of the benchmark bicycle.
 
     Parameters:
     -----------
-    M : a 2x2 array mass matrix
-    C1 : a 2x2 array damping like matrix
-    K0 : a 2x2 stiffness matrix proportional to gravity
-    K2 : a 2x2 stiffness matrix proportional to the square of velocity
-    v : an array of speeds
-    g : local accelartion due to gravity
+    M : ndarray, shape (2, 2)
+        mass matrix
+    C1 : ndarray, shape (2, 2)
+        damping like matrix
+    K0 : ndarray, shape (2, 2)
+        stiffness matrix proportional to gravity
+    K2 : ndarray, shape (2, 2)
+        stiffness matrix proportional to the square of velocity
+    v : ndarray, shape (n,)
+        an array of speeds
+    g : float
+        local accelartion due to gravity in meters per seconds squared
 
     Returns:
     --------
-    : a matplotlib figure instance
+    evals : ndarray, shape (n, 4)
+        eigenvalues
+    evecs : ndarray, shape (n, 4, 4)
+        eigenvectors
 
     '''
     from numpy.linalg import eig
-    from numpy import ones, vstack, delete, real
-    from matplotlib.pyplot import plot, show, figure, clf
-    print v
-    eigenvalues = ones(4)
-    for speed in v:
+    from numpy import zeros
+    m, n = 2*M.shape[0], v.shape[0]
+    evals = zeros((n, m))
+    evecs = zeros((n, m, m))
+    for i, speed in enumerate(v):
         A, B = abMatrix(M, C1, K0, K2, speed, g)
         w, vec = eig(A)
-        eigenvalues = vstack((eigenvalues, w))
-    print eigenvalues.shape
-    eigenvalues = eigenvalues[1:]
-    #delete(eigenvalues, [0], axis=0)
-    print eigenvalues.T[0]
-    clf
-    figure(2)
-    fig = plot(v, real(eigenvalues), '.k')
-    show()
-    return fig
+        evals[i] = w
+        evecs[i] = vec
+    return evals, evecs
 
 def bmp2cm(filename):
     '''Return the benchmark canonical matrices from the bicycle parameters. Formulated from Meijaard et al. 2007.
