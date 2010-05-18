@@ -13,17 +13,27 @@ def plot_bike_eig(M, C1, K0, K2, v, g):
 
     Returns:
     --------
-    A matplotlib figure instance
+    : a matplotlib figure instance
 
     '''
     from numpy.linalg import eig
-    from numpy import ones, vstack, delete
+    from numpy import ones, vstack, delete, real
+    from matplotlib.pyplot import plot, show, figure, clf
+    print v
     eigenvalues = ones(4)
     for speed in v:
         A, B = abMatrix(M, C1, K0, K2, speed, g)
-        w, v = eig(A)
+        w, vec = eig(A)
         eigenvalues = vstack((eigenvalues, w))
-    delete(eigenvalues, [0])
+    print eigenvalues.shape
+    eigenvalues = eigenvalues[1:]
+    #delete(eigenvalues, [0], axis=0)
+    print eigenvalues.T[0]
+    clf
+    figure(2)
+    fig = plot(v, real(eigenvalues), '.k')
+    show()
+    return fig
 
 def bmp2cm(filename):
     '''Return the benchmark canonical matrices from the bicycle parameters. Formulated from Meijaard et al. 2007.
