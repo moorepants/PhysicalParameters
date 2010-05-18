@@ -15,7 +15,7 @@ def bike_eig(M, C1, K0, K2, v, g):
     v : ndarray, shape (n,)
         an array of speeds
     g : float
-        local accelartion due to gravity in meters per seconds squared
+        local acceleration due to gravity in meters per seconds squared
 
     Returns:
     --------

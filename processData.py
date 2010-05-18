@@ -275,6 +275,17 @@ for k, v in par.items():
         par_n[k] = u.nominal_values(v)
     else:
         par_n[k] = par[k]
+# plot all the parameters to look for crazy numbers
+plt.figure(2)
+i = 1
+xt = ['B', 'BI', 'C', 'F', 'P', 'S', 'Y', 'YR']
+for k, v in par_n.items():
+    plt.subplot(3, 9, i)
+    plt.plot(v, '-D', markersize=14)
+    plt.title(k)
+    plt.xticks(np.arange(8), tuple(xt))
+    i += 1
+plt.show()
 # Jason's parameters (sitting on the browser)
 IBJ = np.array([[7.9985, 0 , -1.9272], [0, 8.0689, 0], [ -1.9272, 0, 2.3624]])
 mBJ = 72.
