@@ -5,6 +5,7 @@ version):
 python 2.6.5 http://www.python.org
 scipy 0.7.0 http://www.scipy.org
 numpy 1.3.0 http://numpy.scipy.org
+matplotlib 0.99.1.1 http://matplotlib.sourceforge.net/
 uncertainties 1.4.5 http://pypi.python.org/pypi/uncertainties
 
 Download the data files from:
@@ -17,13 +18,12 @@ Then run these files sequentially:
 experiment.
 
 2. torcom.py: This averages the periods and tries to format them a little better
-for use in processData.py.
+for use in processData.py. (this should be combined with fitData.py)
 
 3. processData.py: This does all the calculations and outputs the data in some
 text files.
 
 Contact
 -------
-
 Jason Moore
 moorepants@gmail.com

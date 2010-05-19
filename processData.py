@@ -285,7 +285,7 @@ for k, v in par_n.items():
     plt.title(k)
     plt.xticks(np.arange(8), tuple(xt))
     i += 1
-plt.show()
+#plt.show()
 # Jason's parameters (sitting on the browser)
 IBJ = np.array([[7.9985, 0 , -1.9272], [0, 8.0689, 0], [ -1.9272, 0, 2.3624]])
 mBJ = 72.
@@ -332,3 +332,5 @@ for i, name in enumerate(bikeNames):
             file.write(mat + '\n')
         file.write(str(eval(mat)) + '\n')
     file.close()
+    vel = np.linspace(0, 10, num=1000)
+    evals, evecs = bike_eig(M, C1, K0, K2, vel, p['g'])
