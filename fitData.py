@@ -13,13 +13,14 @@ file = open('period.txt', 'w')
 filenames.sort()
 period = {}
 #for name in ['YellowRevForkTorsionalFirst1.mat']:
+for name in ['YellowFwheelCompoundFirst1.mat']:
 #for name in ['StratosFrameCompoundFirst2.mat']:
-for name in filenames:
+#for name in filenames:
     pendDat = {}
     mio.loadmat('data/pendDat/' + name, mdict=pendDat)
     y = pendDat['data'].ravel()
-
-    x = np.linspace(0, 30, num=len(y))
+    time = float(pendDat['duration'][0])
+    x = np.linspace(0, time, num=len(y))
     # plot the original data
     plt.plot(x, y, '.')
     # decaying oscillating exponential function
