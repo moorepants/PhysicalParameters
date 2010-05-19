@@ -1,3 +1,58 @@
+def fit_goodness(ym, yp):
+    '''
+    Calculate the goodness of fit.
+
+    Parameters:
+    ----------
+    ym : vector of measured values
+    yp : vector of predicted values
+
+    Returns:
+    --------
+    rsq: r squared value of the fit
+    SSE: error sum of squares
+    SST: total sum of squares
+    SSR: regression sum of squares
+
+    '''
+    from numpy import sum, mean
+    SSR = sum((yp - mean(ym))**2)
+    SST = sum((ym - mean(ym))**2)
+    SSE = SST - SSR
+    rsq = SSR/SST
+    return rsq, SSE, SST, SSR
+
+def jac_fitfunc(p, t):
+    '''
+    Calculate the Jacobian of a decaying oscillation function.
+
+    Uses the analytical formulations of the partial derivatives.
+
+    Parameters:
+    -----------
+    p : the five parameters of the equation
+    t : time vector
+
+    Returns:
+    --------
+    jac : The jacobian, the partial of the vector function with respect to the
+    parameters vector. A 5 x N matrix where N is the number of time steps.
+
+    '''
+    from numpy import zeros, exp, sqrt, sin, cos, ones_like
+    jac = zeros((len(p), len(t)))
+    e = exp(-p[3]*p[4]*t)
+    dampsq = sqrt(1 - p[3]**2)
+    s = sin(dampsq*p[4]*t)
+    c = cos(dampsq*p[4]*t)
+    jac[0] = ones_like(t)
+    jac[1] = e*s
+    jac[2] = e*c
+    jac[3] = -p[4]*t*e*(p[1]*s + p[2]*c) + e*(-p[1]*p[3]*p[4]*t/dampsq*c
+            + p[2]*p[3]*p[4]*t/dampsq*s)
+    jac[4] = -p[3]*t*e*(p[1]*s + p[2]*c) + e*dampsq*t*(p[1]*c - p[2]*s)
+    return jac.T
+
 def bike_eig(M, C1, K0, K2, v, g):
     '''
     Return eigenvalues and eigenvectors of the benchmark bicycle.
