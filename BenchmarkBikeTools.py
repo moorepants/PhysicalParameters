@@ -83,8 +83,8 @@ def bike_eig(M, C1, K0, K2, v, g):
     from numpy.linalg import eig
     from numpy import zeros
     m, n = 2*M.shape[0], v.shape[0]
-    evals = zeros((n, m))
-    evecs = zeros((n, m, m))
+    evals = zeros((n, m), dtype='complex128')
+    evecs = zeros((n, m, m), dtype='complex128')
     for i, speed in enumerate(v):
         A, B = abMatrix(M, C1, K0, K2, speed, g)
         w, vec = eig(A)

@@ -117,7 +117,7 @@ for i, row in enumerate(forkMassDist):
 #print "Fork CoM line intercept =\n", forkB
 
 # plot the CoM lines
-plt.figure()
+plt.figure(num=1)
 # intialize the matrices for the center of mass locations
 frameCoM = np.zeros((2, np.shape(frameM)[1]), dtype='object')
 forkCoM = np.zeros((2, np.shape(forkM)[1]), dtype='object')
@@ -166,7 +166,6 @@ for i in range(np.shape(frameM)[1]):
     plt.axis('equal')
     plt.ylim((0, 1))
     plt.title(bikeNames[i])
-#plt.show()
 par['xB'] = frameCoM[0, :]
 par['zB'] = frameCoM[1, :]
 par['xH'] = forkCoM[0, :]
@@ -276,7 +275,7 @@ for k, v in par.items():
     else:
         par_n[k] = par[k]
 # plot all the parameters to look for crazy numbers
-plt.figure(2)
+plt.figure(num=2)
 i = 1
 xt = ['B', 'BI', 'C', 'F', 'P', 'S', 'Y', 'YR']
 for k, v in par_n.items():
@@ -312,6 +311,8 @@ for i in range(nBk):
     par_n['mB'][i] = mB[i]
     par_n['xB'][i] = xB[i]
     par_n['zB'][i] = zB[i]
+plt.figure(num=3)
+colors = ['k', 'r', 'b', 'g', 'y', 'm', 'c', 'orange']
 # write the par_nameter files
 for i, name in enumerate(bikeNames):
     dir = 'bikeRiderParameters/'
@@ -334,3 +335,7 @@ for i, name in enumerate(bikeNames):
     file.close()
     vel = np.linspace(0, 10, num=1000)
     evals, evecs = bike_eig(M, C1, K0, K2, vel, p['g'])
+    print evals
+    #plt.plot(vel, np.real(evals), '.', color=colors[i])
+    #plt.plot(vel, np.imag(evals), '--', color=colors[i])
+#plt.show()
