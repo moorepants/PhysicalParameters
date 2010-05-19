@@ -335,7 +335,13 @@ for i, name in enumerate(bikeNames):
     file.close()
     vel = np.linspace(0, 10, num=1000)
     evals, evecs = bike_eig(M, C1, K0, K2, vel, p['g'])
-    print evals
-    #plt.plot(vel, np.real(evals), '.', color=colors[i])
-    #plt.plot(vel, np.imag(evals), '--', color=colors[i])
-#plt.show()
+    for j, line in enumerate(evals.T):
+        if j == 0:
+            label = bikeNames[i]
+        else:
+            label = '_nolegend_'
+        plt.plot(vel, np.real(line), '.', color=colors[i], label=label)
+    plt.plot(vel, np.imag(evals), '.', markersize=2, color=colors[i])
+    plt.ylim((-10, 10))
+plt.legend()
+plt.show()
