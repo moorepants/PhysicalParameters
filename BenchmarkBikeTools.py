@@ -68,7 +68,7 @@ def bike_eig(M, C1, K0, K2, v, g):
     K2 : ndarray, shape (2, 2)
         stiffness matrix proportional to the square of velocity
     v : ndarray, shape (n,)
-        an array of speeds
+        an array of speeds for which to calculate eigenvalues
     g : float
         local acceleration due to gravity in meters per seconds squared
 

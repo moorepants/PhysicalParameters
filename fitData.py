@@ -13,9 +13,9 @@ file = open('period.txt', 'w')
 filenames.sort()
 period = {}
 #for name in ['YellowRevForkTorsionalFirst1.mat']:
-for name in ['YellowFwheelCompoundFirst1.mat']:
+#for name in ['YellowFwheelCompoundFirst1.mat']:
 #for name in ['StratosFrameCompoundFirst2.mat']:
-#for name in filenames:
+for name in filenames:
     pendDat = {}
     mio.loadmat('data/pendDat/' + name, mdict=pendDat)
     y = pendDat['data'].ravel()
