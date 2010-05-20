@@ -11,7 +11,23 @@ def sort_modes(evals, evecs):
 
     Returns
     -------
+    weave['evals'] : ndarray, shape (n, 2)
+        The eigen value pair associated with the weave mode.
+    weave['evecs'] : ndarray, shape (n, 4, 2)
+        The associated eigenvectors of the weave mode.
+    capsize['evals'] : ndarray, shape (n,)
+        The real eigenvalue associated with the capsize mode.
+    capsize['evecs'] : ndarray, shape(n, 4, 1)
+        The associated eigenvectors of the capsize mode.
+    caster['evals'] : ndarray, shape (n,)
+        The real eigenvalue associated with the caster mode.
+    caster['evecs'] : ndarray, shape(n, 4, 1)
+        The associated eigenvectors of the caster mode.
 
+    This only works on the standard bicycle eigenvalues, not necessarily on any
+    general eigenvalues for the bike (e.g. there isn't always a distinct weave,
+    capsize and caster. Some type of check using the derivative of the curves
+    could make it more robust.
     '''
     from numpy import abs, zeros_like, imag, real, argmin, sqrt, zeros
     evalsorg = zeros_like(evals)
@@ -43,12 +59,16 @@ def sort_modes(evals, evecs):
                 evecsorg[i + 1, :, j] = evecs[i + 1, :, argmin(dist)]
             # keep track of the indices we've used
             used.append(argmin(dist))
-    weave = evalsorg[:, 2:]
-    capsize = evalsorg[:, 1]
-    caster = evalsorg[:, 0]
+    weave = {'evals' : evalsorg[:, 2:], 'evecs' : evecsorg[:, :, 2:]}
+    capsize = {'evals' : evalsorg[:, 1], 'evecs' : evecsorg[:, :, 1]}
+    caster = {'evals' : evalsorg[:, 0], 'evecs' : evecsorg[:, :, 0]}
     return weave, capsize, caster
 
-#def critical_speeds(weave, capsize, caster):
+def critical_speeds(weave, capsize, caster):
+    '''
+    Return critical speeds
+    
+    '''
 
 def fit_goodness(ym, yp):
     '''
