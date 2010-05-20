@@ -31,9 +31,11 @@ def sort_modes(evals, evecs):
             dist = zeros(4)
             for k, eignext in enumerate(evals[i + 1]):
                 xn, yn = real(eignext), imag(eignext)
+                # distance between points in the real/imag plane
                 dist[k] = abs(sqrt((xn - x)**2 + (yn - y)**2))
             if argmin(dist) in used:
-                dist[argmin(dist)] = 1000.
+                # set the already used indice higher
+                dist[argmin(dist)] = max(dist) + 1.
                 evalsorg[i + 1, j] = evals[i + 1, argmin(dist)]
                 evecsorg[i + 1, :, j] = evecs[i + 1, :, argmin(dist)]
             else:
@@ -41,7 +43,10 @@ def sort_modes(evals, evecs):
                 evecsorg[i + 1, :, j] = evecs[i + 1, :, argmin(dist)]
             # keep track of the indices we've used
             used.append(argmin(dist))
-    return evalsorg, evecsorg
+    weave = evalsorg[:, 2:]
+    capsize = evalsorg[:, 1]
+    caster = evalsorg[:, 0]
+    return weave, capsize, caster
 
 #def critical_speeds(weave, capsize, caster):
 
