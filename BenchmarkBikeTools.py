@@ -14,24 +14,34 @@ def sort_modes(evals, evecs):
 
     '''
     from numpy import abs, zeros_like, imag, real, argmin, sqrt, zeros
-    eigorg = zeros_like(evals)
+    evalsorg = zeros_like(evals)
+    evecsorg = zeros_like(evecs)
     # set the first row to be the same
-    eigorg[0] = evals[0]
+    evalsorg[0] = evals[0]
+    evecsorg[0] = evecs[0]
     # for each speed
     for i, speed in enumerate(evals):
         if i == evals.shape[0] - 1:
             break
         # for each current eigenvalue
+        used = []
         for j, eig in enumerate(speed):
-            x, y = real(eigorg[i, j]), imag(eigorg[i, j])
+            x, y = real(evalsorg[i, j]), imag(evalsorg[i, j])
             # for each eigenvalue at the next speed
             dist = zeros(4)
             for k, eignext in enumerate(evals[i + 1]):
                 xn, yn = real(eignext), imag(eignext)
                 dist[k] = abs(sqrt((xn - x)**2 + (yn - y)**2))
-            eigorg[i + 1, j] = evals[i + 1, argmin(dist)]
-        print eigorg[i]
-    return eigorg
+            if argmin(dist) in used:
+                dist[argmin(dist)] = 1000.
+                evalsorg[i + 1, j] = evals[i + 1, argmin(dist)]
+                evecsorg[i + 1, :, j] = evecs[i + 1, :, argmin(dist)]
+            else:
+                evalsorg[i + 1, j] = evals[i + 1, argmin(dist)]
+                evecsorg[i + 1, :, j] = evecs[i + 1, :, argmin(dist)]
+            # keep track of the indices we've used
+            used.append(argmin(dist))
+    return evalsorg, evecsorg
 
 #def critical_speeds(weave, capsize, caster):
 
