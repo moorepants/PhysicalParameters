@@ -25,8 +25,8 @@ def sort_modes(evals, evecs):
         The associated eigenvectors of the caster mode.
 
     This only works on the standard bicycle eigenvalues, not necessarily on any
-    general eigenvalues for the bike (e.g. there isn't always a distinct weave,
-    capsize and caster. Some type of check using the derivative of the curves
+    general eigenvalues for the bike model (e.g. there isn't always a distinct weave,
+    capsize and caster). Some type of check using the derivative of the curves
     could make it more robust.
     '''
     from numpy import abs, zeros_like, imag, real, argmin, sqrt, zeros
@@ -52,11 +52,10 @@ def sort_modes(evals, evecs):
             if argmin(dist) in used:
                 # set the already used indice higher
                 dist[argmin(dist)] = max(dist) + 1.
-                evalsorg[i + 1, j] = evals[i + 1, argmin(dist)]
-                evecsorg[i + 1, :, j] = evecs[i + 1, :, argmin(dist)]
             else:
-                evalsorg[i + 1, j] = evals[i + 1, argmin(dist)]
-                evecsorg[i + 1, :, j] = evecs[i + 1, :, argmin(dist)]
+                pass
+            evalsorg[i + 1, j] = evals[i + 1, argmin(dist)]
+            evecsorg[i + 1, :, j] = evecs[i + 1, :, argmin(dist)]
             # keep track of the indices we've used
             used.append(argmin(dist))
     weave = {'evals' : evalsorg[:, 2:], 'evecs' : evecsorg[:, :, 2:]}
@@ -64,11 +63,44 @@ def sort_modes(evals, evecs):
     caster = {'evals' : evalsorg[:, 0], 'evecs' : evecsorg[:, :, 0]}
     return weave, capsize, caster
 
-def critical_speeds(weave, capsize, caster):
+def critical_speeds(v, weave, capsize):
     '''
-    Return critical speeds
-    
+    Return critical speeds of the benchmark bicycle.
+
+    Parameters
+    ----------
+    v : ndarray, shape (n,)
+        Speed
+    weave : ndarray, shape (n, 2)
+        The weave eignevalue pair
+    capsize : ndarray, shape (n, 1)
+
+    Returns
+    -------
+    vd : float
+        The speed at which the weave mode goes from two real eigenvalues to a
+        complex pair.
+    vw : float
+        The speed at which the weave mode becomes stable.
+    vc : float
+        The speed at which the capsize mode becomes unstable.
+
     '''
+    from numpy import argmin, abs, real, imag, zeros_like
+    vw = v[argmin(abs(real(weave[:, 0])))]
+    print 'vw', vw
+    vc = v[argmin(abs(real(capsize)))]
+    print 'vc', vc
+    m = max(abs(imag(weave[:, 0])))
+    print 'm', m
+    w = zeros_like(imag(weave[:, 0]))
+    for i, eig in enumerate(abs(imag(weave[:, 0]))):
+        if eig == 0.:
+            w[i] = m + 1.
+        else:
+            w[i] = eig
+    vd = v[argmin(w)]
+    return vd, vw, vc
 
 def fit_goodness(ym, yp):
     '''

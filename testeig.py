@@ -6,3 +6,4 @@ d = {'M': np.array([[102.7, 1.7], [1.7, 0.4]]), 'C1': np.array([[0., 26.7],
 v = np.linspace(0, 10, num=1000)
 evals, evecs = bike_eig(d['M'], d['C1'], d['K0'], d['K2'], v, 9.81)
 weave, capsize, caster = sort_modes(evals, evecs)
+vd, vw, vc, w = critical_speeds(v, weave['evals'], capsize['evals'])
