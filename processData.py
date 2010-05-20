@@ -257,8 +257,8 @@ for i, name in enumerate(bikeNames):
             line = k + ',' + str(v[i]) + ',' + '0.0' + '\n'
         file.write(line)
     file.close()
-    M, C1, K0, K2, p = bmp2cm(dir + fname)
-    A, B = abMatrix(M, C1, K0, K2, p['v'], p['g'])
+    M, C1, K0, K2, param = bmp2cm(dir + fname)
+    A, B = abMatrix(M, C1, K0, K2, param['v'], param['g'])
     dir = 'bikeCanonical/'
     file = open(dir + fname[:-7] + 'Can.txt', 'w')
     for mat in ['M','C1', 'K0', 'K2', 'A', 'B']:
@@ -322,19 +322,19 @@ for i, name in enumerate(bikeNames):
         line = k + ',' + str(v[i]) + '\n'
         file.write(line)
     file.close()
-    M, C1, K0, K2, p = bmp2cm(dir + fname)
-    A, B = abMatrix(M, C1, K0, K2, p['v'], p['g'])
+    M, C1, K0, K2, param = bmp2cm(dir + fname)
+    A, B = abMatrix(M, C1, K0, K2, param['v'], param['g'])
     dir = 'bikeRiderCanonical/'
     file = open(dir + fname[:-7] + 'Can.txt', 'w')
     for mat in ['M','C1', 'K0', 'K2', 'A', 'B']:
         if mat == 'A' or mat == 'B':
-            file.write(mat + ' (v = ' + str(par['v'][i]) + ')\n')
+            file.write(mat + ' (v = ' + str(par_n['v'][i]) + ')\n')
         else:
             file.write(mat + '\n')
         file.write(str(eval(mat)) + '\n')
     file.close()
     vel = np.linspace(0, 10, num=1000)
-    evals, evecs = bike_eig(M, C1, K0, K2, vel, p['g'])
+    evals, evecs = bike_eig(M, C1, K0, K2, vel, 9.81)
     for j, line in enumerate(evals.T):
         if j == 0:
             label = bikeNames[i]

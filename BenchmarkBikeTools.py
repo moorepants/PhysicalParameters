@@ -1,3 +1,40 @@
+def sort_modes(evals, evecs):
+    '''
+    Sort eigenvalues and eigenvectors into weave, capsize, caster modes.
+
+    Parameters
+    ----------
+    evals : ndarray, shape (n, 4)
+        eigenvalues
+    evecs : ndarray, shape (n, 4, 4)
+        eigenvectors
+
+    Returns
+    -------
+
+    '''
+    from numpy import abs, zeros_like, imag, real, argmin, sqrt, zeros
+    eigorg = zeros_like(evals)
+    # set the first row to be the same
+    eigorg[0] = evals[0]
+    # for each speed
+    for i, speed in enumerate(evals):
+        if i == evals.shape[0] - 1:
+            break
+        # for each current eigenvalue
+        for j, eig in enumerate(speed):
+            x, y = real(eigorg[i, j]), imag(eigorg[i, j])
+            # for each eigenvalue at the next speed
+            dist = zeros(4)
+            for k, eignext in enumerate(evals[i + 1]):
+                xn, yn = real(eignext), imag(eignext)
+                dist[k] = abs(sqrt((xn - x)**2 + (yn - y)**2))
+            eigorg[i + 1, j] = evals[i + 1, argmin(dist)]
+        print eigorg[i]
+    return eigorg
+
+#def critical_speeds(weave, capsize, caster):
+
 def fit_goodness(ym, yp):
     '''
     Calculate the goodness of fit.
