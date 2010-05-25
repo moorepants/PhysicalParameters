@@ -1,13 +1,14 @@
-import scipy.io.matlab.mio as mio
-import numpy as np
-import matplotlib.pyplot as plt
 import os
 import re
 import pickle as p
+import scipy.io.matlab.mio as mio
+import numpy as np
+import matplotlib.pyplot as plt
 import uncertainties as u
 import uncertainties.umath as umath
-from BenchmarkBikeTools import *
 from math import pi
+
+from BenchmarkBikeTools import *
 from control_tools import *
 
 # load the main data file into a dictionary
@@ -196,6 +197,7 @@ tor[6, 7] = tor[6, 6]
 tor[9, 7] = tor[9, 6]
 com[2, 7] = com[2, 6]
 com[3, 7] = com[3, 6]
+
 tRod = avgPer['rodPer']
 # calculate the stiffness of the torsional pendulum
 mRod = u.num_with_uncert((5.56, 0.02)) # mass of the calibration rod [kg]
@@ -285,7 +287,6 @@ for k, v in par_n.items():
     plt.title(k)
     plt.xticks(np.arange(8), tuple(xt))
     i += 1
-#plt.show()
 # Jason's parameters (sitting on the browser)
 IBJ = np.array([[7.9985, 0 , -1.9272], [0, 8.0689, 0], [ -1.9272, 0, 2.3624]])
 mBJ = 72.
@@ -364,12 +365,16 @@ for i, name in enumerate(bikeNames):
     BFlip = np.vstack([B[2:, :], B[:2, :]])
     plt.figure(4)
     bode(ABCD=(AFlip, BFlip[:, 0], C_phi, 0.), w=freq, fig=bodeFig)
+for i, line in enumerate(bodeFig.ax1.lines):
+    plt.setp(line, color=colors[i])
+    plt.setp(bodeFig.ax2.lines[i], color=colors[i])
 plt.figure(3)
 plt.legend()
 critFig = plt.figure(num=5)
-plt.plot(vd, '_', markersize=50)
-plt.plot(vc, '_', markersize=50, linewidth=6)
-plt.plot(vw, '_', markersize=50, linewidth=6)
-plt.plot(vc - vw)
-plt.xticks(np.arange(8), tuple(xt))
+bike = np.arange(len(vd))
+plt.plot(vd, bike, '|', markersize=50)
+plt.plot(vc, bike, '|', markersize=50, linewidth=6)
+plt.plot(vw, bike, '|', markersize=50, linewidth=6)
+plt.plot(vc - vw, bike)
+plt.yticks(np.arange(8), tuple(bikeNames))
 plt.show()

@@ -27,4 +27,5 @@ D = 0.
 w = np.logspace(0, 2, 5000)
 f = figure(num=1)
 mag, phase, fig = bode(ABCD=(AFlip, BFlip[:, 0], C, D), w=w, fig=f)
+plt.setp(fig.ax1.lines, color='g')
 show()
