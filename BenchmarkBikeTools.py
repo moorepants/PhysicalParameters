@@ -86,13 +86,10 @@ def critical_speeds(v, weave, capsize):
         The speed at which the capsize mode becomes unstable.
 
     '''
-    from numpy import argmin, abs, real, imag, zeros_like
+    from numpy import argmin, abs, real, imag, zeros_like, max
     vw = v[argmin(abs(real(weave[:, 0])))]
-    print 'vw', vw
     vc = v[argmin(abs(real(capsize)))]
-    print 'vc', vc
     m = max(abs(imag(weave[:, 0])))
-    print 'm', m
     w = zeros_like(imag(weave[:, 0]))
     for i, eig in enumerate(abs(imag(weave[:, 0]))):
         if eig == 0.:

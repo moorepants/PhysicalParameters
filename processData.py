@@ -8,6 +8,7 @@ import uncertainties as u
 import uncertainties.umath as umath
 from BenchmarkBikeTools import *
 from math import pi
+from control_tools import *
 
 # load the main data file into a dictionary
 d = {}
@@ -117,7 +118,7 @@ for i, row in enumerate(forkMassDist):
 #print "Fork CoM line intercept =\n", forkB
 
 # plot the CoM lines
-plt.figure(num=1)
+comFig = plt.figure(num=1)
 # intialize the matrices for the center of mass locations
 frameCoM = np.zeros((2, np.shape(frameM)[1]), dtype='object')
 forkCoM = np.zeros((2, np.shape(forkM)[1]), dtype='object')
@@ -275,7 +276,7 @@ for k, v in par.items():
     else:
         par_n[k] = par[k]
 # plot all the parameters to look for crazy numbers
-plt.figure(num=2)
+parFig = plt.figure(num=2)
 i = 1
 xt = ['B', 'BI', 'C', 'F', 'P', 'S', 'Y', 'YR']
 for k, v in par_n.items():
@@ -311,8 +312,12 @@ for i in range(nBk):
     par_n['mB'][i] = mB[i]
     par_n['xB'][i] = xB[i]
     par_n['zB'][i] = zB[i]
-plt.figure(num=3)
 colors = ['k', 'r', 'b', 'g', 'y', 'm', 'c', 'orange']
+vd = np.zeros(nBk)
+vw = np.zeros(nBk)
+vc = np.zeros(nBk)
+eigFig = plt.figure(num=3)
+bodeFig = plt.figure(num=4)
 # write the par_nameter files
 for i, name in enumerate(bikeNames):
     dir = 'bikeRiderParameters/'
@@ -333,15 +338,38 @@ for i, name in enumerate(bikeNames):
             file.write(mat + '\n')
         file.write(str(eval(mat)) + '\n')
     file.close()
-    vel = np.linspace(0, 10, num=1000)
+    vel = np.linspace(0, 20, num=1000)
     evals, evecs = bike_eig(M, C1, K0, K2, vel, 9.81)
+    wea, cap, cas = sort_modes(evals, evecs)
+    vd[i], vw[i], vc[i] = critical_speeds(vel, wea['evals'], cap['evals'])
+    plt.figure(3)
     for j, line in enumerate(evals.T):
         if j == 0:
             label = bikeNames[i]
         else:
             label = '_nolegend_'
-        plt.plot(vel, np.real(line), '.', color=colors[i], label=label)
-    plt.plot(vel, np.imag(evals), '.', markersize=2, color=colors[i])
-    plt.ylim((-10, 10))
+        plt.plot(vel, np.real(line), '.', color=colors[i], label=label, figure=eigFig)
+    plt.plot(vel, np.abs(np.imag(evals)), '.', markersize=2, color=colors[i], figure=eigFig)
+    plt.ylim((-10, 10), figure=eigFig)
+    # make some bode plots
+    A, B = abMatrix(M, C1, K0, K2, 4., 9.81)
+    C_phi = np.array([1., 0., 0., 0.])
+    C_del = np.array([0., 1., 0., 0.])
+    freq = np.logspace(0, 2, 5000)
+    Aul = A[2:, 2:]
+    Aur = A[2:, :2]
+    All = A[:2, 2:]
+    Alr = A[:2, :2]
+    AFlip = np.vstack((np.hstack((Aul, Aur)), np.hstack((All, Alr))))
+    BFlip = np.vstack([B[2:, :], B[:2, :]])
+    plt.figure(4)
+    bode(ABCD=(AFlip, BFlip[:, 0], C_phi, 0.), w=freq, fig=bodeFig)
+plt.figure(3)
 plt.legend()
+critFig = plt.figure(num=5)
+plt.plot(vd, '_', markersize=50)
+plt.plot(vc, '_', markersize=50, linewidth=6)
+plt.plot(vw, '_', markersize=50, linewidth=6)
+plt.plot(vc - vw)
+plt.xticks(np.arange(8), tuple(xt))
 plt.show()
