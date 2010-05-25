@@ -357,15 +357,8 @@ for i, name in enumerate(bikeNames):
     C_phi = np.array([0., 0., 1., 0.])
     C_del = np.array([0., 0., 0., 1.])
     freq = np.logspace(0, 2, 5000)
-    Aul = A[2:, 2:]
-    Aur = A[2:, :2]
-    All = A[:2, 2:]
-    Alr = A[:2, :2]
-    AFlip = np.vstack((np.hstack((Aul, Aur)), np.hstack((All, Alr))))
-    BFlip = np.vstack([B[2:, :], B[:2, :]])
     plt.figure(4)
     bode(ABCD=(A, B[:, 0], C_phi, 0.), w=freq, fig=bodeFig)
-    #bode(ABCD=(AFlip, BFlip[:, 0], C_phi, 0.), w=freq, fig=bodeFig)
 for i, line in enumerate(bodeFig.ax1.lines):
     plt.setp(line, color=colors[i])
     plt.setp(bodeFig.ax2.lines[i], color=colors[i])
