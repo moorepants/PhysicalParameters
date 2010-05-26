@@ -354,6 +354,8 @@ for i, name in enumerate(bikeNames):
     plt.ylim((-10, 10), figure=eigFig)
     # make some bode plots
     A, B = abMatrix(M, C1, K0, K2, 4., 9.81)
+    C = np.eye(A.shape[0])
+    C_yaw = 
     C_phi = np.array([0., 0., 1., 0.])
     C_del = np.array([0., 0., 0., 1.])
     freq = np.logspace(0, 2, 5000)
