@@ -9,7 +9,6 @@ import uncertainties.umath as umath
 from math import pi
 
 from BenchmarkBikeTools import *
-from control_tools import *
 
 # load the main data file into a dictionary
 d = {}
@@ -17,14 +16,12 @@ mio.loadmat('data/data.mat', mdict=d)
 
 # the number of different bikes
 nBk = len(d['bikes'])
-#print "Number of bikes =", nBk
 
 # make a list of the bikes' names
 bikeNames = []
 for bike in d['bikes']:
     # get rid of the weird matlab unicoding
     bikeNames.append(bike[0][0].encode('ascii'))
-#print "List of bikes:\n", bikeNames
 
 # clean up the matlab imports
 d['bikes'] = bikeNames
@@ -32,10 +29,13 @@ del(d['__globals__'], d['__header__'], d['__version__'])
 for k, v in d.items():
     if np.shape(v)[0] == 1:
         d[k] = v[0]
-
+# pickle the data dictionary
+f = open('data/data.p', 'w')
+p.dump(d, f)
+f.close()
 # make a dictionary for the measurement standard deviations
 dU = {}
-f = open('MeasUncert.txt', 'r')
+f = open('data/MeasUncert.txt', 'r')
 for line in f:
     l = line.split(',')
     dU[l[0]] = eval(l[1])
@@ -53,17 +53,16 @@ for k, v in dU.items():
     ddU[k] = np.array(ddU[k])
     if ddU[k].shape[0] > 8:
         ddU[k] = ddU[k].reshape((ddU[k].shape[0]/8, -1))
-
+f = open('data/dataWithUncert.p', 'w')
+p.dump(ddU, f)
+f.close()
 par = {}
 # calculate the wheel radii
 par['rR'] = ddU['rearWheelDist']/2./pi/ddU['rearWheelRot']
-#print "Rear wheel radii [m] =\n", par['rR']
 par['rF'] = ddU['frontWheelDist']/2./pi/ddU['frontWheelRot']
-#print "Front wheel radii [m] =\n", par['rF']
 
 # steer axis tilt in radians
 par['lambda'] = pi/180.*(90. - ddU['headTubeAngle'])
-#print "Steer axis tilt [deg] =\n", par['lambda']*180./np.pi
 
 # calculate the front wheel trail
 forkOffset = ddU['forkOffset']
@@ -71,41 +70,33 @@ par['c'] = np.zeros_like(forkOffset)
 for i, v in enumerate(par['rF']):
     par['c'][i] = (par['rF'][i]*umath.sin(par['lambda'][i])
                   - forkOffset[i])/umath.cos(par['lambda'][i])
-#print "Trail [m] =\n", par['c']
 
 # calculate the frame rotation angle
 alphaFrame = ddU['frameAngle']
-#print "alphaFrame =\n", alphaFrame
 betaFrame = par['lambda'] - alphaFrame*pi/180
-#print "Frame rotation angle, beta [deg] =\n", betaFrame/np.pi*180.
 
 # calculate the slope of the CoM line
 frameM = np.zeros_like(betaFrame)
 for i, row in enumerate(betaFrame):
     for j, v in enumerate(row):
         frameM[i, j] = -umath.tan(v)
-#print "Frame CoM line slope =\n", frameM
 
 # calculate the z-intercept of the CoM line
 frameMassDist = ddU['frameMassDist']
-#print "Frame CoM distance =\n", d['frameMassDist']
 frameB = np.zeros_like(frameMassDist)
 for i, row in enumerate(frameMassDist):
     for j, col in enumerate(row):
         cb = umath.cos(betaFrame[i, j])
         frameB[i, j] = frameMassDist[i, j]/cb - par['rR'][j]
-#print "Frame CoM line intercept =\n", frameB
 
 # calculate the fork rotation angle
 betaFork = par['lambda'] - ddU['forkAngle']*np.pi/180.
-#print "Fork rotation angle [deg] =\n", betaFork*180./np.pi
 
 # calculate the slope of the fork CoM line
 forkM = np.zeros_like(betaFork)
 for i, row in enumerate(betaFork):
     for j, v in enumerate(row):
         forkM[i, j] = -umath.tan(v)
-#print "Fork CoM line slope =\n", forkM
 
 # calculate the z-intercept of the CoM line
 par['w'] = ddU['wheelbase']
@@ -116,7 +107,6 @@ for i, row in enumerate(forkMassDist):
         cb = umath.cos(betaFork[i, j])
         tb = umath.tan(betaFork[i, j])
         forkB[i, j] = - par['rF'][j] + forkMassDist[i, j]/cb + par['w'][j]*tb
-#print "Fork CoM line intercept =\n", forkB
 
 # plot the CoM lines
 comFig = plt.figure(num=1)
@@ -172,8 +162,6 @@ par['xB'] = frameCoM[0, :]
 par['zB'] = frameCoM[1, :]
 par['xH'] = forkCoM[0, :]
 par['zH'] = forkCoM[1, :]
-#print "Frame CoM =\n", frameCoM
-#print "Fork CoM =\n", forkCoM
 # load the average period data
 f = open('avgPer.p', 'r')
 avgPer = p.load(f)
@@ -248,29 +236,7 @@ par['IBxx'] = np.array(par['IBxx'])
 par['IBxz'] = np.array(par['IBxz'])
 par['IBzz'] = np.array(par['IBzz'])
 par['v'] = np.ones_like(d['forkMass'])
-# write the parameter files
-for i, name in enumerate(bikeNames):
-    dir = 'bikeParameters/'
-    fname = ''.join(name.split()) + 'Par.txt'
-    file = open(dir + fname, 'w')
-    for k, v in par.items():
-        if type(v[i]) == type(par['rF'][0]) or type(v[i]) == type(par['mF'][0]):
-            line = k + ',' + str(v[i].nominal_value) + ',' + str(v[i].std_dev()) + '\n'
-        else:
-            line = k + ',' + str(v[i]) + ',' + '0.0' + '\n'
-        file.write(line)
-    file.close()
-    M, C1, K0, K2, param = bmp2cm(dir + fname)
-    A, B = abMatrix(M, C1, K0, K2, param['v'], param['g'])
-    dir = 'bikeCanonical/'
-    file = open(dir + fname[:-7] + 'Can.txt', 'w')
-    for mat in ['M','C1', 'K0', 'K2', 'A', 'B']:
-        if mat == 'A' or mat == 'B':
-            file.write(mat + ' (v = ' + str(par['v'][i]) + ')\n')
-        else:
-            file.write(mat + '\n')
-        file.write(str(eval(mat)) + '\n')
-    file.close()
+# make a dictionary with only the nominal values
 par_n = {}
 for k, v in par.items():
     if type(v[i]) == type(par['rF'][0]) or type(v[i]) == type(par['mF'][0]):
@@ -287,100 +253,19 @@ for k, v in par_n.items():
     plt.title(k)
     plt.xticks(np.arange(8), tuple(xt))
     i += 1
-# Jason's parameters (sitting on the browser)
-IBJ = np.array([[7.9985, 0 , -1.9272], [0, 8.0689, 0], [ -1.9272, 0, 2.3624]])
-mBJ = 72.
-xBJ = 0.2909
-zBJ = -1.1091
-# compute the total mass
-mB = par_n['mB'] + mBJ
-# compute the new CoM
-xB = (mBJ*xBJ + par_n['mB']*par_n['xB'])/mB
-zB = (mBJ*zBJ + par_n['mB']*par_n['zB'])/mB
-# compute the new moment of inertia
-dJ = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((xBJ, 0., zBJ))
-dB = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((par_n['xB'], np.zeros(nBk), par_n['zB']))
-IB = np.zeros((3, 3))
-for i in range(nBk):
-    IB[0] = np.array([par_n['IBxx'][i], 0., par_n['IBxz'][i]])
-    IB[1] = np.array([0., par_n['IByy'][i], 0.])
-    IB[2] = np.array([par_n['IBxz'][i], 0., par_n['IBzz'][i]])
-    I = parallel_axis(IBJ, mBJ, dJ[:, i]) + parallel_axis(IB, par_n['mB'][i], dB[:, i])
-    par_n['IBxx'][i] = I[0, 0]
-    par_n['IBxz'][i] = I[0, 2]
-    par_n['IByy'][i] = I[1, 1]
-    par_n['IBzz'][i] = I[2, 2]
-    par_n['mB'][i] = mB[i]
-    par_n['xB'][i] = xB[i]
-    par_n['zB'][i] = zB[i]
-colors = ['k', 'r', 'b', 'g', 'y', 'm', 'c', 'orange']
-vd = np.zeros(nBk)
-vw = np.zeros(nBk)
-vc = np.zeros(nBk)
-eigFig = plt.figure(num=3)
-Tdel2phi = plt.figure(num=4)
-Tdel2del = plt.figure(num=5)
-Tphi2phi = plt.figure(num=6)
-Tphi2del = plt.figure(num=7)
-# write the par_nameter files
+plt.show()
+# write the parameter files
 for i, name in enumerate(bikeNames):
-    dir = 'bikeRiderParameters/'
-    fname = ''.join(name.split()) + 'RiderPar.txt'
-    file = open(dir + fname, 'w')
-    for k, v in par_n.items():
-        line = k + ',' + str(v[i]) + '\n'
+    dir = 'bikeParameters/'
+    fname = ''.join(name.split())
+    file = open(dir + fname + 'Par.txt', 'w')
+    for k, v in par.items():
+        if type(v[i]) == type(par['rF'][0]) or type(v[i]) == type(par['mF'][0]):
+            line = k + ',' + str(v[i].nominal_value) + ',' + str(v[i].std_dev()) + '\n'
+        else:
+            line = k + ',' + str(v[i]) + ',' + '0.0' + '\n'
         file.write(line)
     file.close()
-    M, C1, K0, K2, param = bmp2cm(dir + fname)
-    A, B = abMatrix(M, C1, K0, K2, param['v'], param['g'])
-    dir = 'bikeRiderCanonical/'
-    file = open(dir + fname[:-7] + 'Can.txt', 'w')
-    for mat in ['M','C1', 'K0', 'K2', 'A', 'B']:
-        if mat == 'A' or mat == 'B':
-            file.write(mat + ' (v = ' + str(par_n['v'][i]) + ')\n')
-        else:
-            file.write(mat + '\n')
-        file.write(str(eval(mat)) + '\n')
+    file = open(dir + fname + 'Par.p', 'w')
+    p.dump(par, file)
     file.close()
-    vel = np.linspace(0, 20, num=1000)
-    evals, evecs = bike_eig(M, C1, K0, K2, vel, 9.81)
-    wea, cap, cas = sort_modes(evals, evecs)
-    vd[i], vw[i], vc[i] = critical_speeds(vel, wea['evals'], cap['evals'])
-    plt.figure(3)
-    for j, line in enumerate(evals.T):
-        if j == 0:
-            label = bikeNames[i]
-        else:
-            label = '_nolegend_'
-        plt.plot(vel, np.real(line), '.', color=colors[i], label=label, figure=eigFig)
-    plt.plot(vel, np.abs(np.imag(evals)), '.', markersize=2, color=colors[i], figure=eigFig)
-    plt.ylim((-10, 10), figure=eigFig)
-    # make some bode plots
-    A, B = abMatrix(M, C1, K0, K2, 4., 9.81)
-    # y is [phidot, deldot, phi, del]
-    C = np.eye(A.shape[0])
-    freq = np.logspace(0, 2, 5000)
-    plt.figure(4)
-    bode(ABCD=(A, B[:, 1], C[2], 0.), w=freq, fig=Tdel2phi)
-    plt.figure(5)
-    bode(ABCD=(A, B[:, 1], C[3], 0.), w=freq, fig=Tdel2del)
-    plt.figure(6)
-    bode(ABCD=(A, B[:, 0], C[2], 0.), w=freq, fig=Tphi2phi)
-    plt.figure(7)
-    bode(ABCD=(A, B[:, 0], C[3], 0.), w=freq, fig=Tphi2del)
-#for i, line in enumerate(Tdel2phi.ax1.lines):
-#    plt.setp(line, color=colors[i])
-#    plt.setp(Tdel2phi.ax2.lines[i], color=colors[i])
-# plot the bike names on the eigenvalue plot
-plt.figure(3)
-plt.legend()
-# make a plot comparing the critical speeds of each bike
-critFig = plt.figure(num=8)
-bike = np.arange(len(vd))
-plt.plot(vd, bike, '|', markersize=50)
-plt.plot(vc, bike, '|', markersize=50, linewidth=6)
-plt.plot(vw, bike, '|', markersize=50, linewidth=6)
-plt.plot(vc - vw, bike)
-plt.legend([r'$v_d$', r'$v_c$', r'$v_w$', 'stable speed range'])
-plt.yticks(np.arange(8), tuple(bikeNames))
-plt.show()
