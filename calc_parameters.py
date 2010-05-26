@@ -29,10 +29,12 @@ del(d['__globals__'], d['__header__'], d['__version__'])
 for k, v in d.items():
     if np.shape(v)[0] == 1:
         d[k] = v[0]
+
 # pickle the data dictionary
 f = open('data/data.p', 'w')
 p.dump(d, f)
 f.close()
+
 # make a dictionary for the measurement standard deviations
 dU = {}
 f = open('data/MeasUncert.txt', 'r')
@@ -53,10 +55,15 @@ for k, v in dU.items():
     ddU[k] = np.array(ddU[k])
     if ddU[k].shape[0] > 8:
         ddU[k] = ddU[k].reshape((ddU[k].shape[0]/8, -1))
+
+# pickle the data with the uncertainties
 f = open('data/dataWithUncert.p', 'w')
 p.dump(ddU, f)
 f.close()
+
+# calculate all the benchmark parameters
 par = {}
+
 # calculate the wheel radii
 par['rR'] = ddU['rearWheelDist']/2./pi/ddU['rearWheelRot']
 par['rF'] = ddU['frontWheelDist']/2./pi/ddU['frontWheelRot']
@@ -162,6 +169,7 @@ par['xB'] = frameCoM[0, :]
 par['zB'] = frameCoM[1, :]
 par['xH'] = forkCoM[0, :]
 par['zH'] = forkCoM[1, :]
+
 # load the average period data
 f = open('avgPer.p', 'r')
 avgPer = p.load(f)
@@ -193,23 +201,28 @@ lRod = u.num_with_uncert((1.05, 0.001)) # length of the calibration rod [m]
 rRod = u.num_with_uncert((0.015, 0.0001)) # radius of the calibration rod [m]
 iRod = tube_inertia(lRod, mRod, rRod, 0.)[1]
 k = tor_stiffness(iRod, tRod)
+
 # masses
 par['mR'] = ddU['rearWheelMass']
 par['mF'] = ddU['frontWheelMass']
 par['mB'] = ddU['frameMass']
 par['mH'] = ddU['forkMass']
+
 # calculate the wheel y inertias
 par['g'] = 9.81*np.ones_like(par['rR'])
 par['IRyy'] = com_inertia(par['mR'], par['g'], ddU['rWheelPendLength'], com[3, :])
 par['IFyy'] = com_inertia(par['mF'], par['g'], ddU['fWheelPendLength'], com[2, :])
+
 # calculate the wheel x/z inertias
 par['IRxx'] = tor_inertia(k, tor[6, :])
 par['IFxx'] = tor_inertia(k, tor[9, :])
+
 # calculate the y inertias for the frame and fork
 framePendLength = (frameCoM[0, :]**2 + (frameCoM[1, :] + par['rR'])**2)**(0.5)
 par['IByy'] = com_inertia(par['mB'], par['g'], framePendLength, com[0, :])
 forkPendLength = ((forkCoM[0, :] - par['w'])**2 + (forkCoM[1, ] + par['rF'])**2)**(0.5)
 par['IHyy'] = com_inertia(par['mH'], par['g'], forkPendLength, com[1, :])
+
 # calculate the fork in-plane moments of inertia
 Ipend = tor_inertia(k, tor)
 par['IHxx'] = []
@@ -223,6 +236,7 @@ for i, row in enumerate(Ipend[3:6, :].T):
 par['IHxx'] = np.array(par['IHxx'])
 par['IHxz'] = np.array(par['IHxz'])
 par['IHzz'] = np.array(par['IHzz'])
+
 # calculate the frame in-plane moments of inertia
 par['IBxx'] = []
 par['IBxz'] = []
@@ -236,6 +250,7 @@ par['IBxx'] = np.array(par['IBxx'])
 par['IBxz'] = np.array(par['IBxz'])
 par['IBzz'] = np.array(par['IBzz'])
 par['v'] = np.ones_like(d['forkMass'])
+
 # make a dictionary with only the nominal values
 par_n = {}
 for k, v in par.items():
@@ -243,6 +258,7 @@ for k, v in par.items():
         par_n[k] = u.nominal_values(v)
     else:
         par_n[k] = par[k]
+
 # plot all the parameters to look for crazy numbers
 parFig = plt.figure(num=2)
 i = 1
@@ -254,6 +270,7 @@ for k, v in par_n.items():
     plt.xticks(np.arange(8), tuple(xt))
     i += 1
 plt.show()
+
 # write the parameter files
 for i, name in enumerate(bikeNames):
     dir = 'bikeParameters/'
@@ -266,6 +283,8 @@ for i, name in enumerate(bikeNames):
             line = k + ',' + str(v[i]) + ',' + '0.0' + '\n'
         file.write(line)
     file.close()
-    file = open(dir + fname + 'Par.p', 'w')
-    p.dump(par, file)
-    file.close()
+
+# pickle the parameters too
+file = open(dir + fname + 'Par.p', 'w')
+p.dump(par, file)
+file.close()
