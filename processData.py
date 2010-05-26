@@ -318,7 +318,10 @@ vd = np.zeros(nBk)
 vw = np.zeros(nBk)
 vc = np.zeros(nBk)
 eigFig = plt.figure(num=3)
-bodeFig = plt.figure(num=4)
+Tdel2phi = plt.figure(num=4)
+Tdel2del = plt.figure(num=5)
+Tphi2phi = plt.figure(num=6)
+Tphi2del = plt.figure(num=7)
 # write the par_nameter files
 for i, name in enumerate(bikeNames):
     dir = 'bikeRiderParameters/'
@@ -354,23 +357,30 @@ for i, name in enumerate(bikeNames):
     plt.ylim((-10, 10), figure=eigFig)
     # make some bode plots
     A, B = abMatrix(M, C1, K0, K2, 4., 9.81)
+    # y is [phidot, deldot, phi, del]
     C = np.eye(A.shape[0])
-    C_yaw = 
-    C_phi = np.array([0., 0., 1., 0.])
-    C_del = np.array([0., 0., 0., 1.])
     freq = np.logspace(0, 2, 5000)
     plt.figure(4)
-    bode(ABCD=(A, B[:, 0], C_phi, 0.), w=freq, fig=bodeFig)
-for i, line in enumerate(bodeFig.ax1.lines):
-    plt.setp(line, color=colors[i])
-    plt.setp(bodeFig.ax2.lines[i], color=colors[i])
+    bode(ABCD=(A, B[:, 1], C[2], 0.), w=freq, fig=Tdel2phi)
+    plt.figure(5)
+    bode(ABCD=(A, B[:, 1], C[3], 0.), w=freq, fig=Tdel2del)
+    plt.figure(6)
+    bode(ABCD=(A, B[:, 0], C[2], 0.), w=freq, fig=Tphi2phi)
+    plt.figure(7)
+    bode(ABCD=(A, B[:, 0], C[3], 0.), w=freq, fig=Tphi2del)
+#for i, line in enumerate(Tdel2phi.ax1.lines):
+#    plt.setp(line, color=colors[i])
+#    plt.setp(Tdel2phi.ax2.lines[i], color=colors[i])
+# plot the bike names on the eigenvalue plot
 plt.figure(3)
 plt.legend()
-critFig = plt.figure(num=5)
+# make a plot comparing the critical speeds of each bike
+critFig = plt.figure(num=8)
 bike = np.arange(len(vd))
 plt.plot(vd, bike, '|', markersize=50)
 plt.plot(vc, bike, '|', markersize=50, linewidth=6)
 plt.plot(vw, bike, '|', markersize=50, linewidth=6)
 plt.plot(vc - vw, bike)
+plt.legend([r'$v_d$', r'$v_c$', r'$v_w$', 'stable speed range'])
 plt.yticks(np.arange(8), tuple(bikeNames))
 plt.show()
