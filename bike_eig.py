@@ -34,6 +34,7 @@ for i, name in enumerate(data['bikes']):
 # plot the bike names on the eigenvalue plot
 plt.legend()
 plt.ylim((-10, 10))
+#plt.xlim((0, 10))
 plt.title('Eigenvalues vs Speed')
 plt.xlabel('Speed [m/s]')
 plt.ylabel('Real and Imaginary Parts of the Eigenvalue [1/s]')
@@ -47,4 +48,3 @@ plt.plot(vc - vw, bike)
 plt.legend([r'$v_d$', r'$v_c$', r'$v_w$', 'stable speed range'])
 plt.yticks(np.arange(8), tuple(data['bikes']))
 plt.show()
-

@@ -316,12 +316,12 @@ def bmp2cm(filename):
     K0dp = K0pd
     K0dd = -SA*sin(p['lambda'])
     K0 = array([[K0pp, K0pd], [K0dp, K0dd]])
-    K2pp = 0
+    K2pp = 0.
     K2pd = (ST - mT*zT)/p['w']*cos(p['lambda'])
-    K2dp = 0
+    K2dp = 0.
     K2dd = (SA + SF*sin(p['lambda']))/p['w']*cos(p['lambda'])
     K2 = array([[K2pp, K2pd], [K2dp, K2dd]])
-    C1pp = 0
+    C1pp = 0.
     C1pd = mu*ST + SF*cos(p['lambda']) + ITxz/p['w']*cos(p['lambda']) - mu*mT*zT
     C1dp = -(mu*ST + SF*cos(p['lambda']))
     C1dd = IAlz/p['w']*cos(p['lambda']) + mu*(SA + ITzz/p['w']*cos(p['lambda']))
@@ -331,16 +331,17 @@ def bmp2cm(filename):
 def abMatrix(M, C1, K0, K2, v, g):
     '''Calculate the A and B matrices for the benchmark bicycle
 
-    Input:
-        M is the mass matrix
-        C1 is the damping like matrix that is proportional to v
-        K0 is the stiffness matrix proportional to gravity
-        K2 is the stiffness matrix proportional to v**2
+    Parameters:
+    -----------
+        M : the mass matrix
+        C1 : the damping like matrix that is proportional to v
+        K0 : the stiffness matrix proportional to gravity
+        K2 : the stiffness matrix proportional to v**2
         v : speed
         g : acceleration due to gravity
     Returns:
-        A system dynamic matrix
-        B control matrix
+        A : system dynamic matrix
+        B : control matrix
     '''
     from numpy import eye, zeros, vstack, hstack, dot
     from numpy.linalg import inv
