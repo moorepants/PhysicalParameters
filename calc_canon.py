@@ -9,11 +9,11 @@ f.close()
 
 # write the parameter files
 for i, name in enumerate(data['bikes']):
-    dir = 'bikeParameters/'
+    dir = 'data/bikeParameters/'
     fname = ''.join(name.split())
     M, C1, K0, K2, param = bmp2cm(dir + fname + 'Par.txt')
     A, B = abMatrix(M, C1, K0, K2, param['v'], param['g'])
-    dir = 'bikeCanonical/'
+    dir = 'data/bikeCanonical/'
     file = open(dir + fname + 'Can.txt', 'w')
     for mat in ['M','C1', 'K0', 'K2', 'A', 'B']:
         if mat == 'A' or mat == 'B':
