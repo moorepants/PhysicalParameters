@@ -254,7 +254,7 @@ par['v'] = np.ones_like(d['forkMass'])
 # make a dictionary with only the nominal values
 par_n = {}
 for k, v in par.items():
-    if type(v[i]) == type(par['rF'][0]) or type(v[i]) == type(par['mF'][0]):
+    if type(v[0]) == type(par['rF'][0]) or type(v[0]) == type(par['mF'][0]):
         par_n[k] = u.nominal_values(v)
     else:
         par_n[k] = par[k]
@@ -273,7 +273,7 @@ plt.show()
 
 # write the parameter files
 for i, name in enumerate(bikeNames):
-    dir = 'bikeParameters/'
+    dir = 'data/bikeParameters/'
     fname = ''.join(name.split())
     file = open(dir + fname + 'Par.txt', 'w')
     for k, v in par.items():
@@ -285,6 +285,6 @@ for i, name in enumerate(bikeNames):
     file.close()
 
 # pickle the parameters too
-file = open(dir + fname + 'Par.p', 'w')
+file = open('data/par.p', 'w')
 p.dump(par, file)
 file.close()
