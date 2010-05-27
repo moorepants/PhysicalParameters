@@ -20,8 +20,18 @@ experiment.
 2. torcom.py: This averages the periods and tries to format them a little better
 for use in processData.py. (this should be combined with fitData.py)
 
-3. processData.py: This does all the calculations and outputs the data in some
-text files.
+3. calc_parameters.py: This does all the calculations and outputs the
+parameters in text and pickled files.
+
+4. calc_canon.py: calculates the benchmark canonical matrics for each bike
+
+5. calc_JasonOnBikes.py: calculates the parameters and canonical matrics with a
+rider on each bike (same position relative to the benchmark coordinates)
+
+6. bike_eig.py: calculates eigenvalues and critical speeds for an upright
+steady speed configuration, makes a couple of plots
+
+7. bike_bode.py: makes bode plots of various SISO transfer functions
 
 Contact
 -------
