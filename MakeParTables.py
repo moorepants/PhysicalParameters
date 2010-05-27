@@ -22,31 +22,33 @@ for i, name in enumerate(data['bikes']):
     f = open(direct + '/ParameterTable.tex', 'r')
     fn = open(direct + '/' + fname + 'RiderPar.tex', 'w') 
     for line in f:
-        print line
+        #print line
         # find all of the matches in the line
         test = re.findall('\|(\w*.)\|', line)
-        print 'search for u: ',  re.findall('\|(\w*\?)\|', line)
-        print 'search for nom: ', re.findall('\|(\w*)(?!\?)\|', line)
+        #print 'search for u: ',  re.findall('\|(\w*\?)\|', line)
+        #print 'search for nom: ', re.findall('\|(\w*)(?!\?)\|', line)
         # if there are matches
         if test:
             print 'Found this!\n', test
             # go through each match and make a substitution
             for match in test:
-                print "replace this: ", match
+                #print "replace this: ", match
                 if match[-1] == '?':
                     try:
                         line = re.sub('\|(\w*\?)\|', '%-6.3f' % par[match[:-1]][i].std_dev(), line,
                                 count=1)
-                        print line
+                        #print line
                     except:
                         pass
+                elif match == 'bikename':
+                    line = re.sub('\|bikename\|', name, line)
                 else:
                     try:
                         line = re.sub('\|(\w*(?!\?))\|', '%.3f' % par[match][i].nominal_value, line, count=1)
-                        print line
+                        #print line
                     except:
                         pass
-        print line
+        #print line
         fn.write(line)
     f.close()
     fn.close()
