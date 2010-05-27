@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from BenchmarkBikeTools import *
 
-
 # load in the base data file
 f = open('data/data.p', 'r')
 data = pickle.load(f)
@@ -25,19 +24,19 @@ for i, name in enumerate(data['bikes']):
     file.close()
     evals, evecs = bike_eig(can['M'], can['C1'], can['K0'], can['K2'], vel, 9.81)
     wea, cap, cas = sort_modes(evals, evecs)
-    vd[i], vw[i], vc[i] = critical_speeds(vel, wea['evals'], cap['evals'])
     plt.figure(1)
-    for j, line in enumerate(evals.T):
-        if j == 0:
-            label = data['bikes'][i]
-        else:
-            label = '_nolegend_'
-        plt.plot(vel, np.real(line), '.', color=colors[i], label=label, figure=eigFig)
-    plt.plot(vel, np.abs(np.imag(evals)), '.', markersize=2, color=colors[i], figure=eigFig)
-    plt.ylim((-10, 10), figure=eigFig)
+    plt.plot(vel, np.abs(np.imag(wea['evals'])), color=colors[i], label='_nolegend_', linestyle='--')
+    plt.plot(vel, np.zeros_like(vel), 'k-', label='_nolegend_')
+    plt.plot(vel, np.real(wea['evals']), color=colors[i], label='_nolegend_')
+    plt.plot(vel, np.real(cap['evals']), color=colors[i], label=data['bikes'][i])
+    plt.plot(vel, np.real(cas['evals']), color=colors[i], label='_nolegend_')
+    vd[i], vw[i], vc[i] = critical_speeds(vel, wea['evals'], cap['evals'])
 # plot the bike names on the eigenvalue plot
-plt.figure(1)
 plt.legend()
+plt.ylim((-10, 10))
+plt.title('Eigenvalues vs Speed')
+plt.xlabel('Speed [m/s]')
+plt.ylabel('Real and Imaginary Parts of the Eigenvalue [1/s]')
 # make a plot comparing the critical speeds of each bike
 critFig = plt.figure(num=2)
 bike = np.arange(len(vd))
