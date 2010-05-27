@@ -17,10 +17,10 @@ f.close()
 
 direct = 'ParTables'
 for i, name in enumerate(data['bikes']):
-    fname = ''.join(name.split()) 
+    fname = ''.join(name.split())
     # open the new file
     f = open(direct + '/ParameterTable.tex', 'r')
-    fn = open(direct + '/' + fname + 'RiderPar.tex', 'w') 
+    fn = open(direct + '/' + fname + 'Par.tex', 'w')
     for line in f:
         #print line
         # find all of the matches in the line
@@ -29,7 +29,7 @@ for i, name in enumerate(data['bikes']):
         #print 'search for nom: ', re.findall('\|(\w*)(?!\?)\|', line)
         # if there are matches
         if test:
-            print 'Found this!\n', test
+            #print 'Found this!\n', test
             # go through each match and make a substitution
             for match in test:
                 #print "replace this: ", match
@@ -41,17 +41,17 @@ for i, name in enumerate(data['bikes']):
                     except:
                         pass
                 elif match == 'bikename':
-                    line = re.sub('\|bikename\|', name, line)
+                    line = re.sub('\|bikename\|', name.upper(), line)
                 else:
                     try:
                         line = re.sub('\|(\w*(?!\?))\|', '%.3f' % par[match][i].nominal_value, line, count=1)
                         #print line
                     except:
-                        pass
+                        line = re.sub('\|(\w*(?!\?))\|', '%.3f' % par[match][i], line, count=1)
         #print line
         fn.write(line)
     f.close()
     fn.close()
-    os.system('pdflatex -output-directory=ParTables ' + direct + '/' + fname + 'RiderPar.tex')
+    os.system('pdflatex -output-directory=ParTables ' + direct + '/' + fname + 'Par.tex')
     os.system('rm ParTables/*.aux')
     os.system('rm ParTables/*.log')
