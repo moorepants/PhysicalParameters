@@ -42,8 +42,7 @@ for i, name in enumerate(data['bikes']):
                         pass
                 else:
                     try:
-                        line = re.sub('\|(\w*(?!\?))\|',
-                                str(par[match][i].nominal_value), line, count=1)
+                        line = re.sub('\|(\w*(?!\?))\|', '%.3f' % par[match][i].nominal_value, line, count=1)
                         print line
                     except:
                         pass
@@ -51,3 +50,6 @@ for i, name in enumerate(data['bikes']):
         fn.write(line)
     f.close()
     fn.close()
+    os.system('pdflatex -output-directory=ParTables ' + direct + '/' + fname + 'RiderPar.tex')
+    os.system('rm ParTables/*.aux')
+    os.system('rm ParTables/*.log')
