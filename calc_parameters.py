@@ -251,6 +251,37 @@ par['IBxz'] = np.array(par['IBxz'])
 par['IBzz'] = np.array(par['IBzz'])
 par['v'] = np.ones_like(d['forkMass'])
 
+# round the numbers according to the calculated uncertainty
+par_test = {}
+for k, v in par.items():
+    print v
+    par_test[k] = np.zeros_like(v)
+    for i, value in enumerate(v):
+        try:
+            uncert = value.std_dev()
+            nom = value.nominal_value
+            s = str(uncert)
+            print "s = ", s
+            for j, number in enumerate(s):
+                print "number = ", number
+                if number == '0' or number == '.':
+                    pass
+                else:
+                    digit = j
+                    break
+            print "digit = ", digit
+            newUncert = round(uncert, digit-1)
+            newNom = round(nom, len(str(newUncert)) - 2)
+            print "new:", newUncert, "and old:", uncert
+            print "new:", newNom, "and old:", nom
+            newValue = u.num_with_uncert((newNom, newUncert))
+            print "new value: ", newValue
+            par_test[k][i] = newValue
+        except:
+            pass
+del par
+par = par_test
+
 # make a dictionary with only the nominal values
 par_n = {}
 for k, v in par.items():
