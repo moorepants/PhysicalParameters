@@ -508,3 +508,27 @@ def parallel_axis(Ic, m, d):
     dMat[1] = array([-a*b, c**2 + a**2, -b*c])
     dMat[2] = array([-a*c, -b*c, a**2 + b**2])
     return Ic + m*dMat
+
+def trail(rF, lam, fo):
+    '''Caluculate the trail and mechanical trail
+
+    Parameters:
+    -----------
+    rF: float
+        The front wheel radius
+    lam: float
+        The steer axis tilt (pi/2 - headtube angle)
+    fo: float
+        The fork offset
+
+    Returns:
+    --------
+    c: float
+        Trail
+    c: float
+        Mechanical Trail
+
+    '''
+    from math import sin, cos
+
+    c = (rF*sin(lam) - fo)/cos(lam)
