@@ -8,7 +8,7 @@ import uncertainties as u
 import uncertainties.umath as umath
 from math import pi
 
-from BenchmarkBikeTools import *
+from benchmark_bike_tools import *
 
 # load the main data file into a dictionary
 d = {}
@@ -171,7 +171,7 @@ par['xH'] = forkCoM[0, :]
 par['zH'] = forkCoM[1, :]
 
 # load the average period data
-f = open('avgPer.p', 'r')
+f = open('data/avgPer.p', 'r')
 avgPer = p.load(f)
 f.close()
 # torsional, compound and rod periods
@@ -261,21 +261,15 @@ for k, v in par.items():
             uncert = value.std_dev()
             nom = value.nominal_value
             s = str(uncert)
-            print "s = ", s
             for j, number in enumerate(s):
-                print "number = ", number
                 if number == '0' or number == '.':
                     pass
                 else:
                     digit = j
                     break
-            print "digit = ", digit
             newUncert = round(uncert, digit-1)
             newNom = round(nom, len(str(newUncert)) - 2)
-            print "new:", newUncert, "and old:", uncert
-            print "new:", newNom, "and old:", nom
             newValue = u.num_with_uncert((newNom, newUncert))
-            print "new value: ", newValue
             par_test[k][i] = newValue
         except:
             pass

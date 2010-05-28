@@ -14,12 +14,16 @@ Download the data files from:
 
 http://mae.ucdavis.edu/~biosport/PhysicalParameters/data.tar.gz
 
-Then run these files sequentially:
+I'll hopefully have this more user friendly in the future, but for now you can
+run physical_parameters.py to run everything sequentially or run things
+individually.
 
-1. fitData.py: Calculates the period of each moment of inertia oscillation
+To run individually run these files sequentially:
+
+1. fit_data.py: Calculates the period of each moment of inertia oscillation
 experiment.
 
-2. torcom.py: This averages the periods and tries to format them a little better
+2. tor_com.py: This averages the periods and tries to format them a little better
 for use in processData.py. (this should be combined with fitData.py)
 
 3. calc_parameters.py: This does all the calculations and outputs the

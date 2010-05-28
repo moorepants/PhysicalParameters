@@ -13,5 +13,7 @@ os.system('mv data.mat data/data.mat')
 os.system('mv MeasUncert.txt data/MeasUncert.txt')
 
 # run the scripts to process the data
+os.system('python fit_data.py')
+os.system('python tor_com.py')
 os.system('python calc_parameters.py')
 os.system('python calc_canon.py')

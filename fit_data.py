@@ -6,7 +6,7 @@ import os
 import pickle as p
 from scipy.optimize import approx_fprime
 from uncertainties import num_with_uncert
-from BenchmarkBikeTools import fit_goodness, jac_fitfunc
+from benchmark_bike_tools import fit_goodness, jac_fitfunc
 
 dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
 file = open('data/period.txt', 'w')

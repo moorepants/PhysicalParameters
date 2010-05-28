@@ -2,7 +2,7 @@ import numpy as np
 import pickle as p
 import uncertainties as un
 
-from BenchmarkBikeTools import *
+from benchmark_bike_tools import *
 
 # load in the base data file
 f = open('data/data.p', 'r')

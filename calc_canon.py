@@ -1,6 +1,6 @@
 import pickle as p
 
-from BenchmarkBikeTools import *
+from benchmark_bike_tools import *
 
 # load in the base data file
 f = open('data/data.p', 'r')

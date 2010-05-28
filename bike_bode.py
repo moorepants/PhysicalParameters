@@ -2,7 +2,7 @@ import numpy as np
 import pickle
 import matplotlib.pyplot as plt
 
-from BenchmarkBikeTools import *
+from benchmark_bike_tools import *
 
 # load in the base data file
 f = open('data/data.p', 'r')
@@ -42,4 +42,3 @@ for i, name in enumerate(data['bikes']):
 #    plt.setp(Tdel2phi.ax2.lines[i], color=colors[i])
 # plot the bike names on the eigenvalue plot
 plt.show()
-

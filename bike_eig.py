@@ -1,7 +1,8 @@
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
-from BenchmarkBikeTools import *
+
+from benchmark_bike_tools import *
 
 # load in the base data file
 f = open('data/data.p', 'r')
