@@ -8,19 +8,17 @@ f = open('data/data.p', 'r')
 data = pickle.load(f)
 f.close()
 
-nBk = len(data['bikes'])
-
 # load in the parameter data file
 f = open('data/par.p', 'r')
 par = pickle.load(f)
 f.close()
 
-direct = 'ParTables'
+direct = 'parTables/'
 for i, name in enumerate(data['bikes']):
     fname = ''.join(name.split())
     # open the new file
-    f = open(direct + '/ParameterTable.tex', 'r')
-    fn = open(direct + '/' + fname + 'Par.tex', 'w')
+    f = open(direct + 'ParameterTable.tex', 'r')
+    fn = open(direct + fname + 'Par.tex', 'w')
     for line in f:
         #print line
         # find all of the matches in the line
@@ -53,6 +51,6 @@ for i, name in enumerate(data['bikes']):
         fn.write(line)
     f.close()
     fn.close()
-    os.system('pdflatex -output-directory=ParTables ' + direct + '/' + fname + 'Par.tex')
-    os.system('rm ParTables/*.aux')
-    os.system('rm ParTables/*.log')
+    os.system('pdflatex -output-directory=parTables ' + direct + fname + 'Par.tex')
+    os.system('rm parTables/*.aux')
+    os.system('rm parTables/*.log')
