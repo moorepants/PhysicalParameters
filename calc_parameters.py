@@ -209,7 +209,7 @@ par['mB'] = ddU['frameMass']
 par['mH'] = ddU['forkMass']
 
 # calculate the wheel y inertias
-par['g'] = 9.81*np.ones_like(par['rR'])
+par['g'] = 9.81*np.ones_like(d['forkMass'])
 par['IRyy'] = com_inertia(par['mR'], par['g'], ddU['rWheelPendLength'], com[3, :])
 par['IFyy'] = com_inertia(par['mF'], par['g'], ddU['fWheelPendLength'], com[2, :])
 
@@ -254,7 +254,6 @@ par['v'] = np.ones_like(d['forkMass'])
 # round the numbers according to the calculated uncertainty
 par_test = {}
 for k, v in par.items():
-    print v
     par_test[k] = np.zeros_like(v)
     for i, value in enumerate(v):
         try:

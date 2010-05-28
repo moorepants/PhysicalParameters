@@ -10,9 +10,16 @@ numpy 1.3.0 http://numpy.scipy.org
 matplotlib 0.99.1.1 http://matplotlib.sourceforge.net/
 uncertainties 1.4.5 http://pypi.python.org/pypi/uncertainties
 
-Download the data files from:
+Download the data files from (currently they are .mat files):
 
 http://mae.ucdavis.edu/~biosport/PhysicalParameters/data.tar.gz
+
+The python files should be in the top directory and their should be these
+subdirectories:
+
+/data -- put general data files here (data.mat and MeasUncert.txt)
+/data/pendDat -- all the pendulum measurement .mat files go here
+/data/pendDat/graphs -- a place for the graphs to go
 
 I'll hopefully have this more user friendly in the future, but for now you can
 run physical_parameters.py to run everything sequentially or run things

@@ -58,17 +58,17 @@ file.close()
 
 # write the parameter files
 for i, name in enumerate(data['bikes']):
-    dir = 'data/bikeRiderParameters/'
+    direct = 'data/bikeRiderParameters/'
     fname = ''.join(name.split())
-    file = open(dir + fname  + 'RiderPar.txt', 'w')
+    file = open(direct + fname  + 'RiderPar.txt', 'w')
     for k, v in par_n.items():
         line = k + ',' + str(v[i]) + '\n'
         file.write(line)
     file.close()
-    M, C1, K0, K2, param = bmp2cm(dir + fname + 'RiderPar.txt')
+    M, C1, K0, K2, param = bmp2cm(direct + fname + 'RiderPar.txt')
     A, B = abMatrix(M, C1, K0, K2, param['v'], param['g'])
-    dir = 'data/bikeRiderCanonical/'
-    file = open(dir + fname + 'RiderCan.txt', 'w')
+    direct = 'data/bikeRiderCanonical/'
+    file = open(direct + fname + 'RiderCan.txt', 'w')
     for mat in ['M','C1', 'K0', 'K2', 'A', 'B']:
         if mat == 'A' or mat == 'B':
             file.write(mat + ' (v = ' + str(par_n['v'][i]) + ')\n')
@@ -76,7 +76,7 @@ for i, name in enumerate(data['bikes']):
             file.write(mat + '\n')
         file.write(str(eval(mat)) + '\n')
     file.close()
-    file = open(dir + fname + 'RiderCan.p', 'w')
+    file = open(direct + fname + 'RiderCan.p', 'w')
     p.dump({'M':M, 'C1':C1, 'K0':K0, 'K2':K2, 'A':A, 'B':B, 'v':param['v']},
             file)
     file.close()
