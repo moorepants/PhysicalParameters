@@ -1,4 +1,6 @@
-These are some tools for caluculating the physical parameters of a bicycle.
+These are some tools for calculating the physical parameters of a bicycle.
+
+This was written and tested under Ubuntu 10.04 LTS
 
 You will need this software to run the code (hopefully indpendent of the
 version):
@@ -10,7 +12,7 @@ uncertainties 1.4.5 http://pypi.python.org/pypi/uncertainties
 
 Download the data files from:
 
-****will add this once I upload all the data files****
+http://mae.ucdavis.edu/~biosport/PhysicalParameters/data.tar.gz
 
 Then run these files sequentially:
 
