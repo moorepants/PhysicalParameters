@@ -35,8 +35,8 @@ for i, name in enumerate(data['bikes']):
                 #print "replace this: ", match
                 if match[-1] == '?':
                     try:
-                        line = re.sub('\|(\w*\?)\|', '%-6.3f' % par[match[:-1]][i].std_dev(), line,
-                                count=1)
+                        line = re.sub('\|(\w*\?)\|',
+                                str(par[match[:-1]][i].std_dev()), line, count=1)
                         #print line
                     except:
                         pass
@@ -44,10 +44,11 @@ for i, name in enumerate(data['bikes']):
                     line = re.sub('\|bikename\|', name.upper(), line)
                 else:
                     try:
-                        line = re.sub('\|(\w*(?!\?))\|', '%.3f' % par[match][i].nominal_value, line, count=1)
+                        line = re.sub('\|(\w*(?!\?))\|',
+                                str(par[match][i].nominal_value), line, count=1)
                         #print line
                     except:
-                        line = re.sub('\|(\w*(?!\?))\|', '%.3f' % par[match][i], line, count=1)
+                        line = re.sub('\|(\w*(?!\?))\|', str(par[match][i]), line, count=1)
         #print line
         fn.write(line)
     f.close()
