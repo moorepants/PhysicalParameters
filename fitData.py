@@ -9,7 +9,7 @@ from uncertainties import num_with_uncert
 from BenchmarkBikeTools import fit_goodness, jac_fitfunc
 
 dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
-file = open('period.txt', 'w')
+file = open('data/period.txt', 'w')
 filenames.sort()
 period = {}
 #for name in ['YellowRevForkTorsionalFirst1.mat']:
@@ -74,6 +74,6 @@ for name in filenames:
         # start a new list
         period[name[:-5]] = [T]
 file.close()
-file = open('period.p', 'w')
+file = open('data/period.p', 'w')
 p.dump(period, file)
 file.close()
