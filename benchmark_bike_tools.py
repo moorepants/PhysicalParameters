@@ -532,3 +532,5 @@ def trail(rF, lam, fo):
     from math import sin, cos
 
     c = (rF*sin(lam) - fo)/cos(lam)
+    cm = c*cos(lam)
+    return c, cm
