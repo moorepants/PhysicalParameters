@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import uncertainties as u
 import uncertainties.umath as umath
+import uncertainties.unumpy as unumpy
 from math import pi
 
 from benchmark_bike_tools import *
@@ -48,10 +49,10 @@ ddU = {}
 for k, v in dU.items():
     for pair in zip(d[k].flatten(), np.ones_like(d[k].flatten())*v):
         if k in ddU.keys():
-            ddU[k].append(u.num_with_uncert((float(pair[0]), pair[1])))
+            ddU[k].append(u.ufloat((float(pair[0]), pair[1])))
         else:
             ddU[k] = []
-            ddU[k].append(u.num_with_uncert((float(pair[0]), pair[1])))
+            ddU[k].append(u.ufloat((float(pair[0]), pair[1])))
     ddU[k] = np.array(ddU[k])
     if ddU[k].shape[0] > 8:
         ddU[k] = ddU[k].reshape((ddU[k].shape[0]/8, -1))
@@ -73,10 +74,8 @@ par['lambda'] = pi/180.*(90. - ddU['headTubeAngle'])
 
 # calculate the front wheel trail
 forkOffset = ddU['forkOffset']
-par['c'] = np.zeros_like(forkOffset)
-for i, v in enumerate(par['rF']):
-    par['c'][i] = (par['rF'][i]*umath.sin(par['lambda'][i])
-                  - forkOffset[i])/umath.cos(par['lambda'][i])
+par['c'] = (par['rF']*unumpy.sin(par['lambda'])
+              - forkOffset)/unumpy.cos(par['lambda'])
 
 # calculate the frame rotation angle
 alphaFrame = ddU['frameAngle']
@@ -196,9 +195,9 @@ com[3, 7] = com[3, 6]
 
 tRod = avgPer['rodPer']
 # calculate the stiffness of the torsional pendulum
-mRod = u.num_with_uncert((5.56, 0.02)) # mass of the calibration rod [kg]
-lRod = u.num_with_uncert((1.05, 0.001)) # length of the calibration rod [m]
-rRod = u.num_with_uncert((0.015, 0.0001)) # radius of the calibration rod [m]
+mRod = u.ufloat((5.56, 0.02)) # mass of the calibration rod [kg]
+lRod = u.ufloat((1.05, 0.001)) # length of the calibration rod [m]
+rRod = u.ufloat((0.015, 0.0001)) # radius of the calibration rod [m]
 iRod = tube_inertia(lRod, mRod, rRod, 0.)[1]
 k = tor_stiffness(iRod, tRod)
 
@@ -268,7 +267,7 @@ for k, v in par.items():
                     break
             newUncert = round(uncert, digit-1)
             newNom = round(nom, len(str(newUncert)) - 2)
-            newValue = u.num_with_uncert((newNom, newUncert))
+            newValue = u.ufloat((newNom, newUncert))
             par_test[k][i] = newValue
         except:
             pass
