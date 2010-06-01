@@ -1,6 +1,6 @@
 import numpy as np
 import pickle as p
-import uncertainties as un
+from uncertainties import unumpy
 
 from benchmark_bike_tools import *
 
@@ -20,7 +20,7 @@ nBk = len(data['bikes'])
 par_n = {}
 for k, v in par.items():
     if type(v[0]) == type(par['rF'][0]) or type(v[0]) == type(par['mF'][0]):
-        par_n[k] = un.nominal_values(v)
+        par_n[k] = unumpy.nominal_values(v)
     else:
         par_n[k] = par[k]
 
