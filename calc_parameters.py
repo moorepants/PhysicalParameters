@@ -93,20 +93,14 @@ frameB = frameMassDist/cb - par['rR']
 betaFork = par['lambda'] - ddU['forkAngle']*np.pi/180.
 
 # calculate the slope of the fork CoM line
-forkM = np.zeros_like(betaFork)
-for i, row in enumerate(betaFork):
-    for j, v in enumerate(row):
-        forkM[i, j] = -umath.tan(v)
+forkM = -unumpy.tan(betaFork)
 
 # calculate the z-intercept of the CoM line
 par['w'] = ddU['wheelbase']
 forkMassDist = ddU['forkMassDist']
-forkB = np.zeros_like(forkMassDist)
-for i, row in enumerate(forkMassDist):
-    for j, col in enumerate(row):
-        cb = umath.cos(betaFork[i, j])
-        tb = umath.tan(betaFork[i, j])
-        forkB[i, j] = - par['rF'][j] + forkMassDist[i, j]/cb + par['w'][j]*tb
+cb = unumpy.cos(betaFork)
+tb = unumpy.tan(betaFork)
+forkB = - par['rF'] + forkMassDist/cb + par['w']*tb
 
 # plot the CoM lines
 comFig = plt.figure(num=1)
