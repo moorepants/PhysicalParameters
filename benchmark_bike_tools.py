@@ -490,16 +490,12 @@ def inertia_components_uncert(I, alpha):
     Inew : An inertia tensor
 
     '''
-    from numpy import sin, cos, vstack, array, matrix, dot, zeros_like
-    from numpy.linalg import lstsq
-    from uncertainties import umath
-    sa = zeros_like(alpha)
-    ca = zeros_like(alpha)
-    for i in range(len(alpha)):
-        sa[i] = umath.sin(alpha[i])
-        ca[i] = umath.cos(alpha[i])
-    A = matrix(vstack((ca**2, 2*sa*ca, sa**2)).T)
-    Iorth = dot(dot(dot(A.T, A).I, A.T), I)
+    from numpy import vstack, array, dot
+    from uncertainties import unumpy
+    sa = unumpy.sin(alpha)
+    ca = unumpy.cos(alpha)
+    A = unumpy.matrix(vstack((ca**2, 2*sa*ca, sa**2)).T)
+    Iorth = dot(A.I, I)
     Iorth = array([Iorth[0, 0], Iorth[0, 1], Iorth[0, 2]], dtype='object')
     Inew = array([[Iorth[0], Iorth[1]], [Iorth[1], Iorth[2]]])
     return Inew
