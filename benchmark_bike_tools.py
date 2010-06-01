@@ -1,3 +1,43 @@
+def plot_osfit(t, ym, yf, p, rsq, T, fig=None):
+    '''Plot fitted data over the measured
+
+    Parameters:
+    -----------
+    t : ndarray (n,)
+        Measurement time in seconds
+    ym : ndarray (n,)
+        The measured voltage
+    yf : ndarray (n,)
+    p : ndarray (5,)
+        The fit parameters for the decaying osicallation fucntion
+    rsq : float
+        The r squared value of y (the fit)
+    T : float
+        The period
+
+    Returns:
+    --------
+    fig : the figure
+
+    '''
+    from matplotlib.pyplot import figure, plot, xlabel, ylabel, text
+    if fig:
+        fig = fig
+    else:
+        fig = figure()
+    plot(t, ym, '.', markersize=14)
+    plot(t, yf, 'k-')
+    xlabel('Time [s]')
+    ylabel('Amplitude [V]')
+    equation = 'f(t) =
+    {0}+e^{{-({3})({4})t}}\left[{1}\sin{{\sqrt{{1-{4}^2}}{3}t}}+{2}\cos{{\sqrt{{1-{4}^2}}{3}t}}\right]'.format(p[0],
+    p[1], p[2], p[3], p[4])
+    print equation
+    text(0.5, 0.5, equation)
+    text(0.5, 0.45, '$T =$' + str(T))
+    text(0.5, 0.4, '$r^2 =$' + str(rsq))
+    return fig
+
 def space_out_camel_case(s):
         """Adds spaces to a camel case string.  Failure to space out string
         returns the original string.
@@ -17,7 +57,7 @@ def bode(ABCD=None, numden=None, w=None, fig=None, n=None, label=None,
 
     Returns magnitude and phase vectors, and figure object.
     """
-    import numpy as np
+    i mport numpy as np
     import scipy as sp
     import matplotlib.pyplot as plt
     if fig == None:
