@@ -115,7 +115,7 @@ for i in range(np.shape(frameM)[1]):
     lineX = np.zeros((3, 2), dtype='object')
     # for each line intersection...
     for j, row in enumerate(comb):
-        a = np.matrix(np.vstack([-frameM[row, i], np.ones((2))]).T)
+        a = unumpy.matrix(np.vstack([-frameM[row, i], np.ones((2))]).T)
         b = frameB[row, i]
         lineX[j] = np.dot(a.I, b)
     frameCoM[:, i] = np.mean(lineX, axis=0)
@@ -124,7 +124,7 @@ for i in range(np.shape(frameM)[1]):
     lineX = np.zeros((3, 2), dtype='object')
     # for each line intersection...
     for j, row in enumerate(comb):
-        a = np.matrix(np.vstack([-forkM[row, i], np.ones((2))]).T)
+        a = unumpy.matrix(np.vstack([-forkM[row, i], np.ones((2))]).T)
         b = forkB[row, i]
         lineX[j] = np.dot(a.I, b)
     forkCoM[:, i] = np.mean(lineX, axis=0)
