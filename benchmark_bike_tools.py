@@ -1,3 +1,12 @@
+def space_out_camel_case(s):
+        """Adds spaces to a camel case string.  Failure to space out string
+        returns the original string.
+        >>> space_out_camel_case('DMLSServicesOtherBSTextLLC')
+        'DMLS Services Other BS Text LLC'
+        """
+        import re
+        return re.sub('((?=[A-Z][a-z])|(?<=[a-z])(?=[A-Z]))', ' ', s)
+
 def bode(ABCD=None, numden=None, w=None, fig=None, n=None, label=None,
         title=None, color=None):
     """Bode plot.

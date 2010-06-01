@@ -1,17 +1,11 @@
 import pickle as p
 import numpy as np
 import re
+from benchmark_bike_tools import space_out_camel_case
 
 f = open('data/period.p', 'r')
 period = p.load(f)
 f.close()
-def space_out_camel_case(s):
-        """Adds spaces to a camel case string.  Failure to space out string
-        returns the original string.
-        >>> space_out_camel_case('DMLSServicesOtherBSTextLLC')
-        'DMLS Services Other BS Text LLC'
-        """
-        return re.sub('((?=[A-Z][a-z])|(?<=[a-z])(?=[A-Z]))', ' ', s)
 
 tor = np.zeros((12, 8), dtype='object')
 com = np.zeros((4, 8), dtype='object')
