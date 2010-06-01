@@ -266,7 +266,7 @@ par = par_test
 par_n = {}
 for k, v in par.items():
     if type(v[0]) == type(par['rF'][0]) or type(v[0]) == type(par['mF'][0]):
-        par_n[k] = u.nominal_values(v)
+        par_n[k] = unumpy.nominal_values(v)
     else:
         par_n[k] = par[k]
 
