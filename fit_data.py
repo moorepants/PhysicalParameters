@@ -5,7 +5,7 @@ import scipy.optimize as op
 import os
 import pickle as p
 from scipy.optimize import approx_fprime
-from uncertainties import num_with_uncert
+from uncertainties import ufloat
 from benchmark_bike_tools import fit_goodness, jac_fitfunc
 
 dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
@@ -55,8 +55,8 @@ for name in filenames:
     else:
         pass
     # frequency and period
-    wo = num_with_uncert((p1[4], sigp[4]))
-    zeta = num_with_uncert((p1[3], sigp[3]))
+    wo = ufloat((p1[4], sigp[4]))
+    zeta = ufloat((p1[3], sigp[3]))
     wd = (1. - zeta**2.)**(1./2.)*wo
     f = wd/2./np.pi
     T = 1./f
