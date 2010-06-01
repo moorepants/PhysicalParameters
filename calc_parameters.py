@@ -82,18 +82,12 @@ alphaFrame = ddU['frameAngle']
 betaFrame = par['lambda'] - alphaFrame*pi/180
 
 # calculate the slope of the CoM line
-frameM = np.zeros_like(betaFrame)
-for i, row in enumerate(betaFrame):
-    for j, v in enumerate(row):
-        frameM[i, j] = -umath.tan(v)
+frameM = -unumpy.tan(betaFrame)
 
 # calculate the z-intercept of the CoM line
 frameMassDist = ddU['frameMassDist']
-frameB = np.zeros_like(frameMassDist)
-for i, row in enumerate(frameMassDist):
-    for j, col in enumerate(row):
-        cb = umath.cos(betaFrame[i, j])
-        frameB[i, j] = frameMassDist[i, j]/cb - par['rR'][j]
+cb = unumpy.cos(betaFrame)
+frameB = frameMassDist/cb - par['rR']
 
 # calculate the fork rotation angle
 betaFork = par['lambda'] - ddU['forkAngle']*np.pi/180.
