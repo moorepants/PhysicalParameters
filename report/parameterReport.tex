@@ -1,4 +1,5 @@
 \documentclass{article}
+\usepackage[lmargin=1in,rmargin=1in]{geometry}
 \usepackage[colorlinks=true, linkcolor=blue]{hyperref}
 \usepackage{graphicx}
 
@@ -20,7 +21,35 @@ was able to use much of the same apparatus and refine the measurement
 technique.
 \section{Accuracy}
 Error propagation theory was utilized to calculate what the accuracy the
-benchmark ideal parameters are based on the measurements taken.
+benchmark ideal parameters are based on the measurements taken. If $x$ is a
+random variable and is defined as $x=f(u,v,\ldots)$ then the sample variance of
+$x$ is defined as
+\begin{equation}
+    s_x^2 = \frac{1}{N-1}\sum^N_{i=1}
+    \left[(u_i - \bar{u})^2\left(\frac{\partial x}{\partial u}\right)^2 +
+    (v_i - \bar{v})^2\left(\frac{\partial x}{\partial v}\right)^2 +
+    2(u_i - \bar{u})(v_i - \bar{v})\left(\frac{\partial x}{\partial u}\right)\left(\frac{\partial x}{\partial v}\right)
+    + \ldots\right]
+    \label{eqn:sampleVariance}
+\end{equation}
+Using the definitions for variance and covariance
+Equation~\ref{eqn:sampleVariance} can be simplified to
+\begin{equation}
+    s_x^2 = s_u^2\left(\frac{\partial x}{\partial u}\right)^2 +
+            s_v^2\left(\frac{\partial x}{\partial v}\right)^2 +
+            2s_{uv}\left(\frac{\partial x}{\partial u}\right)\left(\frac{\partial x}{\partial v}\right)
+            + \ldots
+    \label{eqn:variance}
+\end{equation}
+If $u$ and $v$ are uncorrelated then $s_{uv}=0$. We assume that the all the
+random variables hereafter are uncorrelated. Equation~\ref{eqn:variance} can be
+used to calculated the variance of all types of functions. The most basic are
+functions such as addtion
+\begin{eqnarray}
+    \label{eqn:addition}
+    x &=&  au + bv\\
+    s_x &=& a^2s_u^2 + b^2s_v^2
+\end{eqnarray}
 
 \section{Geometry}
 
@@ -48,6 +77,7 @@ calculated by
 \begin{table}
 	\begin{tabular}{llllllll}
 	Bicycle   & B      & B*     & C      & G      & P      & S      & Y \& Y*\\
+    \hline
 	Front\\
 	Pressure  & 3.5    & 3.5    & 4      & 4      & 6.9    & 4.5    & 4      \\
 	Distance  & 28.060 & 27.980 & 27.980 & 29.044 & 29.366 & 27.772 & 27.925 \\
@@ -57,7 +87,7 @@ calculated by
 	Pressure  & 3.5    & 3.5    & 4      & 4      & 6.9    & 4.5    & 3.5    \\
 	Distance  & 27.850 & 27.835 & 27.768 & 29.788 & 29.212 & 29.774 & 27.884 \\
 	Rotations & 13     & 13     & 13     & 14     & 14     & 14     & 13     \\
-	Radius    & 0.341  & 0.341  & 0.340  & 0.339  & 0.332  & 0.338  & 0.341	
+	Radius    & 0.341  & 0.341  & 0.340  & 0.339  & 0.332  & 0.338  & 0.341
 	\end{tabular}
 	\caption{}
 	\label{tab:wheelRadius}
@@ -73,6 +103,7 @@ tilt $\lambda$ is the complement to the head tube angle.
 \end{equation}
 \begin{table}
 	\begin{tabular}{lllllllll}
+    \hline
 	Bicycle   & B      & B*     & C      & G      & P      & S      & Y      & Y*\\
 	Head tube angle & 67.1 & 67.1 & 69.0 & 71.1 & 74.2 & 73.1 & 72.7 & 70.6\\
 	Steer axis tilt & 0.400 & 0.400 & 0.367 & 0.330 & 0.276 & 0.295 & 0.302 & 0.339
@@ -95,6 +126,7 @@ surface.
 \begin{table}
 	\begin{tabular}{lllllllll}
 	Bicycle     & B     & B*    & C     & G     & P     & S     & Y     & Y*\\
+    \hline
 	Fork offset & 0.071 & 0.071 & 0.045 & 0.039 & 0.032 & 0.045 & 0.057 & -0.057\\
 	Trail       & 0.069 & 0.068 & 0.083 & 0.072 & 0.062 & 0.056 & 0.047 & 0.180
 	\end{tabular}
@@ -107,6 +139,7 @@ in the same upright fixed position used when measuring the head tube angle.
 \begin{table}
 	\begin{tabular}{lllllllll}
 	Bicycle    & B     & B*    & C     & G     & P     & S     & Y     & Y*\\
+    \hline
 	Wheel base & 1.121 & 1.121 & 1.101 & 1.070 & 0.989 & 1.037 & 1.089 & 0.985
 	\end{tabular}
 	\caption{Wheelbase values.}
@@ -118,14 +151,17 @@ The total mass of each bicycle was measured using a spring scale with a
 resolution of 100g. Then each of the four bicycle parts were measured using a
 Molen 20kg scale with a resolution of 20g.
 \begin{table}
-	\begin{tabular}{lllllllll}
-		Bicycle     & B     & B*    & C     & G     & P    & S     & Y     & Y*\\
-		total       & 18.5  & 23.5  & 20.9  & 10.5  & 9.9  & 17.6  & 10.2  & 10.2\\
-		frame       & 9.86  & 14.71 & 9.18  & 4.48  & 4.49 & 7.22  & 3.31  & 3.31\\
-		fork        &       & 3.22  & 4.57  & 2.52  & 2.27 & 3.04  & 2.45  & 2.45\\
-		rear wheel  & 3.11  & 3.11  & 3.96  & 1.94  & 1.38 & 3.96  & 2.57  & 2.57\\
-		front wheel & 2.02  & 2.02  & 3.55  & 1.50  & 1.58 & 3.33  & 1.90  & 1.90\\
-		total sum   & 18.21 & 23.06 & 21.26 & 10.44 & 9.72 & 17.55 & 10.23 & 10.23
+    \centering
+	\begin{tabular}{llllllllll}
+		Bicycle &     $\sigma_m$ & B     & B*    & C     & G     & P    & S     & Y     & Y*\\
+        \hline
+		total   &    0.1       & 18.5  & 23.5  & 20.9  & 10.5  & 9.9  & 17.6  & 10.2  & 10.2\\
+        \hline
+		frame   &    0.02      & 9.86  & 14.71 & 9.18  & 4.48  & 4.49 & 7.22  & 3.31  & 3.31\\
+		fork    &    0.02      & 3.22  & 3.22  & 4.57  & 2.52  & 2.27 & 3.04  & 2.45  & 2.45\\
+		rear wheel & 0.02      & 3.11  & 3.11  & 3.96  & 1.94  & 1.38 & 3.96  & 2.57  & 2.57\\
+		front wheel& 0.02      & 2.02  & 2.02  & 3.55  & 1.50  & 1.58 & 3.33  & 1.90  & 1.90\\
+		total sum  & 0.04      & 18.21 & 23.06 & 21.26 & 10.44 & 9.72 & 17.55 & 10.23 & 10.23
 	\end{tabular}
 	\caption{Mass of bicycles and parts}
 	\label{tab:mass}
@@ -264,7 +300,7 @@ z-intercept is different.
 \section{Moment of Inertia}
 The moments of inertia of the wheels, frame and fork were measured by taking
 advantage of the assumed symmetry of the parts and by hanging the parts as both
-compound and torsional pendulums and measuring the period of oscillation when
+compound and torsional pendulums and measuring their period of oscillation when
 perturb at small angles. The rate of oscillation was measured was measured
 using a \href{http://www.siliconsensing.com/CRS03}{Silicon Sensing CRS03 100
 deg/s rate gyro}. The rate gyro was sampled at
@@ -277,6 +313,14 @@ calibrate the rate gyro, maintain a constant power source (i.e. the battery
 drains slowly), or account for drift. The raw voltage signal was used to
 determine only the period of oscillation which is need for the moment of inertia
 calculations.
+\begin{figure}[tbp]
+    \begin{center}
+        \includegraphics[width=5in]{../data/pendDat/graphs/BrowserFrameCompoundFirst1.png}
+    \end{center}
+    \caption{Example of the raw voltage data taken during a 30 second
+    measurement of the oscillation of one of the components.}
+    \label{fig:voltage}
+\end{figure}
 \subsection{Torsional Pendulum}
 A torsional pendulum was used to measure all of moments of inertia about axes
 in the lateral symmetric plane of each of the wheels, fork and frame. The

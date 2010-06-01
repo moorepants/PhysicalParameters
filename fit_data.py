@@ -22,7 +22,7 @@ for name in filenames:
     time = float(pendDat['duration'][0])
     x = np.linspace(0, time, num=len(y))
     # plot the original data
-    plt.plot(x, y, '.')
+    plt.plot(x, y, '.', markersize=14)
     # decaying oscillating exponential function
     fitfunc = lambda p, t: p[0] + np.exp(-p[3]*p[4]*t)*(p[1]*np.sin(p[4]*np.sqrt(1-p[3]**2)*t) + p[2]*np.cos(p[4]*np.sqrt(1-p[3]**2)*t))
     # initial guesses
@@ -33,9 +33,9 @@ for name in filenames:
     p1, success = op.leastsq(errfunc, p0[:], args=(x, y))
     # plot the fitted curve
     lscurve = fitfunc(p1, x)
-    plt.plot(x, lscurve, 'k')
+    plt.plot(x, lscurve, 'k-')
     plt.xlabel('Time [s]')
-    plt.ylabel('Amplitude')
+    plt.ylabel('Amplitude [V]')
     #plt.show()
     plt.savefig('data/pendDat/graphs/' + name[:-4] + '.png')
     plt.close()
