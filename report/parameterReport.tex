@@ -234,6 +234,14 @@ leads me to think that the center of mass is located at the centroid of the
 triangle made by the three intersecting lines. The centroid can be found by
 calculating the intersection point of each pair of lines and then averaging the
 three intersection points.
+\begin{figure}[htpb]
+    \begin{center}
+        \includegraphics{figures/triangle.pdf}
+    \end{center}
+    \caption{Exaggerated intersection of the three pendulum axes and the
+    location of the center of mass.}
+    \label{fig:triangle}
+\end{figure}
 \begin{equation}
 	\left[
 	\begin{array}{cc}
@@ -321,12 +329,76 @@ calculations.
     measurement of the oscillation of one of the components.}
     \label{fig:voltage}
 \end{figure}
-The following function was fit to the data
+The following function Eqn~\ref{eqn:decayOs} was fit to the data using a nonlinear least squares fit
+routine for each experiment.
 \begin{equation}
     f(t) = A + e^{-\zeta\omega t}\left[B\sin{\sqrt{1-\zeta^2}\omega t} +
     C\cos{\sqrt{1-\zeta^2}\omega t}\right]
     \label{eqn:decayOs}
 \end{equation}
+Most of the data fit the damped oscillation function well with very light (and
+ignorable) damping. There were several instances of beating-like phenomena for
+some of the parts at particular orienations. Roland and
+Massing~\cite{Roland1971} also encountered this problem and used a bearing to
+prevent the torsional pendulum from swinging. Figure~\ref{fig:beating} shows an
+example of the beating like phenomena.
+\begin{figure}[htpb]
+    \begin{center}
+        \includegraphics[width=5in]{../data/pendDat/graphs/CrescendoForkTorsionalFirst2.png}
+    \end{center}
+    \caption{An example of the beating-like phenomena observed on 5\% of the
+    experiments.}
+    \label{fig:beating}
+\end{figure}
+The physical phenonena that was observed for data sets such as these were that
+the bicycle frame or fork was perturbed torsionally. After set into motion the
+torionsal motion died out and a longitudinal swinging motion increased. The
+motions alternated back and forth with neither ever reaching zero. The
+frequencies of these motions were very close to one another and it is not
+apparent how disect the two. We explored fitting to a function such as
+\begin{equation}
+    f(t) = A\sin{(\omega_1 t)} + B\sin{(\omega_2 t + \phi)} + C
+    \label{eqn:sumSines}
+\end{equation}
+But the fit predicts that $\omega_1$ and $\omega_2$ have very similar
+frequencies. There was no easy way to choose which of the two $\omega$'s was
+the one associated with the torionsal osciallation. Some work was done to model
+the torsional pedulum as a laterally flexible beam to determine this, but we
+thought the improvement in the accuracy of the period calculation would not
+improve enough for the effort required. Future experiements should simply
+prevent the swinging motion of the pendulum without damping the torsional
+motion. Roland and Massing~\cite{Roland1971} noted that they had this same problem and solved it
+by hold the torsional rod in a fixed bearing.
+
+The period for a damped osciallation is
+\begin{equation}
+    T = \frac{2\pi}{\sqrt{1-\zeta^2}\omega_n}
+    \label{eqn:periodDamped}
+\end{equation}
+and for light damping
+\begin{equation}
+    T \approx \frac{2\pi}{\omega_n}
+    \label{eqn:period}
+\end{equation}
+The uncertaintity in the period, $T$, can be determined from the fit. Firstly,
+the variance of the fit is
+\begin{equation}
+    \sigma_y^2 =
+    \frac{1}{N-5}\sum_{i=1}^N(y_{mi}-\bar{y}_m)^2-(y_{pi}-\bar{y}_m)^2
+    \label{eqn:fitVariance}
+\end{equation}
+The covariance matrix of the fit function can be formed
+\begin{equation}
+    \mathbf{U} = \sigma_y^2\mathbf{H}^{-1}
+    \label{eqn:covariance}
+\end{equation}
+where $\mathbf{H}$ is the Hessian. $\mathbf{U}$ is a $5\times5$ matrix with the
+variances of each of the five fit parameters along the diagonal. This assumes
+that the parameters are uncorrelated [note for Jason: you may have to take into
+account correlation for this..maybe checkout the R function for nls]. The
+variance of $T$ can be computed using the variance of $\zeta$ and $\omega$. It
+is important to note that the uncertainties in the period are very low
+($<10e-4$), even for the fits with low $r^2$ values due to the beating issue.
 \subsection{Torsional Pendulum}
 A torsional pendulum was used to measure all of moments of inertia about axes
 in the lateral symmetric plane of each of the wheels, fork and frame. The

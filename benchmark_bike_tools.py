@@ -20,13 +20,13 @@ def plot_osfit(t, ym, yf, p, rsq, T, fig=None):
     fig : the figure
 
     '''
-    from matplotlib.pyplot import figure, plot, xlabel, ylabel, title, legend, axes
+    from matplotlib.pyplot import figure, plot, xlabel, ylabel, title, legend, axes, xlim
     if fig:
         fig = fig
     else:
         fig = figure(2)
     ax1 = axes([0.1, 0.1, 0.8, 0.7])
-    ax1.plot(t, ym, '.')
+    ax1.plot(t, ym, '.', markersize=2)
     plot(t, yf, 'k-')
     xlabel('Time [s]')
     ylabel('Amplitude [V]')
@@ -35,6 +35,7 @@ def plot_osfit(t, ym, yf, p, rsq, T, fig=None):
     period = '$T={0} s$'.format(T)
     title(equation + '\n' + rsquare + ', ' + period)
     legend(['Measured', 'Fit'])
+    #xlim((0, 1))
     return fig
 
 def space_out_camel_case(s):
