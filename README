@@ -46,6 +46,16 @@ steady speed configuration, makes a couple of plots
 
 7. bike_bode.py: makes bode plots of various SISO transfer functions
 
+To Do List
+----------
+- convert all the data files to either txt files or python types (.p, .npy,
+  .npz)
+- consolidate into one raw data file and one processed data file
+- add more bode plots
+- clean up the bode plots
+- convert more things to functions
+
+
 Contact
 -------
 Jason Moore
