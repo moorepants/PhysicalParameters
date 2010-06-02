@@ -57,7 +57,10 @@ for name in filenames:
     else:
         pass
     # include the notes for the experiment
-    note = pendDat['notes']
+    try:
+        note = pendDat['notes'][0].encode('ascii')
+    except:
+        note = ''
     line = name + ',' + str(T) + ',' + str(rsq) + ',' + str(sigma) + ',' + str(note) + '\n'
     file.write(line)
     print line
