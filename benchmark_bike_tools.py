@@ -34,11 +34,16 @@ def uround(value):
         newUncert = round(uncert, digit-1)
         newNom = round(nom, len(str(newUncert)) - 2)
         newValue = ufloat((newNom, newUncert))
-        if len(str(newNom)) < len(str(newUncert)):
-            s = str(newNom) + '0+/-' +str(newUncert)
+        print newValue
+        diff = len(str(newUncert)) - len(str(newNom))
+        if diff > 0:
+            print 'diff is greater than zero'
+            s = str(newNom) + int(diff)*'0' + '+/-' +str(newUncert)
         else:
+            print 'not greater than zero'
             s = str(newValue)
     except:
+        print 'the exception'
         s = str(value)
     return s
 
