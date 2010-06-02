@@ -1,3 +1,47 @@
+def uround(value):
+    '''Round values according to their uncertainity
+
+    Parameters:
+    -----------
+    value: float with uncertainty
+
+    Returns:
+    --------
+    s: string that is properly rounded
+
+    2.4563752289999+/-0.0003797273827
+
+    becomes
+
+    2.4564+/-0.0004
+
+    This doesn't work for large uncertainties.
+    '''
+    from uncertainties import ufloat
+    try:
+        # grab the nominal value and the uncertainty
+        nom = value.nominal_value
+        uncert = value.std_dev()
+        # convert the uncertainty to a string
+        s = str(uncert)
+        # find the first non-zero character
+        for j, number in enumerate(s):
+            if number == '0' or number == '.':
+                pass
+            else:
+                digit = j
+                break
+        newUncert = round(uncert, digit-1)
+        newNom = round(nom, len(str(newUncert)) - 2)
+        newValue = ufloat((newNom, newUncert))
+        if len(str(newNom)) < len(str(newUncert)):
+            s = str(newNom) + '0+/-' +str(newUncert)
+        else:
+            s = str(newValue)
+    except:
+        s = str(value)
+    return s
+
 def plot_osfit(t, ym, yf, p, rsq, T, fig=None):
     '''Plot fitted data over the measured
 
