@@ -3,6 +3,8 @@ import re
 import os
 import uncertainties as un
 
+from benchmark_bike_tools import uround
+
 # load in the base data file
 f = open('data/data.p', 'r')
 data = pickle.load(f)
@@ -31,19 +33,21 @@ for i, name in enumerate(data['bikes']):
             # go through each match and make a substitution
             for match in test:
                 #print "replace this: ", match
+                # if the match has a question mark it is an uncertainty value
                 if match[-1] == '?':
                     try:
                         line = re.sub('\|(\w*\?)\|',
-                                str(par[match[:-1]][i].std_dev()), line, count=1)
+                                uround(par[match[:-1]][i]).split('+/-')[1], line, count=1)
                         #print line
                     except:
                         pass
+                # else if the match is the bicycle name
                 elif match == 'bikename':
                     line = re.sub('\|bikename\|', name.upper(), line)
                 else:
                     try:
                         line = re.sub('\|(\w*(?!\?))\|',
-                                str(par[match][i].nominal_value), line, count=1)
+                                uround(par[match][i]).split('+/-')[0], line, count=1)
                         #print line
                     except:
                         line = re.sub('\|(\w*(?!\?))\|', str(par[match][i]), line, count=1)
