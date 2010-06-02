@@ -1,0 +1,78 @@
+\documentclass[landscape]{article}
+
+\usepackage[lmargin=0.5in, rmargin=0.5in]{geometry}
+
+\begin{document}
+\begin{table*}[tb]
+\centering
+\caption{|bikename| BICYCLE PARAMETER VALUES.}
+\begin{tabular}{lcll}
+&&\\
+\hline
+Parameter & Symbol & Value & Uncertaintity \\
+\hline
+wheel base & $w$ & |w| m & |w?| m\\
+trail & $c$ & |c| m & |c?| m\\
+steer axis tilt & \emph{$\lambda$} & |lambda| rad & |lambda?| rad \\
+
+\multicolumn{3}{l}{\textbf{R}\emph{ear wheel R}}\\
+radius & \emph{$r_\mathrm{R}$} & |rR| m & |rR?| m \\
+mass & \emph{$m_\mathrm{R}$} & |mR| kg & |mR?| kg\\
+mass moments of inertia & \emph{$(I_{\mathrm{R}xx},\
+I_{\mathrm{R}yy})$} &
+(|IRxx|,\ |IRyy|) $\mathrm{kg\ m}^2$ & (|IRxx?|,\ |IRyy?|) $\mathrm{kg\ m}^2$ \\
+
+\multicolumn{3}{l}{\emph{rear} \textbf{B}\emph{ody and frame B}}\\
+position center of mass & \emph{$(x_\mathrm{B},\ z_\mathrm{B})$} &
+(|xB|,\ |zB|) m & (|xB?|,\ |zB?|) m \\
+mass & \emph{$m_\mathrm{B}$} & |mB| kg & |mB?| kg \\
+mass moments of inertia & $\left[ \begin{array}{ccc}
+I_{\mathrm{B}xx} &  0 & I_{\mathrm{B}xz}\\
+0 & I_{\mathrm{B}yy} & 0 \\
+I_{\mathrm{B}xz} & 0 & I_{\mathrm{B}zz}
+\end{array} \right] $
+&
+$\left[ \begin{array}{ccc}
+|IBxx| &  0 & |IBxz|\\
+0 & |IByy| & 0 \\
+|IBxz| & 0 & |IBzz|
+\end{array} \right] \ \mathrm{kg\ m}^{2}$
+&
+$\left[ \begin{array}{ccc}
+|IBxx?| &  0 & |IBxz?|\\
+0 & |IByy?| & 0 \\
+|IBxz?| & 0 & |IBzz?|
+\end{array} \right] \ \mathrm{kg\ m}^{2}$\\
+
+\multicolumn{3}{l}{\emph{front} \textbf{H}\emph{andlebar and fork assembly H}}\\
+position center of mass & \emph{$(x_\mathrm{H},\ z_\mathrm{H})$} &
+(|xH|,\ |zH|) m & (|xH?|,\ |zH?|) m\\
+mass & \emph{$m_\mathrm{H}$} & |mH| kg & |mH?| kg\\
+mass moments of inertia & $\left[ \begin{array}{ccc}
+I_{\mathrm{H}xx} &  0 & I_{\mathrm{H}xz}\\
+0 & I_{\mathrm{H}yy} & 0 \\
+I_{\mathrm{H}xz} & 0 & I_{\mathrm{H}zz}
+\end{array} \right] $
+&
+$\left[ \begin{array}{ccc}
+    |IHxx|  &      0  & |IHxz|\\
+         0  & |IHyy|  &      0\\
+    |IHxz|  &      0  & |IHzz|
+\end{array} \right] \ \mathrm{kg\ m}^{2}$
+&
+$\left[ \begin{array}{ccc}
+    |IHxx?|  &      0  & |IHxz?|\\
+         0  & |IHyy?|  &      0\\
+    |IHxz?|  &      0  & |IHzz?|
+\end{array} \right] \ \mathrm{kg\ m}^{2}$\\
+
+\multicolumn{3}{l}{\textbf{F}\emph{ront wheel F}}\\
+radius & \emph{$r_\mathrm{F}$} & |rF| m & |rF?| m \\
+mass & \emph{$m_\mathrm{F}$} & |mF| kg & |mF?| kg \\
+mass moments of inertia & \emph{$(I_{\mathrm{F}xx},\
+I_{\mathrm{F}yy})$} &
+(|IFxx|,\ |IFyy|) $\mathrm{kg\ m}^2$ & (|IFxx?|,\ |IFyy?|) $\mathrm{kg\ m}^2$ \\
+\hline
+\end{tabular}
+\end{table*}
+\end{document}
