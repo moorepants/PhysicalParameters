@@ -1,13 +1,11 @@
 import pickle
 import scipy.io.matlab.mio as mio
 import uncertainties as u
+import numpy as np
 
 # load the main data file into a dictionary
 d = {}
 mio.loadmat('data/data.mat', mdict=d)
-
-# the number of different bikes
-nBk = len(d['bikes'])
 
 # make a list of the bikes' names
 bikeNames = []
@@ -21,11 +19,6 @@ del(d['__globals__'], d['__header__'], d['__version__'])
 for k, v in d.items():
     if np.shape(v)[0] == 1:
         d[k] = v[0]
-
-# pickle the data dictionary
-f = open('data/data.p', 'w')
-pickle.dump(d, f)
-f.close()
 
 # make a dictionary for the measurement standard deviations
 dU = {}
@@ -47,6 +40,19 @@ for k, v in dU.items():
     ddU[k] = np.array(ddU[k])
     if ddU[k].shape[0] > 8:
         ddU[k] = ddU[k].reshape((ddU[k].shape[0]/8, -1))
+
+# bring in the calibration rod data
+f = open('data/CalibrationRod.txt')
+for line in f:
+    var, val, unc = line.split(',')
+    d[var] = float(val)
+    ddU[var] = u.ufloat((float(val), float(unc)))
+f.close()
+
+# pickle the data dictionary
+f = open('data/data.p', 'w')
+pickle.dump(d, f)
+f.close()
 
 # pickle the data with the uncertainties
 f = open('data/udata.p', 'w')
