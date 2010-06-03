@@ -44,6 +44,7 @@ betaFrame = par['lambda'] - alphaFrame*pi/180
 frameM = -unumpy.tan(betaFrame)
 
 # calculate the z-intercept of the CoM line
+# frameMassDist is positive according to the pendulum ref frame
 frameMassDist = ddU['frameMassDist']
 cb = unumpy.cos(betaFrame)
 frameB = -frameMassDist/cb - par['rR']
