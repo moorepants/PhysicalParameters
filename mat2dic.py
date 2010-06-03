@@ -6,7 +6,7 @@ import os
 
 # load the main data file into a dictionary
 d = {}
-mio.loadmat('data/dataneg.mat', mdict=d)
+mio.loadmat('data/data.mat', mdict=d)
 
 # make a list of the bikes' names
 bikeNames = []
