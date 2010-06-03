@@ -46,7 +46,7 @@ frameM = -unumpy.tan(betaFrame)
 # calculate the z-intercept of the CoM line
 frameMassDist = ddU['frameMassDist']
 cb = unumpy.cos(betaFrame)
-frameB = frameMassDist/cb - par['rR']
+frameB = -frameMassDist/cb - par['rR']
 
 # calculate the fork rotation angle
 betaFork = par['lambda'] - ddU['forkAngle']*np.pi/180.
@@ -59,7 +59,7 @@ par['w'] = ddU['wheelbase']
 forkMassDist = ddU['forkMassDist']
 cb = unumpy.cos(betaFork)
 tb = unumpy.tan(betaFork)
-forkB = - par['rF'] + forkMassDist/cb + par['w']*tb
+forkB = - par['rF'] - forkMassDist/cb + par['w']*tb
 
 # plot the CoM lines
 comFig = plt.figure(num=1)

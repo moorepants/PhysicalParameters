@@ -11,10 +11,10 @@ dirs, subdirs, filenames = list(os.walk('data/pendDat/p'))[0]
 file = open('data/period.txt', 'w')
 filenames.sort()
 period = {}
-#for name in ['YellowRevForkTorsionalFirst1.mat']:
-#for name in ['YellowFwheelCompoundFirst1.mat']:
-for name in ['StratosFrameCompoundFirst2.p']:
-#for name in filenames:
+#for name in ['YellowRevForkTorsionalFirst1.p']:
+#for name in ['YellowFwheelCompoundFirst1.p']:
+#for name in ['StratosFrameCompoundFirst2.p']:
+for name in filenames:
     df = open('data/pendDat/p/' + name)
     pendDat = p.load(df)
     df.close()
@@ -58,20 +58,20 @@ for name in ['StratosFrameCompoundFirst2.p']:
         pass
     # include the notes for the experiment
     try:
-        note = pendDat['notes'][0].encode('ascii')
+        note = pendDat['notes']
     except:
         note = ''
     line = name + ',' + str(T) + ',' + str(rsq) + ',' + str(sigma) + ',' + str(note) + '\n'
     file.write(line)
     print line
     # if the filename is already in the period dictionary...
-    if name[:-5] in period.keys():
+    if name[:-3] in period.keys():
         # append the period to the list
-        period[name[:-5]].append(T)
+        period[name[:-3]].append(T)
     # else if the filename isn't in the period dictionary...
     else:
         # start a new list
-        period[name[:-5]] = [T]
+        period[name[:-3]] = [T]
 file.close()
 file = open('data/period.p', 'w')
 p.dump(period, file)
