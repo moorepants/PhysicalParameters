@@ -83,4 +83,6 @@ for name in filenames:
             # else it is the data which is formatted correctly
             else:
                 pendDat[k] = v
-    print pendDat
+    f = open('data/pendDat/p/' + name[:-4] + '.p', 'w')
+    pickle.dump(pendDat, f, protocol=2)
+    f.close()
