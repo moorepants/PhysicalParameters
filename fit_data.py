@@ -1,25 +1,25 @@
-import scipy.io.matlab.mio as mio
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.optimize as op
 import os
 import pickle as p
-from scipy.optimize import approx_fprime
 from uncertainties import ufloat
+
 from benchmark_bike_tools import fit_goodness, jac_fitfunc, plot_osfit
 
-dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
+dirs, subdirs, filenames = list(os.walk('data/pendDat/p'))[0]
 file = open('data/period.txt', 'w')
 filenames.sort()
 period = {}
 #for name in ['YellowRevForkTorsionalFirst1.mat']:
 #for name in ['YellowFwheelCompoundFirst1.mat']:
-#for name in ['StratosFrameCompoundFirst2.mat']:
-for name in filenames:
-    pendDat = {}
-    mio.loadmat('data/pendDat/' + name, mdict=pendDat)
+for name in ['StratosFrameCompoundFirst2.p']:
+#for name in filenames:
+    df = open('data/pendDat/p/' + name)
+    pendDat = p.load(df)
+    df.close()
     y = pendDat['data'].ravel()
-    time = float(pendDat['duration'][0])
+    time = pendDat['duration']
     x = np.linspace(0, time, num=len(y))
     # decaying oscillating exponential function
     fitfunc = lambda p, t: p[0] + np.exp(-p[3]*p[4]*t)*(p[1]*np.sin(p[4]*np.sqrt(1-p[3]**2)*t) + p[2]*np.cos(p[4]*np.sqrt(1-p[3]**2)*t))
@@ -49,7 +49,7 @@ for name in filenames:
     T = 1./f
     fig = plt.figure(1)
     plot_osfit(x, y, lscurve, p1, rsq, T, fig=fig)
-    plt.savefig('data/pendDat/graphs/' + name[:-4] + '.png')
+    plt.savefig('data/pendDat/graphs/' + name[:-2] + '.png')
     plt.close()
     # add a star in the R value is low
     if rsq <= 0.99:
