@@ -41,8 +41,10 @@ for k, v in dU.items():
     if ddU[k].shape[0] > 8:
         ddU[k] = ddU[k].reshape((ddU[k].shape[0]/8, -1))
 
+ddU['bikes'] = d['bikes']
+
 # bring in the calibration rod data
-f = open('data/CalibrationRod.txt')
+f = open('data/CalibrationRod.txt', 'r')
 for line in f:
     var, val, unc = line.split(',')
     d[var] = float(val)
