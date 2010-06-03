@@ -425,6 +425,8 @@ secured. The wheel was then perturbed and it oscillated about the pendulum axis.
 The rate gyro was mounted on the clamp in line with the pendulum axis. The
 radial moment of inertia can can calculated as such:
 
+The torsional pendulum was calibrated using a known moment of inertia. 
+
 \subsection{Wheels}
 The wheels are assumed to be symmetric laterally and about any radial axis. Thus only two
 moment's of inertia are required. The moment of inertia about the axle was
@@ -455,6 +457,100 @@ radial moment of inertia can can calculated as such:
     I_{xx} = \frac{k\bar{T}^2}{4\pi^2}
 \end{equation}
 \subsection{Frame}
+Three measurements were made to estimate the globally referenced moments and
+products of inertia ($I_{xx}$, $I_{xz}$ and $I_{zz}$) of the rear frame. The
+frame was typically hung from the three main tubes: seat tube, down tube
+and top tube. The rear fender prevented easy connection to the seat tube on
+some of the bikes and the clamp was attached to the fender instead which was
+less rigid. For best accuracy with only three orientation angles, the frame
+should be hung at three angles that are $120^\circ$ apart. The three tubes on
+the frame generally provide that the orientation angles were spread evenly.
+Taking data at more orientation angles could improve the accuracy further and
+is gernally possible with standard diamond frame bicylces.
+ The same torsional pendulum used in
+\cite{Kooijman2006} was used to measure the averaged period $\overline{T}_i$ of
+oscillation of the rear frame and handlebar/fork assembly at three different
+orientation angles $\beta_i$, where $i=1$, $2$, $3$, as shown in
+Fig.~\ref{fig:angles}. The parts were perturbed lightly, less than 1 degree,
+and allowed to oscillate about the pendulum axis through at least ten periods.
+The time of oscillation was recorded via a stopwatch ($\pm1$~s). This was done
+three times for each frame and the recorded times were averaged. The
+coefficient of elasticity $k$ for the torsional pendulum had previously been
+measured in \cite{Kooijman2006} and found to be $k=5.01\pm0.01$
+$\frac{\textrm{Nm}}{\textrm{rad}}$. Three moments of inertia $J_{i}$ about the
+pendulum axes were calculated with
+\begin{equation}
+	J_i=\frac{k\overline{T}_i^2}{4\pi^2}
+\label{eq:torPend}
+\end{equation}
+
+The moments and products of inertia of the rear frame and handlebar/fork assembly with reference to the benchmark coordinate system were calculated by formulating the relationship between inertial frames
+\begin{equation}
+	\mathbf{J}_i=\mathbf{R}_i^T\mathbf{IR}_i
+\label{eq:rotIn}
+\end{equation}
+where $\mathbf{J}_i$ is the inertia tensor about the pendulum axes, $\mathbf{I}$, is the inertia tensor in the global reference frame and $\mathbf{R}$ is the rotation matrix relating the two frames. The global inertia tensor is defined as
+\begin{equation}
+	\mathbf{I}=
+	\left[
+	\begin{array}{rr}
+		I_{xx}  & -I_{xz}\\
+		-I_{xz} & I_{zz}
+	\end{array}
+	\right]\textrm{.}
+	\label{eq:MoI}
+\end{equation}
+The inertia tensor can be reduced to a $2\times2$ matrix because the $I_{yy}$ component is not needed in the linear formulation of the benchmark bicycle\footnote{The pitch of the rear frame and handlebar/fork assembly are quadratic functions of the lean and steer\cite{PetersenHubbard2007}, so the pitch becomes zero in the linear model.} and the bicycle is assumed to be symmetric about the $XZ$-plane. The simple rotation matrix about the $Y$-axis can similarly be reduced to a $2\times2$ matrix where $s_{\beta i}$ and $c_{\beta i}$ are defined as $\sin{\beta_i}$ and $\cos{\beta_i}$, respectively.
+\begin{equation}
+	\mathbf{R}=
+	\left[
+	\begin{array}{rr}
+		c_{\beta i} & s_{\beta i}\\
+		-s_{\beta i} & c_{\beta i}
+	\end{array}
+	\right]
+	\label{eq:rotMat}
+\end{equation}
+The first entry of $\mathbf{J}_i$ in Eq.~\ref{eq:rotIn} is the moment of inertia about the pendulum axis and is written explicitly as 
+\begin{equation}
+	J_{i}=c^{2}_{\beta i}I_{xx}+2s_{\beta i}c_{\beta i}I_{xz}+s^{2}_{\beta i}I_{zz}\textrm{.}
+\label{eq:inRelComp}
+\end{equation}
+Calculating all three $J_{i}$ allows one to form
+\begin{equation}
+	\left[
+	\begin{array}{c}
+		J_{1}\\
+		J_{2}\\
+		J_{3}
+	\end{array}
+	\right]
+	=
+	\left[
+	\begin{array}{ccc}
+		c_{\beta 1}^2 & -2s_{\beta 1}c_{\beta 1} & s_{\beta 1}^2\\
+		c_{\beta 2}^2 & -2s_{\beta 2}c_{\beta 2} & s_{\beta 2}^2\\
+		c_{\beta 3}^2 & -2s_{\beta 3}c_{\beta 3} & s_{\beta 3}^2
+	\end{array}
+	\right]
+	\left[
+	\begin{array}{c}
+		I_{xx}\\
+		I_{xz}\\
+		I_{zz}
+	\end{array}
+	\right]
+\label{eq:inRel}
+\end{equation}
+and the unknown global inertia tensor can be solved for.
+
+Finding the inertia tensors of the wheels is less complex because the wheels are symmetric about three orthogonal planes so there are no products of inertia. The $I_{xx}=I_{zz}$ moments of inertia were calculated by measuring the averaged period of oscillation about an axis in the $XZ$-plane using the torsional pendulum setup and Eq.~\ref{eq:torPend}. The $I_{yy}$ moment of inertia was calculated with a compound pendulum as described in \cite{Kooijman2006} and shown in Fig.~\ref{fig:comPend} using
+\begin{equation}
+	I_{yy}=\left(\frac{\overline{T}}{2\pi}\right)^2mgl-ml^2
+\label{eq:comPend}
+\end{equation}
+where $l=0.303\pm0.002$ m is the pendulum length, $m$ is the mass of the wheel, $\overline{T}$ is the averaged period and $g$ is the local acceleration due to gravity. Table \ref{tab:wheeliInertiaComp} gives the calculated values.
+
 \subsection{Fork}
 \appendix
 \section{Bicycle Descriptions}
