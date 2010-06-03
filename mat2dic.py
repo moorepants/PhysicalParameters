@@ -2,6 +2,7 @@ import pickle
 import scipy.io.matlab.mio as mio
 import uncertainties as u
 import numpy as np
+import os
 
 # load the main data file into a dictionary
 d = {}
@@ -60,3 +61,26 @@ f.close()
 f = open('data/udata.p', 'w')
 pickle.dump(ddU, f)
 f.close()
+
+dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
+filenames.sort()
+for name in filenames:
+    pendDat = {}
+    mio.loadmat('data/pendDat/' + name, mdict=pendDat)
+    # clean up the matlab imports
+    del(pendDat['__globals__'], pendDat['__header__'], pendDat['__version__'])
+    for k, v in pendDat.items():
+        try:
+            # change to an ascii string
+            pendDat[k] = v[0].encode('ascii')
+        except:
+            # if an array of a single number
+            if np.shape(v)[0] == 1:
+                pendDat[k] = v[0][0]
+            # else if the notes are empty
+            elif np.shape(v)[0] == 0:
+                pendDat[k] = ''
+            # else it is the data which is formatted correctly
+            else:
+                pendDat[k] = v
+    print pendDat

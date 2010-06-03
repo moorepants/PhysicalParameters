@@ -142,9 +142,6 @@ com[3, 7] = com[3, 6]
 
 tRod = avgPer['rodPer']
 # calculate the stiffness of the torsional pendulum
-# mRod = u.ufloat((5.56, 0.02)) # mass of the calibration rod [kg]
-# lRod = u.ufloat((1.05, 0.001)) # length of the calibration rod [m]
-# rRod = u.ufloat((0.015, 0.0001)) # radius of the calibration rod [m]
 iRod = tube_inertia(ddU['lRod'], ddU['mRod'], ddU['rRod'], 0.)[1]
 k = tor_stiffness(iRod, tRod)
 

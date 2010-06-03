@@ -32,7 +32,7 @@ for name in filenames:
     # plot the fitted curve
     lscurve = fitfunc(p1, x)
     rsq, SSE, SST, SSR = fit_goodness(y, lscurve)
-    sigma = np.sqrt(SSE/(len(y)-len(p0))) # DoF for non-lin fit may be different
+    sigma = np.sqrt(SSE/(len(y)-len(p0)))
     # calculate the jacobian
     L = jac_fitfunc(p1, x)
     # the Hessian
