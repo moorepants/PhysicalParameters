@@ -1,7 +1,6 @@
 import os
 import re
-import pickle as p
-import scipy.io.matlab.mio as mio
+import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 import uncertainties as u
@@ -11,56 +10,16 @@ from math import pi
 
 from benchmark_bike_tools import *
 
-# load the main data file into a dictionary
-d = {}
-mio.loadmat('data/data.mat', mdict=d)
+# load the data file
+f = open('data/udata.p', 'r')
+ddU = pickle.load(f)
+f.close()
 
 # the number of different bikes
-nBk = len(d['bikes'])
+nBk = len(ddU['bikes'])
 
 # make a list of the bikes' names
-bikeNames = []
-for bike in d['bikes']:
-    # get rid of the weird matlab unicoding
-    bikeNames.append(bike[0][0].encode('ascii'))
-
-# clean up the matlab imports
-d['bikes'] = bikeNames
-del(d['__globals__'], d['__header__'], d['__version__'])
-for k, v in d.items():
-    if np.shape(v)[0] == 1:
-        d[k] = v[0]
-
-# pickle the data dictionary
-f = open('data/data.p', 'w')
-p.dump(d, f)
-f.close()
-
-# make a dictionary for the measurement standard deviations
-dU = {}
-f = open('data/MeasUncert.txt', 'r')
-for line in f:
-    l = line.split(',')
-    dU[l[0]] = eval(l[1])
-f.close()
-
-# add the uncertainties to the data
-ddU = {}
-for k, v in dU.items():
-    for pair in zip(d[k].flatten(), np.ones_like(d[k].flatten())*v):
-        if k in ddU.keys():
-            ddU[k].append(u.ufloat((float(pair[0]), pair[1])))
-        else:
-            ddU[k] = []
-            ddU[k].append(u.ufloat((float(pair[0]), pair[1])))
-    ddU[k] = np.array(ddU[k])
-    if ddU[k].shape[0] > 8:
-        ddU[k] = ddU[k].reshape((ddU[k].shape[0]/8, -1))
-
-# pickle the data with the uncertainties
-f = open('data/dataWithUncert.p', 'w')
-p.dump(ddU, f)
-f.close()
+bikeNames = ddU['bikes']
 
 # calculate all the benchmark parameters
 par = {}
@@ -159,7 +118,7 @@ par['zH'] = forkCoM[1, :]
 
 # load the average period data
 f = open('data/avgPer.p', 'r')
-avgPer = p.load(f)
+avgPer = pickle.load(f)
 f.close()
 # torsional, compound and rod periods
 tor = avgPer['tor']
@@ -183,10 +142,10 @@ com[3, 7] = com[3, 6]
 
 tRod = avgPer['rodPer']
 # calculate the stiffness of the torsional pendulum
-mRod = u.ufloat((5.56, 0.02)) # mass of the calibration rod [kg]
-lRod = u.ufloat((1.05, 0.001)) # length of the calibration rod [m]
-rRod = u.ufloat((0.015, 0.0001)) # radius of the calibration rod [m]
-iRod = tube_inertia(lRod, mRod, rRod, 0.)[1]
+# mRod = u.ufloat((5.56, 0.02)) # mass of the calibration rod [kg]
+# lRod = u.ufloat((1.05, 0.001)) # length of the calibration rod [m]
+# rRod = u.ufloat((0.015, 0.0001)) # radius of the calibration rod [m]
+iRod = tube_inertia(ddU['lRod'], ddU['mRod'], ddU['rRod'], 0.)[1]
 k = tor_stiffness(iRod, tRod)
 
 # masses
@@ -196,7 +155,7 @@ par['mB'] = ddU['frameMass']
 par['mH'] = ddU['forkMass']
 
 # calculate the wheel y inertias
-par['g'] = 9.81*np.ones_like(d['forkMass'])
+par['g'] = 9.81*np.ones(ddU['forkMass'].shape, dtype=float)
 par['IRyy'] = com_inertia(par['mR'], par['g'], ddU['rWheelPendLength'], com[3, :])
 par['IFyy'] = com_inertia(par['mF'], par['g'], ddU['fWheelPendLength'], com[2, :])
 
@@ -236,7 +195,7 @@ for i, row in enumerate(Ipend[:3, :].T):
 par['IBxx'] = np.array(par['IBxx'])
 par['IBxz'] = np.array(par['IBxz'])
 par['IBzz'] = np.array(par['IBzz'])
-par['v'] = np.ones_like(d['forkMass'])
+par['v'] = np.ones_like(par['g'])
 
 # make a dictionary with only the nominal values
 par_n = {}
@@ -273,5 +232,5 @@ for i, name in enumerate(bikeNames):
 
 # pickle the parameters too
 file = open('data/par.p', 'w')
-p.dump(par, file)
+pickle.dump(par, file)
 file.close()
