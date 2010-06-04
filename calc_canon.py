@@ -31,5 +31,5 @@ for i, name in enumerate(data['bikes']):
     canon = {'M':M, 'C1':C1, 'K0':K0, 'K2':K2, 'A':A, 'B':B, 'v':param['v']}
     p.dump(canon, file)
     file.close()
+    # build some pretty tex files
     replace_values(directory, 'CanonTemplate.tex', fname + 'Can.tex', canon)
-    stop
