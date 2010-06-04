@@ -1,3 +1,87 @@
+def replace_values(directory, template, newfile, replacers):
+    '''
+    Replaces variables with values in a text file.
+
+    Parameters:
+    -----------
+    directory: string that locates the template file
+    template: string text file
+    newfile: string  text file
+    replacers: dictionary
+
+    Returns:
+    --------
+
+    This looks for |varible_name| and replaces it with the value stored in
+    variable_name. It also looks for |variable_name?| and replaces it with the
+    uncertainty of the value of variable_name.
+
+    '''
+    import re
+    import os
+
+    from benchmark_bike_tools import uround
+
+    # open the template file
+    f = open(template, 'r')
+    # open the new file
+    fn = open(newfile, 'w')
+    for line in f:
+        #print line
+        # find all of the matches in the line
+        test = re.findall('\|(\w*.)\|', line)
+        #print 'search for u: ',  re.findall('\|(\w*\?)\|', line)
+        #print 'search for nom: ', re.findall('\|(\w*)(?!\?)\|', line)
+        # if there are matches
+        if test:
+            #print 'Found this!\n', test
+            # go through each match and make a substitution
+            for match in test:
+                #print "replace this: ", match
+                # if there is a '[' then the match is an array entry
+                if '[' in match:
+                    var = match.split('[')[0] # this returns the variable
+                    loc = '[' + match.split('[')[1] # may include question mark
+                    # if the match has a question mark it is an uncertainty value
+                    if loc[-1] == '?':
+                        try:
+                            line = re.sub('\|(\w*\?)\|',
+                                    uround(eval('replacers[' + var + ']' + loc[:-1])).split('+/-')[1], line, count=1)
+                            #print line
+                        except: # there is no uncertainty
+                            pass
+                    else:
+                        try:
+                            line = re.sub('\|(\w*(?!\?))\|',
+                                    uround(eval('replacers[' + var + ']' + loc)).split('+/-')[0], line, count=1)
+                            #print line
+                        except: # there is no uncertainty
+                            line = re.sub('\|(\w*(?!\?))\|', str(eval('replacers[' + var + ']' + loc)), line, count=1)
+                # else the match is just a scalar
+                else:
+                    # if the match has a question mark it is an uncertainty value
+                    if match[-1] == '?':
+                        try:
+                            line = re.sub('\|(\w*\?)\|',
+                                    uround(replacers[match[:-1]]).split('+/-')[1], line, count=1)
+                            #print line
+                        except:
+                            pass
+                    else:
+                        try:
+                            line = re.sub('\|(\w*(?!\?))\|',
+                                    uround(replacers[match]).split('+/-')[0], line, count=1)
+                            #print line
+                        except:
+                            line = re.sub('\|(\w*(?!\?))\|', str(replacers[match][i]), line, count=1)
+        #print line
+        fn.write(line)
+    f.close()
+    fn.close()
+    os.system('pdflatex -output-directory=' + directory + ' ' + newfile)
+    os.system('rm ' + directory + '*.aux')
+    os.system('rm ' + directory + '*.log')
+
 def uround(value):
     '''Round values according to their uncertainity
 
