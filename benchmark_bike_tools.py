@@ -37,7 +37,6 @@ def replace_values(directory, template, newfile, replacers):
         print 'search for un: ',  re.findall('\|(\w*\?)\|', line)
         # if there are matches
         if test:
-            print 'Found this!\n', test
             # go through each match and make a substitution
             for match in test:
                 print "replace this: ", match
@@ -49,20 +48,29 @@ def replace_values(directory, template, newfile, replacers):
                     except:
                         var, row, col = match.split('_')
                     valStr = "replacers['" + var + "']" + '[' + row + ', ' + col + ']'
-                    print valStr
+                    #print valStr
                     value = eval(valStr)
                     print 'value =', value
                     # if the match has a question mark it is an uncertainty value
                     if ques:
                         try:
-                            line = re.sub('\|(\w*\?)\|', uround(value).split('+/-')[1], line, count=1)
+                            replacement = uround(value).split('+/-')[1]
+                            print "with this:", replacement
+                            line = re.sub('\|(\w*\?)\|', replacement, line, count=1)
                         except: # there is no uncertainty
-                            pass
+                            replacement = '0.0'
+                            print "with this:", replacement
+                            line = re.sub('\|(\w*\?)\|', replacement, line, count=1)
                     else:
                         try:
-                            line = re.sub('\|(\w*(?!\?))\|', uround(value).split('+/-')[0], line, count=1)
+                            replacement = uround(value).split('+/-')[0]
+                            print "with this:", replacement
+                            line = re.sub('\|(\w*(?!\?))\|', replacement, line, count=1)
                         except: # there is no uncertainty
-                            line = re.sub('\|(\w*(?!\?))\|', str(value), line, count=1)
+                            replacement = str(value)
+                            print "with this:", replacement
+                            line = re.sub('\|(\w*(?!\?))\|', replacement, line, count=1)
+                    del var, row, col
                 # else the match is just a scalar
                 else:
                     # if the match has a question mark it is an uncertainty value
@@ -84,9 +92,9 @@ def replace_values(directory, template, newfile, replacers):
         fn.write(line)
     f.close()
     fn.close()
-    # os.system('pdflatex -output-directory=' + directory + ' ' + newfile)
-    # os.system('rm ' + directory + '*.aux')
-    # os.system('rm ' + directory + '*.log')
+    os.system('pdflatex -output-directory=' + directory + ' ' + newfile)
+    os.system('rm ' + directory + '*.aux')
+    os.system('rm ' + directory + '*.log')
 
 def uround(value):
     '''Round values according to their uncertainity
