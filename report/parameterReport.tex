@@ -1,8 +1,9 @@
 \documentclass{article}
 
-\usepackage[lmargin=1in,rmargin=1in]{geometry}
+\usepackage[lmargin=1in,rmargin=1in, tmargin=1in, bmargin=1in]{geometry}
 \usepackage[colorlinks=true, linkcolor=blue]{hyperref}
 \usepackage{graphicx}
+\usepackage{eurosans}
 
 \author{Jason K. Moore}
 \title{Accurate Measurement of Eight Bicycles' Physical Parameters}
@@ -28,10 +29,238 @@ D\"{o}hring measured the physical parameters of a scooter~\cite{Dohring1953}.
 Singh and Goel measured the physical parameters of a scooter~\cite{Singh1971}.
 Roland and Massing measured the physical parameters of a bicycle in much the
 same was as presented, including calculations of uncertainty from the indirect
-measurement techniques~\cite{Roland1971}. This work is based off of the work
+measurement techniques~\cite{Roland1971}. Patterson used a swing to measure the
+inertia of a bicycle and rider~\cite{Patterson2004}. This work is based off of the work
 done by Kooijman~\cite{Kooijman2006}. I worked with Jodi Kooijman for a year and
 was able to use much of the same apparatus and refine the measurement
 technique.
+\section{Bicycle Descriptions}
+\subsection{Yellow Bicycle}
+The yellow is a bicycle used in the lab to demonstrate that a bicycle is stable
+at certain speeds. It is an aluminum road frame of unknown make with the
+majority of components removed. The wheels, drop handlebar, seat, seat post and
+bottom bracket are the only parts on the bike. The fork has been reversed to
+''increase`` the stability of the bicycle. The bicycle was measured with both
+the fork in normal position and the fork reversed.
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=5in]{images/yellow.jpg}
+    \end{center}
+    \caption{Side view of the yellow bicycle with the fork in the reversed
+    posistion.}
+    \label{fig:YellowBike}
+\end{figure}
+\begin{table}[htbp]
+	\begin{tabular}{ll}
+		Style & Road\\
+		Size & \\
+		Wheels & 700c Aluminum Rims\\
+		Tires & 28 x 1 3/8 x 1 5/8\\
+		Sprocket & 6 speed free wheel\\
+		Handlebars & Drop\\
+	\end{tabular}
+	\caption{Specifications of the Yellow Bicycle}
+	\label{yellowBikeSpecs}
+\end{table}
+\subsection{Batavus Browser}
+The Batavus Browser is lower priced Dutch city bike. We measured the physical
+proprieties of the stock Browser model and also the same bike with the
+instrumentation used in our experiments.
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=5in]{images/browser.jpg}
+    \end{center}
+    \caption{Side view of the Batavus Browser as from the factory.}
+    \label{fig:browser}
+\end{figure}
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=5in]{images/browserIns.jpg}
+    \end{center}
+    \caption{The Batavus Browser with instrumentation as used
+    in~\cite{Kooijman2009}}
+    \label{fig:browserIns}
+\end{figure}
+\begin{table}[htbp]
+	\begin{tabular}{ll}
+        Price          & euro symbol 449\\
+        Wheel Size     & 28''\\
+        Weight         & 18.7 kg\\
+        Frame Size     & 54\\
+        Frame material & High Tensile Steel\\
+        Fork material  & Steel\\
+        Rims           & Aluminum Airline\\
+        Spokes         & Stainless steel\\
+        Tires          & Trax Highway, 28'' x 1 5/8 x 1 3/8\\
+        Handlebar      & Steel painted\\
+        Handles        & Batavus Comfort\\
+        Saddle         & Selle Royal 8274\\
+        Dynamo         & Basta Trio\\
+        Headlight      & Batavus Logic Light\\
+        Rearlight      & Battery light\\
+        Pedals         & Batavus plastic antislip\\
+        Final          & Trelock RS42\\
+        Theft chip     & Present\\
+        Crank          & Aluminum\\
+        Rack           & Steel\\
+        Quick Binder   & Binder Trio\\
+        Mudguards      & Steel\\
+        Bell           & Kenlight\\
+	\end{tabular}
+	\caption{2008 Batavus Browser Specifications.}
+	\label{browserSpecs}
+\end{table}
+
+\subsection{2007 Bianchi Pista}
+The Pista is a modern steel track bicycle. Specifications, taken from the Bianchi
+website~\cite{Bianchi2009}, are as follows:
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=5in]{images/pista.jpg}
+    \end{center}
+    \caption{The Bianchi Pista hanging from a spring scale.}
+    \label{fig:pista}
+\end{figure}
+\begin{table}
+	\begin{tabular}{ll}
+        Style            & Track Bike\\
+        Size             & 57cm\\
+        Color            & Gang Green\\
+        Frame            & Bianchi DB CrMo, rear entry track dropouts\\
+        Fork             & CrMo\\
+        Retail Price     & \$579.99\\
+        Headset          & VP AheadSet, 1''threadless\\
+        Handlebar        & Bianchi steel track, 26.0mm\\
+        Stem             & Bianchi alloy\\
+        Brakes/Levers    & Shimano Tiagra front brake/lever\\
+        Crankset         & Truvativ Touro 1.1, 48T\\
+        Bottom Bracket   & Truvativ Power Spline cartridge\\
+        Chain            & KMC\\
+        Sprocket         & 16T fixed cog \& 16T Freewheel\\
+        Pedals           & Campus pedals\\
+        Wheels           & Bianchi Alex Solo wheelset, 28h rims\\
+        Tires            & Continental UltraSport, 700x23C\\
+        Saddle           & Bianchi Velo\\
+        Seatpost         & Bianchi alloy, 27.2mm\\
+        Size             & 57cm\\ 
+        Seat Tube        & 570mm\\
+        Top Tube-actual  & 560mm\\
+        Top Tube-virtual & 560mm\\
+        Chainstay        & 383mm\\
+        Fork Rake        & 28mm\\
+        Head Tube Angle  & 74.5$^{\circ}$\\
+        Seat Tube Angle  & 75.5$^{\circ}$\\
+        Wheelbase        & 967mm\\
+        Standover Height & 32''  
+	\end{tabular}
+	\caption{}
+	\label{pistaSpecs}
+\end{table}
+\subsection{Gary Fisher Mountain Bike}
+The Gary Fisher Ziggurat is a modern front suspended mountain bike.
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=5in]{images/fisher.jpg}
+    \end{center}
+    \caption{The Gary Fisher mountain bike hanging from a spring scale.}
+    \label{fig:fisher}
+\end{figure}
+\begin{table}
+    \centering
+    \begin{tabular}{ll}
+        Geometry & Genisis\\
+        Frame & Aluminum, Damping, AC/DC, Carbon, Composite\\
+        Front Wheel & DT Swiss XR4.1 Ceramic 559 17\\
+        Tires & Michelin 26'' X 2.00 (5.2-559)\\
+        Rear Wheel & DT Swiss 240s\\
+        Rear hub & 9 speed\\
+        Rear derailleur & SRAM X-0\\
+        Crank & Bonterager 3-speed\\
+        Seat post & Ritchey\\
+        Fork & SID Rock Shox
+    \end{tabular}
+    \caption{Specifications of the Gary Fisher Mountain Bike}
+    \label{tab:gary}
+\end{table}
+\subsection{Batavus Crescendo Deluxe}
+The Batavus Crescendo Deluxe is a contemporary of all-round cycling in cool
+black and white. A great bike for a good end to touring. And that works fine
+with 8 gears, suspension fork and suspension seatpost.
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=5in]{images/crescendo.jpg}
+    \end{center}
+    \caption{A side view of the Batavus Crescendo Deluxe.}
+    \label{fig:crescendo}
+\end{figure}
+\begin{table}
+	\begin{tabular}{ll}
+		Price             & from € 869\\
+		Wheel Size        & 28''\\
+		Weight            & 21.5 kg\\
+		Frame Size        & 53\\
+		Performance/speed & Shimano Nexus 8 speed with roller brakes\\
+		Color             & White / black\\
+		Brakes            & Shimano roller brakes (BR-IM50)\\
+		Frame type        & Ladies mono tube frame Gentlemen trend\\
+		Frame material    & Aluminum 7005\\
+		Front Fork        & spring, Batavus\\
+		Rims              & Aluminum Rodi VR19\\
+		Spokes            & Stainless steel (adapted spoke pattern)\\
+		Tires             & CST End\\
+		Handlebar         & Steel aluminum look\\
+		Stem              & Manually adjustable, Batavus Ergo Matic III\\
+		Handles           & adjustable Batavus Ergo Grip II\\
+		Saddle            & Selle Royal 5160\\
+		Seatpost          & spring, Post Modern Compact\\
+		Dynamo            & Shimano Hub Dynamo\\
+		Headlight         & Trelock Hi-Power automatic halogen\\
+		Rear              & Smart battery automatically\\
+		Pedals            & aluminum antislip\\
+		Final							& AXA Defender\\
+		Chip theft        & Present\\
+		Crank             & Aluminum\\
+		Rack              & Aluminum\\
+		Quick Binder      & Binder Quattro\\
+		Mudguards         & Batavus hyalite II\\
+		Bell              & Bibia Touring\\
+		Balhoofdset       & VP semi-integrated, oversized\\
+		Shifters          & Batavus (8-speed)\\
+		Saddlebag         & Batavus saddlebag with plakset\\
+	\end{tabular}
+	\caption{}
+	\label{crescendoSpecs}
+\end{table}
+\subsection{Batavus Stratos Deluxe}
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=5in]{images/stratos.jpg}
+    \end{center}
+    \caption{A side view of the Batavus Stratos Deluxe}
+    \label{fig:stratos}
+\end{figure}
+\begin{table}
+	\begin{tabular}{ll}
+		Switching           & Spin System (shifter)\\
+		Monochromatic frame & Black\\
+		Chain guard         & Semi-open\\
+		Mudguards           & Aluminum\\
+		Rack                & Yes\\
+		Extra drive         & Regardless Motori degree\\
+		Type                & Men's\\
+		Frame Material      & Aluminum\\
+		Rim Material        & Aluminum\\
+		Rear braking system & Roller brake\\
+		Front braking system & Roller Brake\\
+		Number of gears      & 7 Gears\\
+		Gear System          & Shimano Nexus\\
+		Wheel Size           & 28 inch\\
+		Tirewidth            & 37 mm\\
+		Price                & 749,00\\
+	\end{tabular}
+	\caption{}
+	\label{stratosSpecs}
+\end{table}
 \section{Accuracy}
 Error propagation theory was utilized to calculate what the accuracy the
 benchmark ideal parameters are based on the measurements taken. If $x$ is a
@@ -163,6 +392,13 @@ in the same upright fixed position used when measuring the head tube angle.
 The total mass of each bicycle was measured using a spring scale with a
 resolution of 100g. Then each of the four bicycle parts were measured using a
 Molen 20kg scale with a resolution of 20g.
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=5in]{images/massScale.jpg}
+    \end{center}
+    \caption{The scale used to measure the mass of each bicycle component.}
+    \label{fig:massScale}
+\end{figure}
 \begin{table}
     \centering
 	\begin{tabular}{llllllllll}
@@ -197,6 +433,14 @@ the string. The distance $a$ was negative if the string fell to the right of
 the rear axle and positive if it fell to the left of the rear axle. These
 measurements allow for the calculation of the center of mass location in the
 global reference frame.
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=5in]{images/pendDist.jpg}
+    \end{center}
+    \caption{Measuring the distance from the pendulum axis to the rear wheel
+    axle using level ruler.}
+    \label{fig:PendDist}
+\end{figure}
 \begin{figure}[tb]
 	\begin{center}
 		\includegraphics[width=5in]{images/level.jpg}
@@ -231,7 +475,7 @@ The pendulum axis $X_P$ is simply a line in the nominal bicycle reference frame 
 \end{equation}
 The z-intercept can be shown to be
 \begin{equation}
-	b_i=\frac{d_i}{\cos{\beta_i}}-r_\mathrm{R}
+    b_i=-\left(\frac{a_\mathrm{B}}{\cos{\beta_i}}+r_\mathrm{R}\right)
     \label{eq:zInt}
 \end{equation}
 Only two lines are required to calculate the center of mass of the laterally
@@ -313,10 +557,14 @@ of the center of mass.
 \label{eq:leastSquares}
 \end{equation}
 \subsection{Fork}
-The center of mass of the fork is calculated in the same fashion, only the
-z-intercept is different.
+The fork and handlebars are a bit trickier to hang in three different
+orientations. Typically two angles can be obtained by clamping to the steer
+tube at the top and the bottom. The third angle can be obtained by clamping to
+the stem. The center of mass of the fork is calculated in the same fashion. The
+slope of the line in the benchmark reference frame is the same as for the
+frame but the z-intercept is different:
 \begin{equation}
-    b = r_\mathrm{F} + \frac{a}{\cos{\beta}} + w\tan{\beta}
+    b = w\tan{\beta} - r_\mathrm{F} - \frac{a}{\cos{\beta}} 
 \end{equation}
 \section{Moment of Inertia}
 The moments of inertia of the wheels, frame and fork were measured by taking
@@ -351,7 +599,7 @@ routine for each experiment.
 \end{equation}
 Most of the data fit the damped oscillation function well with very light (and
 ignorable) damping. There were several instances of beating-like phenomena for
-some of the parts at particular orienations. Roland and
+some of the parts at particular orientations. Roland and
 Massing~\cite{Roland1971} also encountered this problem and used a bearing to
 prevent the torsional pendulum from swinging. Figure~\ref{fig:beating} shows an
 example of the beating like phenomena.
@@ -363,27 +611,27 @@ example of the beating like phenomena.
     experiments.}
     \label{fig:beating}
 \end{figure}
-The physical phenonena that was observed for data sets such as these were that
+The physical phenomena that was observed for data sets such as these were that
 the bicycle frame or fork was perturbed torsionally. After set into motion the
-torionsal motion died out and a longitudinal swinging motion increased. The
+torsional motion died out and a longitudinal swinging motion increased. The
 motions alternated back and forth with neither ever reaching zero. The
 frequencies of these motions were very close to one another and it is not
-apparent how disect the two. We explored fitting to a function such as
+apparent how dissect the two. We explored fitting to a function such as
 \begin{equation}
     f(t) = A\sin{(\omega_1 t)} + B\sin{(\omega_2 t + \phi)} + C
     \label{eqn:sumSines}
 \end{equation}
 But the fit predicts that $\omega_1$ and $\omega_2$ have very similar
 frequencies. There was no easy way to choose which of the two $\omega$'s was
-the one associated with the torionsal osciallation. Some work was done to model
-the torsional pedulum as a laterally flexible beam to determine this, but we
+the one associated with the torsional oscillation. Some work was done to model
+the torsional pendulum as a laterally flexible beam to determine this, but we
 thought the improvement in the accuracy of the period calculation would not
-improve enough for the effort required. Future experiements should simply
+improve enough for the effort required. Future experiments should simply
 prevent the swinging motion of the pendulum without damping the torsional
 motion. Roland and Massing~\cite{Roland1971} noted that they had this same problem and solved it
 by hold the torsional rod in a fixed bearing.
 
-The period for a damped osciallation is
+The period for a damped oscillation is
 \begin{equation}
     T = \frac{2\pi}{\sqrt{1-\zeta^2}\omega_n}
     \label{eqn:periodDamped}
@@ -393,7 +641,7 @@ and for light damping
     T \approx \frac{2\pi}{\omega_n}
     \label{eqn:period}
 \end{equation}
-The uncertaintity in the period, $T$, can be determined from the fit. Firstly,
+The uncertainty in the period, $T$, can be determined from the fit. Firstly,
 the variance of the fit is
 \begin{equation}
     \sigma_y^2 =
@@ -417,6 +665,13 @@ A torsional pendulum was used to measure all of moments of inertia about axes
 in the lateral symmetric plane of each of the wheels, fork and frame. The
 pendulum is made up of a rigid mount, an upper clamp, a torsion rod, and
 various lower clamps.
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=5in]{images/fixture.jpg}
+    \end{center}
+    \caption{The rigid pendulumfixture mounted to a concrete column.}
+    \label{fig:fixture}
+\end{figure}
 A 5mm diameter, 1m long mild steel rod was used as the torsion
 spring. A lightweight, low relative moment of inertia clamp was constructed
 that could clamp the rim and the tire. The wheel was hung freely such that the
@@ -426,6 +681,24 @@ The rate gyro was mounted on the clamp in line with the pendulum axis. The
 radial moment of inertia can can calculated as such:
 
 The torsional pendulum was calibrated using a known moment of inertia. 
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=5in]{images/rod.jpg}
+    \end{center}
+    \caption{The steel calibration rod.}
+    \label{fig:rod}
+\end{figure}
+A torsional pendulum almost identical to the one used in
+\cite{Kooijman2006} was used to measure the averaged period $\overline{T}_i$ of
+oscillation of the rear frame at three different
+orientation angles $\beta_i$, where $i=1$, $2$, $3$, as shown in
+Fig.~\ref{fig:triangle}. The parts were perturbed lightly, less than 1 degree,
+and allowed to oscillate about the pendulum axis through at least ten periods.
+The time of oscillation was recorded via a stopwatch ($\pm1$~s). This was done
+three times for each frame and the recorded times were averaged. The
+coefficient of elasticity $k$ for the torsional pendulum had previously been
+measured in \cite{Kooijman2006} and found to be $k=5.01\pm0.01$
+$\frac{\textrm{Nm}}{\textrm{rad}}$.
 
 \subsection{Wheels}
 The wheels are assumed to be symmetric laterally and about any radial axis. Thus only two
@@ -444,7 +717,13 @@ inertia about the axle is calculated by:
     I_{\mathrm{R}yy} = \left(\frac{\bar{T}}{2\pi}\right)^2m_\mathrm{R}gl_\mathrm{R} -
     m_\mathrm{R}l^2
 \end{equation}
-
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=5in]{images/CrescendoFwheelTorsionalFirst.jpg}
+    \end{center}
+    \caption{The front wheel of the Crescendo hung as a torsional pendulum.}
+    \label{fig:FwheelTor}
+\end{figure}
 The radial moment of inertia was measured by hanging the wheel as a torsional
 pendulum. A 5mm diameter, 1m long mild steel rod was used as the torsion
 spring. A lightweight, low relative moment of inertia clamp was constructed
@@ -456,40 +735,56 @@ radial moment of inertia can can calculated as such:
 \begin{equation}
     I_{xx} = \frac{k\bar{T}^2}{4\pi^2}
 \end{equation}
+Finding the inertia tensors of the wheels is less complex because the wheels
+are symmetric about three orthogonal planes so there are no products of
+inertia. The $I_{xx}=I_{zz}$ moments of inertia were calculated by measuring
+the averaged period of oscillation about an axis in the $XZ$-plane using the
+torsional pendulum setup and Eq.~\ref{eq:torPend}. The $I_{yy}$ moment of
+inertia was calculated with a compound pendulum as described in
+\cite{Kooijman2006} and shown in Fig. using
+\begin{equation}
+	I_{yy}=\left(\frac{\overline{T}}{2\pi}\right)^2mgl-ml^2
+\label{eq:comPend}
+\end{equation}
+where $l=0.303\pm0.002$ m is the pendulum length, $m$ is the mass of the wheel,
+$\overline{T}$ is the averaged period and $g$ is the local acceleration due to
+gravity. Table  gives the calculated values.
+\begin{figure}[htpb]
+    \begin{center}
+        \includegraphics[width=5in]{images/wheelIyy.jpg}
+    \end{center}
+    \caption{A wheel hung as a compoun pendulum.}
+    \label{fig:wheelIyy}
+\end{figure}
 \subsection{Frame}
 Three measurements were made to estimate the globally referenced moments and
 products of inertia ($I_{xx}$, $I_{xz}$ and $I_{zz}$) of the rear frame. The
 frame was typically hung from the three main tubes: seat tube, down tube
 and top tube. The rear fender prevented easy connection to the seat tube on
-some of the bikes and the clamp was attached to the fender instead which was
-less rigid. For best accuracy with only three orientation angles, the frame
+some of the bikes and the clamp was attached to the fender. The fender was
+generally less rigid than the frame tube. For best accuracy with only three orientation angles, the frame
 should be hung at three angles that are $120^\circ$ apart. The three tubes on
-the frame generally provide that the orientation angles were spread evenly.
-Taking data at more orientation angles could improve the accuracy further and
+the frame generally provide that the orientation angles were spread evenly at
+about $120^\circ$. Taking data at more orientation angles could improve the accuracy further and
 is gernally possible with standard diamond frame bicylces.
- The same torsional pendulum used in
-\cite{Kooijman2006} was used to measure the averaged period $\overline{T}_i$ of
-oscillation of the rear frame and handlebar/fork assembly at three different
-orientation angles $\beta_i$, where $i=1$, $2$, $3$, as shown in
-Fig.~\ref{fig:angles}. The parts were perturbed lightly, less than 1 degree,
-and allowed to oscillate about the pendulum axis through at least ten periods.
-The time of oscillation was recorded via a stopwatch ($\pm1$~s). This was done
-three times for each frame and the recorded times were averaged. The
-coefficient of elasticity $k$ for the torsional pendulum had previously been
-measured in \cite{Kooijman2006} and found to be $k=5.01\pm0.01$
-$\frac{\textrm{Nm}}{\textrm{rad}}$. Three moments of inertia $J_{i}$ about the
-pendulum axes were calculated with
+
+Three moments of inertia $J_{i}$ about the pendulum axes were calculated with
 \begin{equation}
 	J_i=\frac{k\overline{T}_i^2}{4\pi^2}
 \label{eq:torPend}
 \end{equation}
 
-The moments and products of inertia of the rear frame and handlebar/fork assembly with reference to the benchmark coordinate system were calculated by formulating the relationship between inertial frames
+The moments and products of inertia of the rear frame and handlebar/fork
+assembly with reference to the benchmark coordinate system were calculated by
+formulating the relationship between inertial frames
 \begin{equation}
 	\mathbf{J}_i=\mathbf{R}_i^T\mathbf{IR}_i
 \label{eq:rotIn}
 \end{equation}
-where $\mathbf{J}_i$ is the inertia tensor about the pendulum axes, $\mathbf{I}$, is the inertia tensor in the global reference frame and $\mathbf{R}$ is the rotation matrix relating the two frames. The global inertia tensor is defined as
+where $\mathbf{J}_i$ is the inertia tensor about the pendulum axes,
+$\mathbf{I}$, is the inertia tensor in the global reference frame and
+$\mathbf{R}$ is the rotation matrix relating the two frames. The global inertia
+tensor is defined as
 \begin{equation}
 	\mathbf{I}=
 	\left[
@@ -500,7 +795,12 @@ where $\mathbf{J}_i$ is the inertia tensor about the pendulum axes, $\mathbf{I}$
 	\right]\textrm{.}
 	\label{eq:MoI}
 \end{equation}
-The inertia tensor can be reduced to a $2\times2$ matrix because the $I_{yy}$ component is not needed in the linear formulation of the benchmark bicycle\footnote{The pitch of the rear frame and handlebar/fork assembly are quadratic functions of the lean and steer\cite{PetersenHubbard2007}, so the pitch becomes zero in the linear model.} and the bicycle is assumed to be symmetric about the $XZ$-plane. The simple rotation matrix about the $Y$-axis can similarly be reduced to a $2\times2$ matrix where $s_{\beta i}$ and $c_{\beta i}$ are defined as $\sin{\beta_i}$ and $\cos{\beta_i}$, respectively.
+The inertia tensor can be reduced to a $2\times2$ matrix because the frame is
+assumed to be laterally symmetric and the $y$ axis of the pendulum reference is
+the same as the $y$ axis of the benchmark reference frame. The simple rotation matrix about the $Y$-axis
+can similarly be reduced to a $2\times2$ matrix where $s_{\beta i}$ and
+$c_{\beta i}$ are defined as $\sin{\beta_i}$ and $\cos{\beta_i}$,
+respectively.
 \begin{equation}
 	\mathbf{R}=
 	\left[
@@ -543,174 +843,28 @@ Calculating all three $J_{i}$ allows one to form
 \label{eq:inRel}
 \end{equation}
 and the unknown global inertia tensor can be solved for.
-
-Finding the inertia tensors of the wheels is less complex because the wheels are symmetric about three orthogonal planes so there are no products of inertia. The $I_{xx}=I_{zz}$ moments of inertia were calculated by measuring the averaged period of oscillation about an axis in the $XZ$-plane using the torsional pendulum setup and Eq.~\ref{eq:torPend}. The $I_{yy}$ moment of inertia was calculated with a compound pendulum as described in \cite{Kooijman2006} and shown in Fig.~\ref{fig:comPend} using
-\begin{equation}
-	I_{yy}=\left(\frac{\overline{T}}{2\pi}\right)^2mgl-ml^2
-\label{eq:comPend}
-\end{equation}
-where $l=0.303\pm0.002$ m is the pendulum length, $m$ is the mass of the wheel, $\overline{T}$ is the averaged period and $g$ is the local acceleration due to gravity. Table \ref{tab:wheeliInertiaComp} gives the calculated values.
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=5in]{images/YellowFrameCompoundFirst.jpg}
+    \end{center}
+    \caption{The rear frame hung as a compound pendulum.}
+    \label{fig:FrameCompound}
+\end{figure}
 
 \subsection{Fork}
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=5in]{images/StratosForkTorsionalThird.jpg}
+    \end{center}
+    \caption{The Stratos fork and handlebar assembly hung as a torsional
+    pendulum.}
+    \label{fig:StratosFork}
+\end{figure}
+\section{Linear Analysis}
+\subsection{Canonical Matrices}
+\subsection{Eigenvalues}
+\subsection{Frequency Response}
 \appendix
-\section{Bicycle Descriptions}
-\subsection{Yellow Bicycle}
-The yellow is a bicycle used in the lab to demonstrate that a bicycle is stable
-at certain speeds. It is an aluminum road frame of unknown make with the
-majority of components removed. The wheels, drop handlebar, seat, seat post and
-bottom bracket are the only parts on the bike. The fork has been reversed to
-''increase`` the stability of the bicycle. The bicycle was measured with both
-the fork in normal position and the fork reversed.
-\begin{table}
-	\begin{tabular}{ll}
-		Style & Road\\
-		Size & \\
-		Wheels & 700c Aluminum Rims\\
-		Tires & 28 x 1 3/8 x 1 5/8\\
-		Sprocket & 6 speed free wheel\\
-		Handlebars & Drop\\
-	\end{tabular}
-	\caption{}
-	\label{yellowBikeSpecs}
-\end{table}
-
-\subsection{Batavus Browser}
-The Batavus Browser is lower priced Dutch city bike. We measured the physical
-properities of the stock Browser model and also the same bike with the
-instrumentation used in our experiments.
-\begin{table}
-	\begin{tabular}{ll}
-		Price          & € 449\\
-		Wheel Size     & 28''\\
-		Weight         & 18.7 kg\\
-		Frame Size     & 54\\
-		Frame material & High Tensile Steel\\
-		Fork material  & Steel\\
-		Rims           & Aluminum Airline\\
-    Spokes         & Stainless steel\\
-		Tires          & Trax Highway, 28'' x 1 5/8 x 1 3/8\\
-		Handlebar      & Steel painted\\
-		Handles        & Batavus Comfort\\
-		Saddle         & Selle Royal 8274\\
-		Dynamo         & Basta Trio\\
-		Headlight      & Batavus Logic Light\\
-		Rearlight      & Battery light\\
-		Pedals         & Batavus plastic antislip\\
-		Final          & Trelock RS42\\
-		Theft chip     & Present\\
-		Crank          & Aluminum\\
-		Rack           & Steel\\
-		Quick Binder   & Binder Trio\\
-		Mudguards      & Steel\\
-		Bell           & Kenlight\\
-	\end{tabular}
-	\caption{2008 Batavus Browser Specifications}
-	\label{browserSpecs}
-\end{table}
-
-\subsection{2007 Bianchi Pista}
-The Pista is a steel track bicycle. Specifications, taken from the Bianchi
-website~\cite{Bianchi2009}, are as follows:
-\begin{table}
-	\begin{tabular}{ll}
-		Style            & Track Bike\\
-  	Size             & 57cm\\
-  	Color            & Gang Green\\
-  	Frame            & Bianchi DB CrMo, rear entry track dropouts\\
-  	Fork             & CrMo\\
-  	Retail Price     & \$579.99\\
-		Headset          & VP AheadSet, 1''threadless\\
-  	Handlebar        & Bianchi steel track, 26.0mm\\
-		Stem             & Bianchi alloy\\
-    Brakes/Levers    & Shimano Tiagra front brake/lever\\
-		Crankset         & Truvativ Touro 1.1, 48T\\
-		Bottom Bracket   & Truvativ Power Spline cartridge\\
-		Chain            & KMC\\
-		Sprocket         & 16T fixed cog \& 16T Freewheel\\
-		Pedals           & Campus pedals\\
-		Wheels           & Bianchi Alex Solo wheelset, 28h rims\\
-    Tires            & Continental UltraSport, 700x23C\\
-    Saddle           & Bianchi Velo\\
-		Seatpost         & Bianchi alloy, 27.2mm\\
-		Size             & 57cm\\ 
-		Seat Tube        & 570mm\\
-		Top Tube-actual  & 560mm\\
-		Top Tube-virtual & 560mm\\
-		Chainstay        & 383mm\\
-		Fork Rake        & 28mm\\
-		Head Tube Angle  & 74.5$^{\circ}$\\
-		Seat Tube Angle  & 75.5$^{\circ}$\\
-		Wheelbase        & 967mm\\
-		Standover Height & 32''  
-	\end{tabular}
-	\caption{}
-	\label{pistaSpecs}
-\end{table}
-\subsection{Gary Fisher Mountain Bike}
-\subsection{Batavus Crescendo Deluxe}
-	
-The Batavus Crescendo Deluxe is a contemporary of all-round cycling in cool black and white. A great bike for a good end to touring. And that works fine with 8 gears, suspension fork and suspension seatpost.
-\begin{table}
-	\begin{tabular}{ll}
-		Price             & from € 869\\
-		Wheel Size        & 28''\\
-		Weight            & 21.5 kg\\
-		Frame Size        & 53\\
-		Performance/speed & Shimano Nexus 8 speed with roller brakes\\
-		Color             & White / black\\
-		Brakes            & Shimano roller brakes (BR-IM50)\\
-		Frame type        & Ladies mono tube frame Gentlemen trend\\
-		Frame material    & Aluminum 7005\\
-		Front Fork        & spring, Batavus\\
-		Rims              & Aluminum Rodi VR19\\
-		Spokes            & Stainless steel (adapted spoke pattern)\\
-		Tires             & CST End\\
-		Handlebar         & Steel aluminum look\\
-		Stem              & Manually adjustable, Batavus Ergo Matic III\\
-		Handles           & adjustable Batavus Ergo Grip II\\
-		Saddle            & Selle Royal 5160\\
-		Seatpost          & spring, Post Modern Compact\\
-		Dynamo            & Shimano Hub Dynamo\\
-		Headlight         & Trelock Hi-Power automatic halogen\\
-		Rear              & Smart battery automatically\\
-		Pedals            & aluminum antislip\\
-		Final							& AXA Defender\\
-		Chip theft        & Present\\
-		Crank             & Aluminum\\
-		Rack              & Aluminum\\
-		Quick Binder      & Binder Quattro\\
-		Mudguards         & Batavus hyalite II\\
-		Bell              & Bibia Touring\\
-		Balhoofdset       & VP semi-integrated, oversized\\
-		Shifters          & Batavus (8-speed)\\
-		Saddlebag         & Batavus saddlebag with plakset\\
-	\end{tabular}
-	\caption{}
-	\label{crescendoSpecs}
-\end{table}
-\subsection{Batavus Stratos Deluxe}
-\begin{table}
-	\begin{tabular}{ll}
-		Switching           & Spin System (shifter)\\
-		Monochromatic frame & Black\\
-		Chain guard         & Semi-open\\
-		Mudguards           & Aluminum\\
-		Rack                & Yes\\
-		Extra drive         & Regardless Motori degree\\
-		Type                & Men's\\
-		Frame Material      & Aluminum\\
-		Rim Material        & Aluminum\\
-		Rear braking system & Roller brake\\
-		Front braking system & Roller Brake\\
-		Number of gears      & 7 Gears\\
-		Gear System          & Shimano Nexus\\
-		Wheel Size           & 28 inch\\
-		Tirewidth            & 37 mm\\
-		Price                & 749,00\\
-	\end{tabular}
-	\caption{}
-	\label{stratosSpecs}
-\end{table}
 \bibliographystyle{plain}
 \bibliography{bicycle}
 \end{document}

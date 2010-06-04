@@ -371,12 +371,19 @@ def bmp2cm(filename):
 
         '''
     from numpy import pi, cos, sin, array
+    from uncertainties import ufloat
     f = open(filename, 'r')
     p = {}
     # parse the text file
     for i, line in enumerate(f):
         list1 = line[:-1].split(',')
-        p[list1[0]] = eval(list1[1])
+        # if there is an uncertainty value try to make a ufloat
+        try:
+            p[list1[0]] = ufloat(eval(list1[1]), eval(list1[2]))
+        # else keep it as a float
+        except:
+            p[list1[0]] = eval(list1[1])
+    print p
     mT = p['mR'] + p['mB'] + p['mH'] + p['mF']
     xT = (p['xB']*p['mB'] + p['xH']*p['mH'] + p['w']*p['mF'])/mT
     zT = (-p['rR']*p['mR'] + p['zB']*p['mB'] + p['zH']*p['mH'] - p['rF']*p['mF'])/mT
