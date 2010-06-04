@@ -370,8 +370,9 @@ def bmp2cm(filename):
         p is a dictionary of the parameters. the keys are the variable names
 
         '''
-    from numpy import pi, cos, sin, array
+    from numpy import pi, array
     from uncertainties import ufloat
+    from uncertainties.umath import sin, cos
     f = open(filename, 'r')
     p = {}
     # parse the text file
@@ -379,11 +380,10 @@ def bmp2cm(filename):
         list1 = line[:-1].split(',')
         # if there is an uncertainty value try to make a ufloat
         try:
-            p[list1[0]] = ufloat(eval(list1[1]), eval(list1[2]))
+            p[list1[0]] = ufloat((eval(list1[1]), eval(list1[2])))
         # else keep it as a float
         except:
             p[list1[0]] = eval(list1[1])
-    print p
     mT = p['mR'] + p['mB'] + p['mH'] + p['mF']
     xT = (p['xB']*p['mB'] + p['xH']*p['mH'] + p['w']*p['mF'])/mT
     zT = (-p['rR']*p['mR'] + p['zB']*p['mB'] + p['zH']*p['mH'] - p['rF']*p['mF'])/mT
