@@ -22,6 +22,8 @@ def replace_values(directory, template, newfile, replacers):
 
     from benchmark_bike_tools import uround
 
+    print replacers
+
     # open the template file
     f = open(directory + template, 'r')
     # open the new file
@@ -43,25 +45,24 @@ def replace_values(directory, template, newfile, replacers):
                 if '_' in match:
                     ques = None
                     try:
-                        var, row, col, ques = match.split('_') # this returns the variable
+                        var, row, col, ques = match.split('_')
                     except:
-                        var, row, col = match.split('_') # this returns the variable
-
+                        var, row, col = match.split('_')
+                    valStr = "replacers['" + var + "']" + '[' + row + ', ' + col + ']'
+                    print valStr
+                    value = eval(valStr)
+                    print 'value =', value
                     # if the match has a question mark it is an uncertainty value
                     if ques:
                         try:
-                            line = re.sub('\|(\w*\?)\|',
-                                    uround(eval('replacers[' + var + ']' + loc[:-1])).split('+/-')[1], line, count=1)
-                            print line
+                            line = re.sub('\|(\w*\?)\|', uround(value).split('+/-')[1], line, count=1)
                         except: # there is no uncertainty
                             pass
                     else:
                         try:
-                            line = re.sub('\|(\w*(?!\?))\|',
-                                    uround(eval('replacers[' + var + ']' + loc)).split('+/-')[0], line, count=1)
-                            print line
+                            line = re.sub('\|(\w*(?!\?))\|', uround(value).split('+/-')[0], line, count=1)
                         except: # there is no uncertainty
-                            line = re.sub('\|(\w*(?!\?))\|', str(eval('replacers[' + var + ']' + loc)), line, count=1)
+                            line = re.sub('\|(\w*(?!\?))\|', str(value), line, count=1)
                 # else the match is just a scalar
                 else:
                     # if the match has a question mark it is an uncertainty value
