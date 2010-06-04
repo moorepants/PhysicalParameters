@@ -358,16 +358,21 @@ def bike_eig(M, C1, K0, K2, v, g):
 def bmp2cm(filename):
     '''Return the benchmark canonical matrices from the bicycle parameters. Formulated from Meijaard et al. 2007.
 
-    Input:
-        filename is a text file with the 27 parameters listed in csv format. One
+    Parameters:
+    -----------
+    filename: file
+        is a text file with the 27 parameters listed in csv format. One
         parameter per line in the form: 'lamba,10/pi' or 'v,5'. Use the
         benchmark paper's units!
-    Output:
+    Returns:
+    --------
         M is the mass matrix
         C1 is the damping like matrix that is proportional to v
         K0 is the stiffness matrix proportional to gravity
         K2 is the stiffness matrix proportional to v**2
         p is a dictionary of the parameters. the keys are the variable names
+
+    This function handles parameters with uncertanties.
 
         '''
     from numpy import pi, array
