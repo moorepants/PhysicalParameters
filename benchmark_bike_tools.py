@@ -443,6 +443,8 @@ def abMatrix(M, C1, K0, K2, v, g):
     Returns:
         A : system dynamic matrix
         B : control matrix
+
+    The states are [roll rate, steer rate, roll angle, steer angle]
     '''
     from numpy import eye, zeros, vstack, hstack, dot
     from numpy.linalg import inv

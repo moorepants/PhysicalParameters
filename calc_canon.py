@@ -1,4 +1,5 @@
 import pickle as p
+from uncertainties.unumpy import nominal_values as nom
 
 from benchmark_bike_tools import *
 
@@ -12,7 +13,11 @@ for i, name in enumerate(data['bikes']):
     dir = 'data/bikeParameters/'
     fname = ''.join(name.split())
     M, C1, K0, K2, param = bmp2cm(dir + fname + 'Par.txt')
-    A, B = abMatrix(M, C1, K0, K2, param['v'], param['g'])
+    try:
+        A, B = abMatrix(nom(M), nom(C1), nom(K0), nom(K2), nom(param['v']),
+                nom(param['g']))
+    except:
+        A, B = abMatrix(M, C1, K0, K2, param['v'], param['g'])
     dir = 'data/bikeCanonical/'
     file = open(dir + fname + 'Can.txt', 'w')
     for mat in ['M','C1', 'K0', 'K2', 'A', 'B']:
