@@ -23,38 +23,43 @@ def replace_values(directory, template, newfile, replacers):
     from benchmark_bike_tools import uround
 
     # open the template file
-    f = open(template, 'r')
+    f = open(directory + template, 'r')
     # open the new file
-    fn = open(newfile, 'w')
+    fn = open(directory + newfile, 'w')
     for line in f:
-        #print line
+        print 'This is the template line:\n', line
         # find all of the matches in the line
         test = re.findall('\|(\w*.)\|', line)
-        #print 'search for u: ',  re.findall('\|(\w*\?)\|', line)
-        #print 'search for nom: ', re.findall('\|(\w*)(?!\?)\|', line)
+        print 'these are all the matches', test
+        print 'search for nom: ', re.findall('\|(\w*)(?!\?)\|', line)
+        print 'search for un: ',  re.findall('\|(\w*\?)\|', line)
         # if there are matches
         if test:
-            #print 'Found this!\n', test
+            print 'Found this!\n', test
             # go through each match and make a substitution
             for match in test:
-                #print "replace this: ", match
-                # if there is a '[' then the match is an array entry
-                if '[' in match:
-                    var = match.split('[')[0] # this returns the variable
-                    loc = '[' + match.split('[')[1] # may include question mark
+                print "replace this: ", match
+                # if there is a '_' then the match is an array entry
+                if '_' in match:
+                    ques = None
+                    try:
+                        var, row, col, ques = match.split('_') # this returns the variable
+                    except:
+                        var, row, col = match.split('_') # this returns the variable
+
                     # if the match has a question mark it is an uncertainty value
-                    if loc[-1] == '?':
+                    if ques:
                         try:
                             line = re.sub('\|(\w*\?)\|',
                                     uround(eval('replacers[' + var + ']' + loc[:-1])).split('+/-')[1], line, count=1)
-                            #print line
+                            print line
                         except: # there is no uncertainty
                             pass
                     else:
                         try:
                             line = re.sub('\|(\w*(?!\?))\|',
                                     uround(eval('replacers[' + var + ']' + loc)).split('+/-')[0], line, count=1)
-                            #print line
+                            print line
                         except: # there is no uncertainty
                             line = re.sub('\|(\w*(?!\?))\|', str(eval('replacers[' + var + ']' + loc)), line, count=1)
                 # else the match is just a scalar
@@ -64,23 +69,23 @@ def replace_values(directory, template, newfile, replacers):
                         try:
                             line = re.sub('\|(\w*\?)\|',
                                     uround(replacers[match[:-1]]).split('+/-')[1], line, count=1)
-                            #print line
+                            print line
                         except:
                             pass
                     else:
                         try:
                             line = re.sub('\|(\w*(?!\?))\|',
                                     uround(replacers[match]).split('+/-')[0], line, count=1)
-                            #print line
+                            print line
                         except:
                             line = re.sub('\|(\w*(?!\?))\|', str(replacers[match][i]), line, count=1)
-        #print line
+        print line
         fn.write(line)
     f.close()
     fn.close()
-    os.system('pdflatex -output-directory=' + directory + ' ' + newfile)
-    os.system('rm ' + directory + '*.aux')
-    os.system('rm ' + directory + '*.log')
+    # os.system('pdflatex -output-directory=' + directory + ' ' + newfile)
+    # os.system('rm ' + directory + '*.aux')
+    # os.system('rm ' + directory + '*.log')
 
 def uround(value):
     '''Round values according to their uncertainity
