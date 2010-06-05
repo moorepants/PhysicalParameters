@@ -861,8 +861,29 @@ and the unknown global inertia tensor can be solved for.
     pendulum.}
     \label{fig:StratosFork}
 \end{figure}
+\section{Parameters}
+\subfile{../parTables/BatavusBrowserPar.tex}
+\subfile{../parTables/BatavusBrowserInstrumentedPar.tex}
+\subfile{../parTables/BatavusCrescendoDeluxePar.tex}
+\subfile{../parTables/GaryFisherPar.tex}
+\subfile{../parTables/BianchiPistaPar.tex}
+\subfile{../parTables/BatavusStratosDeluxePar.tex}
+\subfile{../parTables/YellowBikePar.tex}
+\subfile{../parTables/YellowBikeReversedForkPar.tex}
 \section{Linear Analysis}
 \subsection{Canonical Matrices}
+The final results are presented in the form used by the benchmark model. These
+can be used to populate the canonical form
+\begin{equation}
+\mathbf{M\ddot{q}}+v\mathbf{C}_1\mathbf{\dot{q}}+\left[g\mathbf{K}_0+v^2\mathbf{K}_2\right]\mathbf{q}=0
+\label{eq:canonical}
+\end{equation}
+of the linear benchmark equations of motion presented in
+\cite{Meijaard2007}. The coefficient matrices for the
+example rider and bicycle follow in Eqs.~\ref{eq:M}-\ref{eq:K2}.
+\subsubsection{Batavus Browser}
+\subfile{../data/bikeCanonical/BatavusBrowserCan.tex}
+
 \subsection{Eigenvalues}
 \subsection{Frequency Response}
 \appendix
