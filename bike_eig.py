@@ -16,13 +16,13 @@ vd = np.zeros(nBk)
 vw = np.zeros(nBk)
 vc = np.zeros(nBk)
 eigFig = plt.figure(num=1)
-dir = 'data/bikeRiderCanonical/'
+direct = 'data/bikeRiderCanonical/'
 vel = np.linspace(0, 20, num=1000)
 for i, name in enumerate(data['bikes']):
     fname = ''.join(name.split()) + 'RiderCan.p'
-    file = open(dir + fname)
-    can = pickle.load(file)
-    file.close()
+    f = open(direct + fname)
+    can = pickle.load(f)
+    f.close()
     evals, evecs = bike_eig(can['M'], can['C1'], can['K0'], can['K2'], vel, 9.81)
     wea, cap, cas = sort_modes(evals, evecs)
     plt.figure(1)

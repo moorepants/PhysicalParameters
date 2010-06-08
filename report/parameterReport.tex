@@ -45,7 +45,7 @@ bottom bracket are the only parts on the bike. The fork has been reversed to
 the fork in normal position and the fork reversed.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=5in]{images/yellow.jpg}
+        \includegraphics[width=4in]{images/yellow.jpg}
     \end{center}
     \caption{Side view of the yellow bicycle with the fork in the reversed
     posistion.}
@@ -69,14 +69,14 @@ proprieties of the stock Browser model and also the same bike with the
 instrumentation used in our experiments.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=5in]{images/browser.jpg}
+        \includegraphics[width=4in]{images/browser.jpg}
     \end{center}
     \caption{Side view of the Batavus Browser as from the factory.}
     \label{fig:browser}
 \end{figure}
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=5in]{images/browserIns.jpg}
+        \includegraphics[width=4in]{images/browserIns.jpg}
     \end{center}
     \caption{The Batavus Browser with instrumentation as used
     in~\cite{Kooijman2009}}
@@ -117,7 +117,7 @@ The Pista is a modern steel track bicycle. Specifications, taken from the Bianch
 website~\cite{Bianchi2009}, are as follows:
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=5in]{images/pista.jpg}
+        \includegraphics[width=4in]{images/pista.jpg}
     \end{center}
     \caption{The Bianchi Pista hanging from a spring scale.}
     \label{fig:pista}
@@ -161,7 +161,7 @@ website~\cite{Bianchi2009}, are as follows:
 The Gary Fisher Ziggurat is a modern front suspended mountain bike.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=5in]{images/fisher.jpg}
+        \includegraphics[width=4in]{images/fisher.jpg}
     \end{center}
     \caption{The Gary Fisher mountain bike hanging from a spring scale.}
     \label{fig:fisher}
@@ -189,7 +189,7 @@ black and white. A great bike for a good end to touring. And that works fine
 with 8 gears, suspension fork and suspension seatpost.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=5in]{images/crescendo.jpg}
+        \includegraphics[width=4in]{images/crescendo.jpg}
     \end{center}
     \caption{A side view of the Batavus Crescendo Deluxe.}
     \label{fig:crescendo}
@@ -235,7 +235,7 @@ with 8 gears, suspension fork and suspension seatpost.
 \subsection{Batavus Stratos Deluxe}
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=5in]{images/stratos.jpg}
+        \includegraphics[width=4in]{images/stratos.jpg}
     \end{center}
     \caption{A side view of the Batavus Stratos Deluxe}
     \label{fig:stratos}
@@ -310,6 +310,10 @@ calculated by
 	r=\frac{\textrm{distance}}{2\cdot\pi\cdot\textrm{rotations}}
 	\label{eq:wheelRadius}
 \end{equation}
+\begin{equation}
+    \sigma_r^{2}=\left(\frac{\sigma_d}{2\pi n}\right)^{2}
+    \label{eq:WheelRadVar}
+\end{equation}
 \begin{figure}[tb]
 	\begin{center}
 		\includegraphics[width=4in]{images/tireChalk.jpg}
@@ -341,8 +345,12 @@ $\pm0.2^{\circ}$ accuracy. The bicycle was fixed vertically, the front wheel
 was aligned with the rear frame and the bicycle was unloaded. The steer axis
 tilt $\lambda$ is the complement to the head tube angle.
 \begin{equation}
-	\lambda=\frac{\pi}{180}(90^{\circ}-\lambda_{ht})
+    \lambda=\frac{\pi}{180^{\circ}}(90^{\circ}-\lambda_{ht})
 \label{eq:headTubeAngle}
+\end{equation}
+\begin{equation}
+    \sigma_\lambda^{2}=-\sigma_{\lambda_{ht}}^{2}\left(\frac{\pi}{180^\circ}\right)^2
+    \label{eq:HeadTubeAngleVar}
 \end{equation}
 \begin{table}
 	\begin{tabular}{lllllllll}
@@ -365,6 +373,13 @@ surface.
 \begin{equation}
 	c=\frac{r_\mathrm{F}\sin{\lambda}-f_o}{\cos{\lambda}}
 	\label{eq:trail}
+\end{equation}
+\begin{equation}
+    \sigma_{c}^{2}=\sigma_{r_{\mathrm{F}}}^{2}\tan^2{\lambda} -
+    \sigma_{f_o}^{2}\sec^2{\lambda} +
+    \sigma_{\lambda}^{2}\left(r_\mathrm{F}\sec^2{\lambda} -
+    f_o\sec{\lambda}\tan{\lambda}\right)^2
+    \label{eq:TrailVar}
 \end{equation}
 \begin{table}
 	\begin{tabular}{lllllllll}
@@ -395,7 +410,7 @@ resolution of 100g. Then each of the four bicycle parts were measured using a
 Molen 20kg scale with a resolution of 20g.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=5in]{images/massScale.jpg}
+        \includegraphics[width=4in]{images/massScale.jpg}
     \end{center}
     \caption{The scale used to measure the mass of each bicycle component.}
     \label{fig:massScale}
@@ -436,7 +451,7 @@ measurements allow for the calculation of the center of mass location in the
 global reference frame.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=5in]{images/pendDist.jpg}
+        \includegraphics[width=4in]{images/pendDist.jpg}
     \end{center}
     \caption{Measuring the distance from the pendulum axis to the rear wheel
     axle using level ruler.}
@@ -444,7 +459,7 @@ global reference frame.
 \end{figure}
 \begin{figure}[tb]
 	\begin{center}
-		\includegraphics[width=5in]{images/level.jpg}
+		\includegraphics[width=4in]{images/level.jpg}
 	\end{center}
 	\caption{The digital level was mounted to a straight edge that was aligned
     with the headtube of the bicycle frame. This was done without allowing the
@@ -469,15 +484,29 @@ nominal configuration to the hanging orientation, rotated about the $Y$ axis.
 	\beta=\lambda-\alpha
     \label{eq:frameRotAng}
 \end{equation}
+\begin{equation}
+    \sigma_{\beta}^{2} = \sigma_{\lambda}^{2} + \sigma_{\alpha}^{2}
+    \label{eq:FrameRotAngVar}
+\end{equation}
 The pendulum axis $X_P$ is simply a line in the nominal bicycle reference frame with a slope $m$ and a z-intercept $b$. The slope can be shown to be
 \begin{equation}
 	m_i=-\tan{\beta_i}
 \label{eq:slope}
 \end{equation}
+\begin{equation}
+    \sigma_{m}^{2} = \sigma_{\beta}^{2}\sec^{4}{\beta}
+    \label{eq:SlopeVar}
+\end{equation}
 The z-intercept can be shown to be
 \begin{equation}
     b_i=-\left(\frac{a_\mathrm{B}}{\cos{\beta_i}}+r_\mathrm{R}\right)
     \label{eq:zInt}
+\end{equation}
+\begin{equation}
+    \sigma_{b}^{2} = \sigma_{a}^{2}\sec^{2}{\beta} +
+    \sigma_{r_\mathrm{R}}^{2} +
+    \sigma_{\beta}^{2}a^{2}\sec^{2}{\beta}\tan^{2}{\beta}
+    \label{eq:zIntvar}
 \end{equation}
 Only two lines are required to calculate the center of mass of the laterally
 symmetric frame, but more orientations increase the center of mass measurement
@@ -566,6 +595,14 @@ slope of the line in the benchmark reference frame is the same as for the
 frame but the z-intercept is different:
 \begin{equation}
     b = w\tan{\beta} - r_\mathrm{F} - \frac{a}{\cos{\beta}} 
+    \label{eq:zIntFork}
+\end{equation}
+\begin{equation}
+    \sigma_{b}^{2} = \sigma_{w}^{2}\tan^{2}\beta +
+    \sigma_{\beta}^{2}\left(w\sec^{2}\beta -
+    a\sec\beta\tan\beta\right)^{2} + \sigma_{r_\mathrm{F}}^{2} +
+    \sigma_{a}^{2}\sec^{2}\beta
+    \label{eq:zIntForkVar}
 \end{equation}
 \section{Moment of Inertia}
 The moments of inertia of the wheels, frame and fork were measured by taking
@@ -585,7 +622,7 @@ determine only the period of oscillation which is need for the moment of inertia
 calculations.
 \begin{figure}[tbp]
     \begin{center}
-        \includegraphics[width=5in]{../data/pendDat/graphs/BrowserFrameCompoundFirst1.png}
+        \includegraphics[width=4in]{../data/pendDat/graphs/BrowserFrameCompoundFirst1.png}
     \end{center}
     \caption{Example of the raw voltage data taken during a 30 second
     measurement of the oscillation of one of the components.}
@@ -606,7 +643,7 @@ prevent the torsional pendulum from swinging. Figure~\ref{fig:beating} shows an
 example of the beating like phenomena.
 \begin{figure}[htpb]
     \begin{center}
-        \includegraphics[width=5in]{../data/pendDat/graphs/CrescendoForkTorsionalFirst2.png}
+        \includegraphics[width=4in]{../data/pendDat/graphs/CrescendoForkTorsionalFirst2.png}
     \end{center}
     \caption{An example of the beating-like phenomena observed on 5\% of the
     experiments.}
@@ -668,7 +705,7 @@ pendulum is made up of a rigid mount, an upper clamp, a torsion rod, and
 various lower clamps.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=5in]{images/fixture.jpg}
+        \includegraphics[width=4in]{images/fixture.jpg}
     \end{center}
     \caption{The rigid pendulumfixture mounted to a concrete column.}
     \label{fig:fixture}
@@ -684,7 +721,7 @@ radial moment of inertia can can calculated as such:
 The torsional pendulum was calibrated using a known moment of inertia. 
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=5in]{images/rod.jpg}
+        \includegraphics[width=4in]{images/rod.jpg}
     \end{center}
     \caption{The steel calibration rod.}
     \label{fig:rod}
@@ -720,7 +757,7 @@ inertia about the axle is calculated by:
 \end{equation}
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=5in]{images/CrescendoFwheelTorsionalFirst.jpg}
+        \includegraphics[width=4in]{images/CrescendoFwheelTorsionalFirst.jpg}
     \end{center}
     \caption{The front wheel of the Crescendo hung as a torsional pendulum.}
     \label{fig:FwheelTor}
@@ -752,7 +789,7 @@ $\overline{T}$ is the averaged period and $g$ is the local acceleration due to
 gravity. Table  gives the calculated values.
 \begin{figure}[htpb]
     \begin{center}
-        \includegraphics[width=5in]{images/wheelIyy.jpg}
+        \includegraphics[width=4in]{images/wheelIyy.jpg}
     \end{center}
     \caption{A wheel hung as a compoun pendulum.}
     \label{fig:wheelIyy}
@@ -846,7 +883,7 @@ Calculating all three $J_{i}$ allows one to form
 and the unknown global inertia tensor can be solved for.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=5in]{images/YellowFrameCompoundFirst.jpg}
+        \includegraphics[width=4in]{images/YellowFrameCompoundFirst.jpg}
     \end{center}
     \caption{The rear frame hung as a compound pendulum.}
     \label{fig:FrameCompound}
@@ -855,20 +892,28 @@ and the unknown global inertia tensor can be solved for.
 \subsection{Fork}
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=5in]{images/StratosForkTorsionalThird.jpg}
+        \includegraphics[width=4in]{images/StratosForkTorsionalThird.jpg}
     \end{center}
     \caption{The Stratos fork and handlebar assembly hung as a torsional
     pendulum.}
     \label{fig:StratosFork}
 \end{figure}
 \section{Parameters}
+\subsection{Batavus Browser}
 \subfile{../parTables/BatavusBrowserPar.tex}
+\subsection{Batavus Browser Instrumented}
 \subfile{../parTables/BatavusBrowserInstrumentedPar.tex}
+\subsection{Batavus Crescendo Deluxe}
 \subfile{../parTables/BatavusCrescendoDeluxePar.tex}
+\subsection{Gary Fisher}
 \subfile{../parTables/GaryFisherPar.tex}
+\subsection{Bianchi Pista}
 \subfile{../parTables/BianchiPistaPar.tex}
+\subsection{Batavus Stratos Deluxe}
 \subfile{../parTables/BatavusStratosDeluxePar.tex}
+\subsection{Yellow Bike}
 \subfile{../parTables/YellowBikePar.tex}
+\subsection{Yellow Bike Reversed Fork}
 \subfile{../parTables/YellowBikeReversedForkPar.tex}
 \section{Linear Analysis}
 \subsection{Canonical Matrices}
@@ -883,6 +928,21 @@ of the linear benchmark equations of motion presented in
 example rider and bicycle follow in Eqs.~\ref{eq:M}-\ref{eq:K2}.
 \subsubsection{Batavus Browser}
 \subfile{../data/bikeCanonical/BatavusBrowserCan.tex}
+\subsubsection{Batavus Browser Instrumented}
+\subfile{../data/bikeCanonical/BatavusBrowserInstrumentedCan.tex}
+\subsubsection{Batavus Crescendo Deluxe}
+\subfile{../data/bikeCanonical/BatavusCrescendoDeluxeCan.tex}
+\subsubsection{Gary Fisher}
+\subfile{../data/bikeCanonical/GaryFisherCan.tex}
+\subsubsection{Bianchi Pista}
+\subfile{../data/bikeCanonical/BianchiPistaCan.tex}
+\subsubsection{Batavus Stratos Deluxe}
+\subfile{../data/bikeCanonical/BatavusStratosDeluxeCan.tex}
+\subsubsection{Yellow Bike}
+\subfile{../data/bikeCanonical/YellowBikeCan.tex}
+\subsubsection{Yellow Bike Reversed Fork}
+\subfile{../data/bikeCanonical/YellowBikeReversedForkCan.tex}
+
 
 \subsection{Eigenvalues}
 \subsection{Frequency Response}
