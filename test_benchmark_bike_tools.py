@@ -8,6 +8,7 @@ def test_nom_ueig():
     w, v = eig(A)
     uA = uarray((A, sA))
     uw, uv = ueig(A)
-    assert nominal_values(uw) == w && nominal_values(uv) == v
+    assert nominal_values(uw) == w
+    assert nominal_values(uv) == v
 
 
