@@ -1,3 +1,30 @@
+def ueig(A):
+    '''
+    Returns eigenvalues and eigenvectors with uncertainties.
+
+    Parameters:
+    -----------
+    A : ndarry, shape(n x n)
+
+    Returns:
+    --------
+    w : ndarry, shape = (n,)
+    v : ndarray, shape = (n, n)
+
+    uses both numpy.linalg.eig and the uncertainties package to calculate eigen
+    values and eigenvectors with uncertainties
+
+    '''
+    from uncertainties import ufloat
+    from uncertainties.unumpy import nominal_values, std_devs
+    from numpy.linalg import eig
+
+    # separate the nominal values from the uncertainties
+    uA = std_devs(A)
+    nA = nominal_values(A)
+    # the nominal eigenvalues and eigenvectors
+    nw, nv = eig(nA)
+
 def replace_values(directory, template, newfile, replacers):
     '''
     Replaces variables with values in a text file.
