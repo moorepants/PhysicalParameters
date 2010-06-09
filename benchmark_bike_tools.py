@@ -17,27 +17,34 @@ def ueig(uA):
     '''
     from copy import copy
     from uncertainties import ufloat
-    from uncertainties.unumpy import nominal_values, std_devs
+    from uncertainties.unumpy import nominal_values, std_devs, uarray
     from numpy.linalg import eig
-    from numpy import zeros, diag
+    from numpy import zeros, diag, zeros_like, hsplit, dot
 
     # separate the nominal values from the uncertainties
     sA = std_devs(uA)
+    print 'sA', sA
     CA = diag(sA.flatten())
+    print 'CA =\n', CA
     A = nominal_values(uA)
     # the nominal eigenvalues and eigenvectors
     w, v = eig(A)
-    delta = 1e-6
-    pw = zeros((A.shape[0], A.shape[1], w.shape[0]))
-    pv = zeros((A.shape[0], A.shape[1], v.shape[0], v.shape[1]))
-    for i, row in enumerate(A):
-        for j, col in enumerate(row):
-            pA = copy(A)
-            pA[i, j] = pA[i, j] + delta
-            pw[i, j], pv[i, j] = eig(pA)
-    print pw.shape
-    dw = (pw - w)/delta
-    dv = (pv - v)/delta
+    FA = zeros((w.shape[0], A.flatten().shape[0]))
+    pw = zeros_like(FA)
+    print 'pw.shape =', pw.shape
+    delta = 1e-10
+    for i, a in enumerate(A.flatten()):
+        print 'a', a
+        pA = copy(A).flatten()
+        pA[i] = pA[i] + delta
+        print 'pA', pA
+        pA = hsplit(pA, A.shape[0])
+        pw[:, i] = eig(pA)[0]
+    FA = (pw.T - w)/delta
+    FA = FA.T
+    CW = dot(dot(FA, CA), FA.T)
+    uw = uarray((w, diag(CW)))
+    return uw
 
 def replace_values(directory, template, newfile, replacers):
     '''
