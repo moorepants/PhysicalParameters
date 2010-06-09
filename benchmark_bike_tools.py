@@ -19,7 +19,7 @@ def ueig(uA):
     from uncertainties import ufloat
     from uncertainties.unumpy import nominal_values, std_devs, uarray
     from numpy.linalg import eig
-    from numpy import zeros, diag, zeros_like, hsplit, dot, vstack
+    from numpy import zeros, diag, zeros_like, hsplit, dot, vstack, finfo, sqrt
 
     # separate the nominal values from the uncertainties
     sA = std_devs(uA)
@@ -34,18 +34,19 @@ def ueig(uA):
     w, v = eig(A)
 
     # FA is the jacobian
-    FA = zeros((w.shape[0], A.flatten().shape[0]))
+    FAw = zeros((w.shape[0], A.flatten().shape[0]))
+    FAv = zeros((v.flatten().shape[0], A.flatten().shape[0]))
 
     # pw is the perturbed eigenvectors used in the FA calc
-    pw = zeros_like(FA)
+    pw = zeros_like(FAw)
     pv = zeros((w.shape[0]**2, A.flatten().shape[0]))
     print pv.shape
 
-    # delta is the numerical differentiation step
-    delta = 1e-10
-
     # calculate the perturbed eigenvalues for each A entry
     for i, a in enumerate(A.flatten()):
+        # set the differentiation step
+        delta = sqrt(finfo(float).eps)*a
+
         # make a copy of A
         pA = copy(A).flatten()
 
@@ -57,16 +58,18 @@ def ueig(uA):
 
         # calculate the eigenvalues
         pw[:, i], tpv = eig(pA)
+        FAw[:, i] = (pw[:, i] - w)/delta
         print tpv
         print tpv.flatten('F')
         pv[:, i] = tpv.flatten('F')
+        FAv[:, i] = (pv[:, i] - v.flatten('F'))/delta
 
-    # form the jacobian
-    FAw = (pw.T - w)/delta
-    FAw = FAw.T
+    #### form the jacobian
+    ###FAw = (pw.T - w)/delta
+    ###FAw = FAw.T
 
-    FAv = (pv.T - v.flatten('F'))/delta
-    FAv = FAv.T
+    ###FAv = (pv.T - v.flatten('F'))/delta
+    ###FAv = FAv.T
 
     # calculate the covariance matrix for the eigenvalues
     Cw = dot(dot(FAw, CA), FAw.T)
