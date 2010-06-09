@@ -64,13 +64,6 @@ def ueig(uA):
         pv[:, i] = tpv.flatten('F')
         FAv[:, i] = (pv[:, i] - v.flatten('F'))/delta
 
-    #### form the jacobian
-    ###FAw = (pw.T - w)/delta
-    ###FAw = FAw.T
-
-    ###FAv = (pv.T - v.flatten('F'))/delta
-    ###FAv = FAv.T
-
     # calculate the covariance matrix for the eigenvalues
     Cw = dot(dot(FAw, CA), FAw.T)
     Cv = dot(dot(FAv, CA), FAv.T)
