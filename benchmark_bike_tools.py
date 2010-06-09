@@ -19,32 +19,64 @@ def ueig(uA):
     from uncertainties import ufloat
     from uncertainties.unumpy import nominal_values, std_devs, uarray
     from numpy.linalg import eig
-    from numpy import zeros, diag, zeros_like, hsplit, dot
+    from numpy import zeros, diag, zeros_like, hsplit, dot, vstack
 
     # separate the nominal values from the uncertainties
     sA = std_devs(uA)
-    print 'sA', sA
+
+    # create the covariance matrix for A
     CA = diag(sA.flatten())
-    print 'CA =\n', CA
+
+    # pull out the nominal A
     A = nominal_values(uA)
+
     # the nominal eigenvalues and eigenvectors
     w, v = eig(A)
+
+    # FA is the jacobian
     FA = zeros((w.shape[0], A.flatten().shape[0]))
+
+    # pw is the perturbed eigenvectors used in the FA calc
     pw = zeros_like(FA)
-    print 'pw.shape =', pw.shape
+    pv = zeros((w.shape[0]**2, A.flatten().shape[0]))
+    print pv.shape
+
+    # delta is the numerical differentiation step
     delta = 1e-10
+
+    # calculate the perturbed eigenvalues for each A entry
     for i, a in enumerate(A.flatten()):
-        print 'a', a
+        # make a copy of A
         pA = copy(A).flatten()
+
+        # perturb the entry
         pA[i] = pA[i] + delta
-        print 'pA', pA
+
+        # back to matrix
         pA = hsplit(pA, A.shape[0])
-        pw[:, i] = eig(pA)[0]
-    FA = (pw.T - w)/delta
-    FA = FA.T
-    CW = dot(dot(FA, CA), FA.T)
-    uw = uarray((w, diag(CW)))
-    return uw
+
+        # calculate the eigenvalues
+        pw[:, i], tpv = eig(pA)
+        print tpv
+        print tpv.flatten('F')
+        pv[:, i] = tpv.flatten('F')
+
+    # form the jacobian
+    FAw = (pw.T - w)/delta
+    FAw = FAw.T
+
+    FAv = (pv.T - v.flatten('F'))/delta
+    FAv = FAv.T
+
+    # calculate the covariance matrix for the eigenvalues
+    Cw = dot(dot(FAw, CA), FAw.T)
+    Cv = dot(dot(FAv, CA), FAv.T)
+
+    # build the eigenvalues with uncertainties
+    uw = uarray((w, diag(Cw)))
+    uv = uarray((v.flatten('F'), diag(Cv)))
+    uv = vstack(hsplit(uv, w.shape[0])).T
+    return uw, uv
 
 def replace_values(directory, template, newfile, replacers):
     '''
