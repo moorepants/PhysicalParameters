@@ -32,14 +32,15 @@ def ueig(uA):
 
     # the nominal eigenvalues and eigenvectors
     w, v = eig(A)
+    print 'w=', w
 
     # FA is the jacobian
     FAw = zeros((w.shape[0], A.flatten().shape[0]))
     FAv = zeros((v.flatten().shape[0], A.flatten().shape[0]))
 
     # pw is the perturbed eigenvectors used in the FA calc
-    pw = zeros_like(FAw)
-    pv = zeros((w.shape[0]**2, A.flatten().shape[0]))
+    pw = zeros((w.shape[0], A.flatten().shape[0]), dtype=complex)
+    pv = zeros((w.shape[0]**2, A.flatten().shape[0]), dtype=complex)
 
     # calculate the perturbed eigenvalues for each A entry
     for i, a in enumerate(A.flatten()):
@@ -57,11 +58,17 @@ def ueig(uA):
 
         # back to matrix
         pA = hsplit(pA, A.shape[0])
+        print 'A', A
+        print 'pA', pA
 
         # calculate the eigenvalues
         print eig(pA)[0]
         pw[:, i], tpv = eig(pA)
+        print 'perturbed eig', pw[:, i]
+        print 'nom eig', w
+        print 'delta', delta
         FAw[:, i] = (pw[:, i] - w)/delta
+        print "FAw column=", FAw[:, i]
         pv[:, i] = tpv.flatten('F')
         FAv[:, i] = (pv[:, i] - v.flatten('F'))/delta
 
