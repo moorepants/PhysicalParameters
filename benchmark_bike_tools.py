@@ -651,7 +651,8 @@ def abMatrix(M, C1, K0, K2, v, g):
     The states are [roll rate, steer rate, roll angle, steer angle]
     '''
     from numpy import eye, zeros, vstack, hstack, dot
-    from numpy.linalg import inv
+    from uncertainties.unumpy.ulinalg import inv
+
     a11 = -v*C1
     a12 = -(g*K0 + v**2*K2)
     a21 = eye(2)
