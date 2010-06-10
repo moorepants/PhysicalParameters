@@ -544,12 +544,13 @@ def bike_eig(M, C1, K0, K2, v, g):
     '''
     from numpy.linalg import eig
     from numpy import zeros
+    from benchmark_bike_tools import ueig2
     m, n = 2*M.shape[0], v.shape[0]
-    evals = zeros((n, m), dtype='complex128')
-    evecs = zeros((n, m, m), dtype='complex128')
+    evals = zeros((n, m), dtype='object') #dtype='complex128')
+    evecs = zeros((n, m, m), dtype='object') #dtype='complex128')
     for i, speed in enumerate(v):
         A, B = abMatrix(M, C1, K0, K2, speed, g)
-        w, vec = eig(A)
+        w, vec = ueig2(A)
         evals[i] = w
         evecs[i] = vec
     return evals, evecs

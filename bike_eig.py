@@ -10,7 +10,7 @@ f = open('data/data.p', 'r')
 data = pickle.load(f)
 f.close()
 
-data['bikes'].append('Jodi Bike')
+#data['bikes'].append('Jodi Bike')
 
 nBk = len(data['bikes'])
 
@@ -40,8 +40,8 @@ for i, name in enumerate(data['bikes']):
     f = open(direct + fname)
     can = pickle.load(f)
     f.close()
-    for k, v in can.items():
-        can[k] = nominal_values(v)
+    #for k, v in can.items():
+        #can[k] = nominal_values(v)
     evals, evecs = bike_eig(can['M'], can['C1'], can['K0'], can['K2'], vel, 9.81)
     wea, cap, cas = sort_modes(evals, evecs)
     vd[i], vw[i], vc[i] = critical_speeds(vel, wea['evals'], cap['evals'])
