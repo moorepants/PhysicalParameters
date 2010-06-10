@@ -58,6 +58,7 @@ for i, name in enumerate(data['bikes']):
     plt.title('{name}\nEigenvalues vs Speed'.format(name=name))
     plt.xlabel('Speed [m/s]')
     plt.ylabel('Real and Imaginary Parts of the Eigenvalue [1/s]')
+    plt.savefig('plots/' + ''.join(name.split()) + 'EigPlot.png')
     # plot all bikes on the same plot
     plt.figure(nBk + 1)
     plt.plot(vel, np.abs(np.imag(wea['evals'])), color=colors[i], label='_nolegend_', linestyle='--')
@@ -87,4 +88,4 @@ except:
 #plt.plot(vc - vw, bike)
 #plt.legend([r'$v_d$', r'$v_c$', r'$v_w$', 'stable speed range'])
 #plt.yticks(np.arange(8), tuple(data['bikes']))
-plt.show()
+#plt.show()
