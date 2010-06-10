@@ -8,6 +8,8 @@ f = open('data/data.p', 'r')
 data = p.load(f)
 f.close()
 
+data['bikes'].append('Jodi Bike')
+
 # write the parameter files
 for i, name in enumerate(data['bikes']):
     directory = 'data/bikeParameters/'

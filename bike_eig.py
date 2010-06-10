@@ -10,9 +10,11 @@ f = open('data/data.p', 'r')
 data = pickle.load(f)
 f.close()
 
+data['bikes'].append('Jodi Bike')
+
 nBk = len(data['bikes'])
 
-colors = ['k', 'r', 'b', 'g', 'y', 'm', 'c', 'orange']
+colors = ['k', 'r', 'b', 'g', 'y', 'm', 'c', 'orange', 'red']
 vd = np.zeros(nBk)
 vw = np.zeros(nBk)
 vc = np.zeros(nBk)
