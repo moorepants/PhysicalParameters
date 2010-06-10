@@ -1,3 +1,19 @@
+def ueig2(uA):
+    from uncertainties.unumpy.core import wrap_array_func
+    import numpy
+
+    ueig0 = wrap_array_func(lambda m: numpy.linalg.eig(m)[0])
+    ueig1 = wrap_array_func(lambda m: numpy.linalg.eig(m)[1])
+
+    def eig(m):
+        """
+        Version of numpy.linalg.eig that works on matrices that contain
+        numbers with uncertainties.
+        """
+        return (ueig0(m), ueig1(m))
+
+    return eig(uA)
+
 def ueig(uA):
     '''
     Returns eigenvalues and eigenvectors with uncertainties.
