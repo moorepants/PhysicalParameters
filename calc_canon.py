@@ -15,11 +15,12 @@ for i, name in enumerate(data['bikes']):
     directory = 'data/bikeParameters/'
     fname = ''.join(name.split())
     M, C1, K0, K2, param = bmp2cm(directory + fname + 'Par.txt')
-    try:
-        A, B = abMatrix(nom(M), nom(C1), nom(K0), nom(K2), nom(param['v']),
-                nom(param['g']))
-    except:
-        A, B = abMatrix(M, C1, K0, K2, param['v'], param['g'])
+    #try:
+        #A, B = abMatrix(nom(M), nom(C1), nom(K0), nom(K2), nom(param['v']),
+                #nom(param['g']))
+    #except:
+        #A, B = abMatrix(M, C1, K0, K2, param['v'], param['g'])
+    A, B = abMatrix(M, C1, K0, K2, param['v'], param['g'])
     directory = 'data/bikeCanonical/'
     file = open(directory + fname + 'Can.txt', 'w')
     for mat in ['M','C1', 'K0', 'K2', 'A', 'B']:
