@@ -403,13 +403,19 @@ def sort_modes(evals, evecs):
         # for each current eigenvalue
         used = []
         for j, eig in enumerate(speed):
-            x, y = real(evalsorg[i, j]), imag(evalsorg[i, j])
+            try:
+                x, y = real(evalsorg[i, j].nominal_value), imag(evalsorg[i, j].nominal_value)
+            except:
+                x, y = real(evalsorg[i, j]), imag(evalsorg[i, j])
             # for each eigenvalue at the next speed
             dist = zeros(4)
             for k, eignext in enumerate(evals[i + 1]):
-                xn, yn = real(eignext), imag(eignext)
+                try:
+                    xn, yn = real(eignext.nominal_value), imag(eignext.nominal_value)
+                except:
+                    xn, yn = real(eignext), imag(eignext)
                 # distance between points in the real/imag plane
-                dist[k] = abs(sqrt((xn - x)**2 + (yn - y)**2))
+                dist[k] = abs(((xn - x)**2 + (yn - y)**2)**0.5)
             if argmin(dist) in used:
                 # set the already used indice higher
                 dist[argmin(dist)] = max(dist) + 1.
