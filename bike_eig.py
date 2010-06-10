@@ -15,7 +15,7 @@ colors = ['k', 'r', 'b', 'g', 'y', 'm', 'c', 'orange']
 vd = np.zeros(nBk)
 vw = np.zeros(nBk)
 vc = np.zeros(nBk)
-eigFig = plt.figure(num=1)
+eigFig = plt.figure(num=nBk+1)
 direct = 'data/bikeRiderCanonical/'
 vel = np.linspace(0, 20, num=1000)
 for i, name in enumerate(data['bikes']):
@@ -25,7 +25,7 @@ for i, name in enumerate(data['bikes']):
     f.close()
     evals, evecs = bike_eig(can['M'], can['C1'], can['K0'], can['K2'], vel, 9.81)
     wea, cap, cas = sort_modes(evals, evecs)
-    plt.figure(1)
+    plt.figure(nBk+1)
     plt.plot(vel, np.abs(np.imag(wea['evals'])), color=colors[i], label='_nolegend_', linestyle='--')
     plt.plot(vel, np.zeros_like(vel), 'k-', label='_nolegend_')
     plt.plot(vel, np.real(wea['evals']), color=colors[i], label='_nolegend_')

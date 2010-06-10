@@ -40,12 +40,14 @@ def ueig(uA):
     # pw is the perturbed eigenvectors used in the FA calc
     pw = zeros_like(FAw)
     pv = zeros((w.shape[0]**2, A.flatten().shape[0]))
-    print pv.shape
 
     # calculate the perturbed eigenvalues for each A entry
     for i, a in enumerate(A.flatten()):
         # set the differentiation step
-        delta = sqrt(finfo(float).eps)*a
+        if a == 0.:
+            delta = 1e-8
+        else:
+            delta = sqrt(finfo(float).eps)*a
 
         # make a copy of A
         pA = copy(A).flatten()
@@ -57,16 +59,16 @@ def ueig(uA):
         pA = hsplit(pA, A.shape[0])
 
         # calculate the eigenvalues
+        print eig(pA)[0]
         pw[:, i], tpv = eig(pA)
         FAw[:, i] = (pw[:, i] - w)/delta
-        print tpv
-        print tpv.flatten('F')
         pv[:, i] = tpv.flatten('F')
         FAv[:, i] = (pv[:, i] - v.flatten('F'))/delta
 
     # calculate the covariance matrix for the eigenvalues
     Cw = dot(dot(FAw, CA), FAw.T)
     Cv = dot(dot(FAv, CA), FAv.T)
+    print FAw
 
     # build the eigenvalues with uncertainties
     uw = uarray((w, diag(Cw)))
