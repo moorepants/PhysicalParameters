@@ -63,7 +63,7 @@ for i, name in enumerate(data['bikes']):
         scap[j] = cap['evals'][j].std_dev()
         ncas[j] = cas['evals'][j].nominal_value
         scas[j] = cas['evals'][j].std_dev()
-    #vd[i], vw[i], vc[i] = critical_speeds(vel, wea['evals'], cap['evals'])
+    vd[i], vw[i], vc[i] = critical_speeds(vel, nwea, ncap)
     # plot individual plot
     plt.figure(i)
     plt.plot(vel, np.abs(np.imag(nwea)), color='blue', label='Imaginary Weave', linestyle='--')

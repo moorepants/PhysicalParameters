@@ -73,6 +73,7 @@ for i, name in enumerate(data['bikes']):
     for mat in ['M','C1', 'K0', 'K2']:
         file.write(mat + '\n')
         file.write(str(eval(mat)) + '\n')
+    file.write("The states are [roll rate, steer rate, roll angle, steer angle]\n")
     for v in speeds:
         A, B = abMatrix(M, C1, K0, K2, v, param['g'])
         for mat in ['A', 'B']:
