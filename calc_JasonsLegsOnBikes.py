@@ -59,26 +59,27 @@ file = open('data/parWithLegs.p', 'w')
 p.dump(par_n, file)
 file.close()
 
-speeds = [4.0, 5.8, 12Legs# write the parameter files
+speeds = [4.0, 5.8, 12]
+# write the parameter files
 for i, name in enumerate(data['bikes']):
-    try:
-        direct = 'data/bikeLegParameters/'
-    except:
-        os.system('mkdir data/bikeLegParameters/'
-        direct = 'data/bikeLegParameters/'
+    direct = 'data/bikeLegParameters/'
     fname = ''.join(name.split())
-    file = open(direct + fname  + 'LegsPar.txt', 'w')
+    try:
+        file = open(direct + fname  + 'LegsPar.txt', 'w')
+    except:
+        os.system('mkdir data/bikeLegParameters/')
+        file = open(direct + fname  + 'LegsPar.txt', 'w')
     for k, v in par_n.items():
         line = k + ',' + str(v[i]) + '\n'
         file.write(line)
     file.close()
-    M, C1, K0, K2, param = bmp2cm(direct + fname + 'RiderPar.txt')
+    M, C1, K0, K2, param = bmp2cm(direct + fname + 'LegsPar.txt')
+    direct = 'data/bikeLegsCanonical/'
     try:
-        direct = 'data/bikeLegsCanonical/'
+        file = open(direct + fname + 'LegsCan.txt', 'w')
     except:
-        os.system('mkdir data/bikeLegsCanonical/'
-        direct = 'data/bikeLegsCanonical/'
-    file = open(direct + fname + 'LegsCan.txt', 'w')
+        os.system('mkdir data/bikeLegsCanonical/')
+        file = open(direct + fname + 'LegsCan.txt', 'w')
     for mat in ['M','C1', 'K0', 'K2']:
         file.write(mat + '\n')
         file.write(str(eval(mat)) + '\n')
