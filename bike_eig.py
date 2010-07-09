@@ -41,51 +41,51 @@ for i, name in enumerate(data['bikes']):
     f = open(direct + fname)
     can = pickle.load(f)
     f.close()
-    #for k, v in can.items():
-        #can[k] = nom(v)
+    for k, v in can.items():
+        can[k] = nom(v)
     evals, evecs = bike_eig(can['M'], can['C1'], can['K0'], can['K2'], vel, 9.81)
     wea, cap, cas = sort_modes(evals, evecs)
-    nwea = []
-    swea = []
-    for num in wea['evals'].flatten():
-        nwea.append(num.nominal_value)
-        swea.append(num.std_dev())
-    nwea = np.array(nwea).reshape(wea['evals'].shape[0],
-            wea['evals'].shape[1])
-    swea = np.array(swea).reshape(wea['evals'].shape[0],
-            wea['evals'].shape[1])
-    ncap = np.zeros_like(cap['evals'])
-    scap = np.zeros_like(cap['evals'])
-    ncas = np.zeros_like(cas['evals'])
-    scas = np.zeros_like(cas['evals'])
-    for j in range(len(cap)):
-        ncap[j] = cap['evals'][j].nominal_value
-        scap[j] = cap['evals'][j].std_dev()
-        ncas[j] = cas['evals'][j].nominal_value
-        scas[j] = cas['evals'][j].std_dev()
-    vd[i], vw[i], vc[i] = critical_speeds(vel, nwea, ncap)
+    #nwea = []
+    #swea = []
+    #for num in wea['evals'].flatten():
+        #nwea.append(num.nominal_value)
+        #swea.append(num.std_dev())
+    #nwea = np.array(nwea).reshape(wea['evals'].shape[0],
+            #wea['evals'].shape[1])
+    #swea = np.array(swea).reshape(wea['evals'].shape[0],
+            #wea['evals'].shape[1])
+    #ncap = np.zeros_like(cap['evals'])
+    #scap = np.zeros_like(cap['evals'])
+    #ncas = np.zeros_like(cas['evals'])
+    #scas = np.zeros_like(cas['evals'])
+    #for j in range(len(cap)):
+        #ncap[j] = cap['evals'][j].nominal_value
+        #scap[j] = cap['evals'][j].std_dev()
+        #ncas[j] = cas['evals'][j].nominal_value
+        #scas[j] = cas['evals'][j].std_dev()
+    vd[i], vw[i], vc[i] = critical_speeds(vel, wea['evals'], cap['evals'])
     # plot individual plot
     plt.figure(i)
-    plt.plot(vel, np.abs(np.imag(nwea)), color='blue', label='Imaginary Weave', linestyle='--')
-    plt.plot(vel, np.abs(np.imag(ncap)), color='red', label='Imaginary Capsize', linestyle='--')
+    plt.plot(vel, np.abs(np.imag(wea['evals'])), color='blue', label='Imaginary Weave', linestyle='--')
+    #plt.plot(vel, np.abs(np.imag(cap['evals'])), color='red', label='Imaginary Capsize', linestyle='--')
     plt.plot(vel, np.zeros_like(vel), 'k-', label='_nolegend_', linewidth=2)
     # plot the real parts of the eigenvalues
-    plt.plot(vel, np.real(nwea), color='blue', label='Real Weave')
-    plt.plot(vel, np.real(ncap), color='red', label='Real Capsize')
-    plt.plot(vel, np.real(ncas), color='green', label='Real Caster')
+    plt.plot(vel, np.real(wea['evals']), color='blue', label='Real Weave')
+    plt.plot(vel, np.real(cap['evals']), color='red', label='Real Capsize')
+    plt.plot(vel, np.real(cas['evals']), color='green', label='Real Caster')
     #plot the standard deviations of the real parts of the eigenvalues
-    plt.plot(vel, np.real(nwea) + swea,
-            color='blue', label='_nolegen_', linestyle='--')
-    plt.plot(vel, np.real(nwea) - swea,
-            color='blue', label='_nolegen_', linestyle='--')
-    plt.plot(vel, np.real(ncap) + scap,
-            color='blue', label='_nolegen_', linestyle='--')
-    plt.plot(vel, np.real(ncap) - scap,
-            color='blue', label='_nolegen_', linestyle='--')
-    plt.plot(vel, np.real(ncas) + scas,
-            color='blue', label='_nolegen_', linestyle='--')
-    plt.plot(vel, np.real(ncas) - scas,
-            color='blue', label='_nolegen_', linestyle='--')
+    #plt.plot(vel, np.real(nwea) + swea,
+            #color='blue', label='_nolegen_', linestyle='--')
+    #plt.plot(vel, np.real(nwea) - swea,
+            #color='blue', label='_nolegen_', linestyle='--')
+    #plt.plot(vel, np.real(ncap) + scap,
+            #color='blue', label='_nolegen_', linestyle='--')
+    #plt.plot(vel, np.real(ncap) - scap,
+            #color='blue', label='_nolegen_', linestyle='--')
+    #plt.plot(vel, np.real(ncas) + scas,
+            #color='blue', label='_nolegen_', linestyle='--')
+    #plt.plot(vel, np.real(ncas) - scas,
+            #color='blue', label='_nolegen_', linestyle='--')
     plt.ylim((-10, 10))
     plt.xlim((0, 10))
     plt.title('{name}\nEigenvalues vs Speed'.format(name=name))
@@ -94,12 +94,12 @@ for i, name in enumerate(data['bikes']):
     plt.savefig('plots/' + ''.join(name.split()) + 'EigPlot.png')
     # plot all bikes on the same plot
     plt.figure(nBk + 1)
-    plt.plot(vel, np.abs(np.imag(nwea)), color=colors[i], label='_nolegend_', linestyle='--')
-    plt.plot(vel, np.abs(np.imag(ncap)), color=colors[i], label='_nolegend_', linestyle='--')
+    plt.plot(vel, np.abs(np.imag(wea['evals'])), color=colors[i], label='_nolegend_', linestyle='--')
+    plt.plot(vel, np.abs(np.imag(cap['evals'])), color=colors[i], label='_nolegend_', linestyle='--')
     plt.plot(vel, np.zeros_like(vel), 'k-', label='_nolegend_', linewidth=3)
-    plt.plot(vel, np.real(nwea), color=colors[i], label='_nolegend_')
-    plt.plot(vel, np.real(ncap), color=colors[i], label=data['bikes'][i])
-    plt.plot(vel, np.real(ncas), color=colors[i], label='_nolegend_')
+    plt.plot(vel, np.real(wea['evals']), color=colors[i], label='_nolegend_')
+    plt.plot(vel, np.real(cap['evals']), color=colors[i], label=data['bikes'][i])
+    plt.plot(vel, np.real(cas['evals']), color=colors[i], label='_nolegend_')
 # plot the bike names on the eigenvalue plot
 plt.legend()
 plt.ylim((-10, 10))
@@ -121,4 +121,4 @@ except:
 #plt.plot(vc - vw, bike)
 #plt.legend([r'$v_d$', r'$v_c$', r'$v_w$', 'stable speed range'])
 #plt.yticks(np.arange(8), tuple(data['bikes']))
-#plt.show()
+plt.show()
