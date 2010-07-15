@@ -34,10 +34,10 @@ figsize = [figwidth, figwidth*goldenMean]
 eigFig = plt.figure(num=nBk + 1)#, figsize=figsize)
 #plt.clf()
 #plt.axes([0.125,0.2,0.95-0.125,0.95-0.2])
-direct = 'data/bikeCanonical/'
+direct = 'data/bikeLegsCanonical/'
 vel = np.linspace(0, 20, num=1000)
 for i, name in enumerate(data['bikes']):
-    fname = ''.join(name.split()) + 'Can.p'
+    fname = ''.join(name.split()) + 'LegsCan.p'
     f = open(direct + fname)
     can = pickle.load(f)
     f.close()

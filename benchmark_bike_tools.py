@@ -1,3 +1,34 @@
+from numpy.linalg import inv
+from numpy import dot
+
+def ab_to_mck(A, B):
+    '''
+    Returns the spring-mass-damper matrices for a general system.
+
+    Parameters:
+    -----------
+    A : ndarray, shape(n,n)
+    B : ndarray, shape(n/2,n)
+
+    Returns:
+    --------
+    M : ndarray, shape(n/2,n/2)
+    C : ndarray, shape(n/2,n/2)
+    K : ndarray, shape(n/2/n/2)
+
+    This function converts the linear set of equations x' = Ax + Bu to the
+    canonical form Mq'' + Cq' + Kq = f. The states, x, must be ordered
+    sequentially with the configuration variables proceeding the rates (i.e.
+    x = [x1, ..., xn, x1', ..., xn'] and q = [x1, ..., xn]).
+
+    '''
+    numRow, numCol = A.shape
+    M = inv(B[numRow/2:, :])
+    C = -dot(M, A[numRow/2:, numCol/2:])
+    K = -dot(M, A[numRow/2:, :numCol/2])
+
+    return M, C, K
+
 def ueig2(uA):
     from uncertainties.unumpy.core import wrap_array_func
     import numpy
