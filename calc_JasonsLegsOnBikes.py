@@ -2,6 +2,7 @@ import numpy as np
 import pickle as p
 from uncertainties import unumpy
 import os
+from scipy.io.matlab.mio import savemat
 
 from benchmark_bike_tools import *
 
@@ -58,6 +59,8 @@ for i in range(nBk):
 file = open('data/parWithLegs.p', 'w')
 p.dump(par_n, file)
 file.close()
+
+savemat('data/parWithLegs.mat', par_n)
 
 speeds = [4.0, 5.8, 12]
 # write the parameter files
