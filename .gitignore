@@ -1,0 +1,14 @@
+*.pdf
+*.aux
+*.pyc
+*.ALL
+*.asv
+*.out
+*.blg
+*.bbl
+*.log
+*.toc
+*.p
+*.zip
+*.M
+alTmp*
