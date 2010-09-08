@@ -26,20 +26,20 @@
 
 \section*{Introduction}
 Accurate measurements of a bicycle's physical parameters are required for
-realistic dynamic simulations. For the most basic models the geometry, mass,
-mass center location and mass distributions must be measured. More complex models
+realistic dynamic simulations and anaysis. For the most basic models the geometry, mass,
+mass location and mass distributions must be measured. More complex models
 require measurements of tire characteristics, stiffness, damping, etc. This
-paper concerns the measurement of bicycle parameters required for
-simulations of the benchmark bicycle presented in \cite{Meijaard2007}. This
+paper concerns the measurement of the minimal bicycle parameters required for
+the benchmark bicycle presented in~\cite{Meijaard2007}. This
 model is composed of four rigid bodies, has ideal rolling and frictionless joints,
 and is assumed to be laterally symmetric. A set of 25
-physical parameters is used to describe the geometry, mass, mass location and
+parameters is used to describe the geometry, mass, mass location and
 mass distribution of each of the rigid bodies. These parameters are presented
 relative to a reference frame when the bicycle is in the nominal upright
 configuration. The methods described herein are based primarily on the work
-done in \cite{Kooijman2006} but have been refined for improved accuracy and
+done in~\cite{Kooijman2006} but have been refined for improved accuracy and
 methodology. Previously, \cite{Roland1971} measured an experimental bicycle frame in a
-similar fashion and both \cite{Dohring1953} and \cite{Singh1971} have used
+similar fashion and both~\cite{Dohring1953} and~\cite{Singh1971} have used
 similar techniques with scooters. We measured the characteristics of six
 different bicycles, two of which were set up in two different configurations.
 This is a total of eight different parameter sets that can be used with, but not
@@ -47,19 +47,14 @@ limited to, the benchmark bicycle model. The parameters set is also complete
 for the non-linear benchmark bicycle model.
 
 The six bicycles, chosen for both variety and convenience, are as follows:
-\begin{description}
-    \item[Batavus Browser] The Dutch style city bicycle was measured
-        in two configurations, one with the instrumentation described in
-        \cite{Kooijman2009a} and one as received from the manufacturer.
-    \item[Batavus Stratos Deluxe] A Dutch style sporty city bicycle.
-    \item[Batavus Crescendo Deluxe] A Dutch style city bicycle with a
-        suspension fork.
-    \item[Gary Fisher Mountain Bike] A hardtail mountain bicycle.
-    \item[Bianchi Pista] A modern steel frame track racing bicycle.
-    \item[Yellow Bicycle] A stripped down aluminum frame road bicycle. This
-        bike was measured in two configurations, the second with the fork
-        rotated in the headtube 180 degrees for larger trail.
-\end{description}
+\emph{Batavus Browser}, a Dutch style city bicycle measured with and without
+instrumentation as described in~\cite{Kooijman2009a}, \emph{Batavus Stratos
+Deluxe}, a Dutch style sporty city bicycle, \emph{Batavus Crescendo Deluxe} a
+Dutch style city bicycle with a suspened fork, \emph{Gary Fisher Mountain
+Bike}, a hardtail mountain bicycle, \emph{Bianchi Pista}, a modern steel frame
+track racing bicycle, \emph{Yellow Bicycle}, a stripped down aluminum frame
+road bicycle measured in two configurations, the second with the fork rotated
+in the headtube 180 degrees for larger trail.
 \subsection*{Geometry}
 The benchmark bicycle requires five basic geometric measurements: wheelbase
 $w$, steer axis tilt $\lambda$, trail $c$, and wheel radii $r_\mathrm{F}$
@@ -84,75 +79,12 @@ different orientation angles. The out-of-plane moments of inertia were
 measured by swinging the rigid bodies as a compound pendulum.
 \subsection*{Results}
 Parameter sets for all six bicycles and all eight
-configurations, example in Table~\ref{tab:par},  will be
+configurations  will be
 presented, together with basic comparisons of the open loop dynamics of the
 different types of bicycles. The physical parameters, the mass, damping and stiffness
 matrices of the system, the eigenvalues and open loop transfer functions at
 different speeds will be compared with typical anecdotal
 descriptions of handling.
-\begin{table*}[tb]
-\centering
-\caption{PARAMETER VALUES FOR THE BATAVUS BROWSER.}
-{\small
-\begin{tabular}{lcl}
-&&\\
-\hline
-Parameter & Symbol & Value \\
-\hline
-wheel base & $w$ & 1.121 m \\
-trail & $c$ & 0.069 m \\
-steer axis tilt & \emph{$\lambda$} & 0.400 rad \\
-gravity & \emph{g} & 9.81 N kg$^{-1}$ \\
-forward speed & \emph{v} & various m s$^{-1}$ \\
-
-\multicolumn{3}{l}{\textbf{R}\emph{ear wheel R}}\\
-radius & \emph{$r_\mathrm{R}$} & 0.341 m\\
-mass & \emph{$m_\mathrm{R}$} &  3.11 kg \\
-mass moments of inertia & \emph{$(I_{\mathrm{R}xx},\
-I_{\mathrm{R}yy})$} &
-(0.088,\ 0.152) $\mathrm{kg\ m}^2$ \\
-
-\multicolumn{3}{l}{\emph{rear} \textbf{B}\emph{ody and frame B}}\\
-position center of mass & \emph{$(x_\mathrm{B},\ z_\mathrm{B})$} &
-($0.276$,\ $-0.538$) m\\
-mass & \emph{$m_\mathrm{B}$} & 9.86 kg \\
-mass moments of inertia & $\left[ \begin{array}{ccc}
-I_{\mathrm{B}xx} &  0 & I_{\mathrm{B}xz}\\
-0 & I_{\mathrm{B}yy} & 0 \\
-I_{\mathrm{B}xz} & 0 & I_{\mathrm{B}zz}
-\end{array} \right] $ &
-$\left[ \begin{array}{ccc}
-0.527 &  0 & -0.114\\
-0 & 1.317 & 0 \\
--0.114 & 0 & 0.759
-\end{array} \right] \ \mathrm{kg\ m}^{2}$\\
-
-\multicolumn{3}{l}{\emph{front} \textbf{H}\emph{andlebar and fork assembly H}}\\
-position center of mass & \emph{$(x_\mathrm{H},\ z_\mathrm{H})$} &
-($0.867$,\ $-0.748$) m\\
-mass & \emph{$m_\mathrm{H}$} & 3.22 kg \\
-mass moments of inertia & $\left[ \begin{array}{ccc}
-I_{\mathrm{H}xx} &  0 & I_{\mathrm{H}xz}\\
-0 & I_{\mathrm{H}yy} & 0 \\
-I_{\mathrm{H}xz} & 0 & I_{\mathrm{H}zz}
-\end{array} \right] $ &
-$\left[ \begin{array}{ccc}
-    0.253  &       0  & -0.072\\
-         0  & 0.246   &  0\\
-   -0.072  &       0  &  0.096
-\end{array} \right] \ \mathrm{kg\ m}^{2}$\\
-
-\multicolumn{3}{l}{\textbf{F}\emph{ront wheel F}}\\
-radius & \emph{$r_\mathrm{F}$} & 0.344 m\\
-mass & \emph{$m_\mathrm{F}$} & 2.02 kg \\
-mass moments of inertia & \emph{$(I_{\mathrm{F}xx},\
-I_{\mathrm{F}yy})$} &
-(0.090,\ 0.149) $\mathrm{kg\ m}^2$ \\
-\hline
-\end{tabular}
-}
-\label{tab:par}
-\end{table*}
 
 \bibliographystyle{acm}
 \bibliography{bicycle}
