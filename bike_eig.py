@@ -39,15 +39,16 @@ vc = np.zeros(nBk)
 figwidth = 4. # in inches
 goldenMean = (np.sqrt(5)-1.0)/2.0
 figsize = [figwidth, figwidth*goldenMean]
-#params = {#'backend': 'ps',
+params = {#'backend': 'ps',
     #'axes.labelsize': 10,
     #'text.fontsize': 10,
-    #'legend.fontsize': 10,
+    'legend.fontsize': 10,
     #'xtick.labelsize': 8,
     #'ytick.labelsize': 8,
     #'text.usetex': True,
-    #'figure.figsize': figsize}
-#plt.rcParams.update(params)
+    #'figure.figsize': figsize
+    }
+plt.rcParams.update(params)
 eigFig = plt.figure(num=nBk + 1)#, figsize=figsize)
 #plt.clf()
 #plt.axes([0.125,0.2,0.95-0.125,0.95-0.2])

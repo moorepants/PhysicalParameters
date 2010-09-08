@@ -26,9 +26,9 @@
 
 \section*{Introduction}
 Accurate measurements of a bicycle's physical parameters are required for
-realistic dynamic simulations and anaysis. For the most basic models the geometry, mass,
-mass location and mass distributions must be measured. More complex models
-require measurements of tire characteristics, stiffness, damping, etc. This
+realistic dynamic simulations and analysis. For the most basic models the
+geometry, mass, mass location and mass distributions must be measured. More complex models
+require measurements of tire characteristics, human characteristics, friction, stiffness, damping, etc. This
 paper concerns the measurement of the minimal bicycle parameters required for
 the benchmark bicycle presented in~\cite{Meijaard2007}. This
 model is composed of four rigid bodies, has ideal rolling and frictionless joints,
@@ -36,15 +36,16 @@ and is assumed to be laterally symmetric. A set of 25
 parameters is used to describe the geometry, mass, mass location and
 mass distribution of each of the rigid bodies. These parameters are presented
 relative to a reference frame when the bicycle is in the nominal upright
-configuration. The methods described herein are based primarily on the work
+configuration. The experimental methods described herein are based primarily on the work
 done in~\cite{Kooijman2006} but have been refined for improved accuracy and
-methodology. Previously, \cite{Roland1971} measured an experimental bicycle frame in a
-similar fashion and both~\cite{Dohring1953} and~\cite{Singh1971} have used
+methodology. Koojiman's was preceeded by \cite{Roland1971} who measured an experimental bicycle frame in a
+similar fashion and both~\cite{Dohring1953} and~\cite{Singh1971} who have used
 similar techniques with scooters. We measured the characteristics of six
 different bicycles, two of which were set up in two different configurations.
 This is a total of eight different parameter sets that can be used with, but not
-limited to, the benchmark bicycle model. The parameters set is also complete
-for the non-linear benchmark bicycle model.
+limited to, the benchmark bicycle model. The accuracy of all the measurements
+are presented up through the eigenvalue prediction of the linear model and are
+based error propogation theory with correlations taken into account.
 
 The six bicycles, chosen for both variety and convenience, are as follows:
 \emph{Batavus Browser}, a Dutch style city bicycle measured with and without
@@ -78,9 +79,16 @@ rigid bodies' periods of oscillation when hung as a torsional pendulum at
 different orientation angles. The out-of-plane moments of inertia were
 measured by swinging the rigid bodies as a compound pendulum.
 \subsection*{Results}
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=4in]{../../report/figures/bike_eig.png}
+    \end{center}
+    \caption{Eigenvalues versus speed for all eight bicycle configurations.}
+    \label{fig:bike_eig}
+\end{figure}
+
 Parameter sets for all six bicycles and all eight
-configurations  will be
-presented, together with basic comparisons of the open loop dynamics of the
+configurations  will be presented, together with basic comparisons of the open loop dynamics of the
 different types of bicycles. The physical parameters, the mass, damping and stiffness
 matrices of the system, the eigenvalues and open loop transfer functions at
 different speeds will be compared with typical anecdotal
