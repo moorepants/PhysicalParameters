@@ -11,14 +11,18 @@ f = open('data/data.p', 'r')
 data = pickle.load(f)
 f.close()
 
-#data['bikes'].append('Jodi Bike')
+data['bikes'].append('Jodi Bike')
 
 nBk = len(data['bikes'])
 
+# one color for each bike
 colors = ['k', 'r', 'b', 'g', 'y', 'm', 'c', 'orange', 'red']
+
 vd = np.zeros(nBk)
 vw = np.zeros(nBk)
 vc = np.zeros(nBk)
+
+# figure properties
 figwidth = 4. # in inches
 goldenMean = (np.sqrt(5)-1.0)/2.0
 figsize = [figwidth, figwidth*goldenMean]
@@ -34,10 +38,11 @@ figsize = [figwidth, figwidth*goldenMean]
 eigFig = plt.figure(num=nBk + 1)#, figsize=figsize)
 #plt.clf()
 #plt.axes([0.125,0.2,0.95-0.125,0.95-0.2])
-direct = 'data/bikeLegsCanonical/'
+
+direct = 'data/bikeCanonical/'
 vel = np.linspace(0, 20, num=1000)
 for i, name in enumerate(data['bikes']):
-    fname = ''.join(name.split()) + 'LegsCan.p'
+    fname = ''.join(name.split()) + 'Can.p'
     f = open(direct + fname)
     can = pickle.load(f)
     f.close()
