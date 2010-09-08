@@ -6,12 +6,25 @@ from uncertainties.unumpy import std_devs
 
 from benchmark_bike_tools import *
 
+# choose the bike alone, bike with rigid legs or bike with rider
+# bike alone
+#direct = 'data/bikeCanonical/'
+#fend = 'Can.p'
+# bike with rider's legs
+#direct = 'data/bikeLegsCanonical/'
+#fend = 'LegsCan.p'
+# bike with rider
+direct = 'data/bikeRiderCanonical/'
+fend = 'RiderCan.p'
+
+
 # load in the base data file
 f = open('data/data.p', 'r')
 data = pickle.load(f)
 f.close()
 
-data['bikes'].append('Jodi Bike')
+# add Jodi's thesis bike for comparison (only for bikeCanonical)
+#data['bikes'].append('Jodi Bike')
 
 nBk = len(data['bikes'])
 
@@ -39,10 +52,9 @@ eigFig = plt.figure(num=nBk + 1)#, figsize=figsize)
 #plt.clf()
 #plt.axes([0.125,0.2,0.95-0.125,0.95-0.2])
 
-direct = 'data/bikeCanonical/'
 vel = np.linspace(0, 20, num=1000)
 for i, name in enumerate(data['bikes']):
-    fname = ''.join(name.split()) + 'Can.p'
+    fname = ''.join(name.split()) + fend
     f = open(direct + fname)
     can = pickle.load(f)
     f.close()
