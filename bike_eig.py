@@ -36,7 +36,7 @@ vw = np.zeros(nBk)
 vc = np.zeros(nBk)
 
 # figure properties
-figwidth = 4. # in inches
+figwidth = 3.25 # in inches
 goldenMean = (np.sqrt(5)-1.0)/2.0
 figsize = [figwidth, figwidth*goldenMean]
 params = {#'backend': 'ps',
@@ -96,7 +96,7 @@ plt.title('Eigenvalues vs Speed')
 plt.xlabel('Speed [m/s]')
 plt.ylabel('Real and Imaginary Parts of the Eigenvalue [1/s]')
 try:
-    plt.savefig('report/figures/bike_eig.png')
+    plt.savefig('report/figures/bike_eig.pdf')
 except:
     pass
 # make a plot comparing the critical speeds of each bike
