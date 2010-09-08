@@ -4,7 +4,7 @@
 
 \begin{flushleft}
 {\fontsize{16pt}{20pt}\selectfont%
-  An Accurate Method of Measuring and Comparing a Bicycle's Physical Parameters\\}
+  An Accurate Method of Measuring a Bicycle's Physical Parameters\\}
 \end{flushleft}
 
 %%%%%%%%%%%%%%%% authors %%%%%%%%%%%%%%%
@@ -38,7 +38,7 @@ mass distribution of each of the rigid bodies. These parameters are presented
 relative to a reference frame when the bicycle is in the nominal upright
 configuration. The experimental methods described herein are based primarily on the work
 done in~\cite{Kooijman2006} but have been refined for improved accuracy and
-methodology. Koojiman's was preceeded by \cite{Roland1971} who measured an experimental bicycle frame in a
+methodology. Koojiman's was preceded by \cite{Roland1971} who measured an experimental bicycle frame in a
 similar fashion and both~\cite{Dohring1953} and~\cite{Singh1971} who have used
 similar techniques with scooters. We measured the characteristics of six
 different bicycles, two of which were set up in two different configurations.
@@ -51,25 +51,24 @@ The six bicycles, chosen for both variety and convenience, are as follows:
 \emph{Batavus Browser}, a Dutch style city bicycle measured with and without
 instrumentation as described in~\cite{Kooijman2009a}, \emph{Batavus Stratos
 Deluxe}, a Dutch style sporty city bicycle, \emph{Batavus Crescendo Deluxe} a
-Dutch style city bicycle with a suspened fork, \emph{Gary Fisher Mountain
+Dutch style city bicycle with a suspended fork, \emph{Gary Fisher Mountain
 Bike}, a hardtail mountain bicycle, \emph{Bianchi Pista}, a modern steel frame
 track racing bicycle, \emph{Yellow Bicycle}, a stripped down aluminum frame
 road bicycle measured in two configurations, the second with the fork rotated
 in the headtube 180 degrees for larger trail.
-\subsection*{Geometry}
+
+\section*{Experimental Methodology}
 The benchmark bicycle requires five basic geometric measurements: wheelbase
 $w$, steer axis tilt $\lambda$, trail $c$, and wheel radii $r_\mathrm{F}$
-and $r_\mathrm{R}$. The wheelbase and steer axis tilt were measured directly
-with a meter scale and a digital level, respectively. The trail and wheel radii were
-measured indirectly using fork offset and loaded wheel circumference.
-\subsection*{Mass, Mass Center Location and Mass Distribution}
-The mass of each of the rigid bodies were measured with a precision scale.
-The centers of mass of each of the rigid bodies were measured by hanging each
-rigid body at the mass center and assuming lateral symmetry. The mass centers
-were calculated from the orientation angle of the headtube and the location of
-the point of suspension relative to the wheel center.
-The wheel centers of mass were assumed to be in their ideal
-geometric center.
+and $r_\mathrm{R}$. For each geometric measurement care was taken to measure
+the parameter directly as possible with high accuracy measurement equipment
+such as height gages, scales, etc. The mass of each of the rigid bodies were
+measured with a precision scale. The centers of mass of each of the rigid
+bodies were measured by hanging each rigid body at the mass center and
+assuming lateral symmetry. The mass centers were calculated from the
+orientation angle of the headtube and the location of the point of suspension
+relative to the wheel center. The wheel centers of mass were assumed to be in
+their ideal geometric center.
 
 The moments of inertia of the rigid bodies were measured in both torsional
 pendulum and compound pendulum configurations. Again the assumed symmetry of the
@@ -77,22 +76,24 @@ bicycle was utilized to reduce the number of measurements needed. The
 in-symmetric-plane moments of inertia were calculated from measurements of the
 rigid bodies' periods of oscillation when hung as a torsional pendulum at
 different orientation angles. The out-of-plane moments of inertia were
-measured by swinging the rigid bodies as a compound pendulum.
-\subsection*{Results}
+measured by swinging the rigid bodies as a compound pendulum. The periods were
+estimated from precision rate gyro measurements.
+\section*{Results}
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=4in]{../../report/figures/bike_eig.png}
+        \includegraphics[width=3.5in]{../../report/figures/bike_eig.png}
     \end{center}
     \caption{Eigenvalues versus speed for all eight bicycle configurations.}
     \label{fig:bike_eig}
 \end{figure}
 
-Parameter sets for all six bicycles and all eight
-configurations  will be presented, together with basic comparisons of the open loop dynamics of the
-different types of bicycles. The physical parameters, the mass, damping and stiffness
-matrices of the system, the eigenvalues and open loop transfer functions at
-different speeds will be compared with typical anecdotal
-descriptions of handling.
+Parameter sets with measurement uncertainties for all six bicycles and all
+eight configurations  will be presented, together with basic comparisons of the
+open loop dynamics of the different types of bicycles (eigenvalues,
+eigenvectors, bode plots, etc). Notable results include high accuracy
+measurements, dual oscillatory eigenmodes, bicycles without riders may often
+have no stable speed range, and it is possible to calculate the uncertainties
+in the eigenvalues and eigenvectors.
 
 \bibliographystyle{acm}
 \bibliography{bicycle}
