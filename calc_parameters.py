@@ -36,6 +36,13 @@ forkOffset = ddU['forkOffset']
 par['c'] = (par['rF']*unumpy.sin(par['lambda'])
               - forkOffset)/unumpy.cos(par['lambda'])
 
+# wheelbase
+par['w'] = ddU['wheelbase']
+
+# calculate the dees
+par['d1'] = unumpy.cos(par['lambda'])*(par['c']+par['w']-par['rR']*unumpy.tan(par['lambda']))
+par['d3'] = -unumpy.cos(par['lambda'])*(par['c']-par['rF']*unumpy.tan(par['lambda']))
+
 # calculate the frame rotation angle
 alphaFrame = ddU['frameAngle']
 betaFrame = par['lambda'] - alphaFrame*pi/180
@@ -56,7 +63,6 @@ betaFork = par['lambda'] - ddU['forkAngle']*np.pi/180.
 forkM = -unumpy.tan(betaFork)
 
 # calculate the z-intercept of the CoM line
-par['w'] = ddU['wheelbase']
 forkMassDist = ddU['forkMassDist']
 cb = unumpy.cos(betaFork)
 tb = unumpy.tan(betaFork)
@@ -208,7 +214,7 @@ parFig = plt.figure(num=2)
 i = 1
 xt = ['B', 'BI', 'C', 'F', 'P', 'S', 'Y', 'YR']
 for k, v in par_n.items():
-    plt.subplot(3, 9, i)
+    plt.subplot(5, 6, i)
     plt.plot(v, '-D', markersize=14)
     plt.title(k)
     plt.xticks(np.arange(8), tuple(xt))
