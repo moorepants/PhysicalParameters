@@ -44,7 +44,11 @@ par['d1'] = unumpy.cos(par['lambda'])*(par['c']+par['w']-par['rR']*unumpy.tan(pa
 par['d3'] = -unumpy.cos(par['lambda'])*(par['c']-par['rF']*unumpy.tan(par['lambda']))
 
 # calculate the frame rotation angle
+# alpha is the angle between the negative z pendulum (horizontal) and the
+# positive (up) steer axis, rotation about positive y
 alphaFrame = ddU['frameAngle']
+# beta is the angle between the x bike frame and the x pendulum frame, rotation
+# about positive y
 betaFrame = par['lambda'] - alphaFrame*pi/180
 
 # calculate the slope of the CoM line
