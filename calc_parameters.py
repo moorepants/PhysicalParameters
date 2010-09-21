@@ -116,6 +116,18 @@ for i in range(np.shape(frameM)[1]):
         plt.plot(x,forky, 'g')
     # plot the ground line
     plt.plot(x, np.zeros_like(x), 'k')
+    # plot the fundamental bike
+    deex = np.zeros(4)
+    deez = np.zeros(4)
+    deex[0] = 0.
+    deex[1] = (par['d1'][i]*umath.cos(par['lambda'][i])).nominal_value
+    deex[2] = (par['w'][i]-par['d3'][i]*umath.cos(par['lambda'][i])).nominal_value
+    deex[3] = par['w'][i].nominal_value
+    deez[0] = -par['rR'][i].nominal_value
+    deez[1] = -(par['rR'][i]+par['d1'][i]*umath.sin(par['lambda'][i])).nominal_value
+    deez[2] = -(par['rF'][i]-par['d3'][i]*umath.sin(par['lambda'][i])).nominal_value
+    deez[3] = -par['rF'][i].nominal_value
+    plt.plot(deex, -deez, 'k')
     # plot the centers of mass
     plt.plot(frameCoM[0, i].nominal_value, -frameCoM[1, i].nominal_value, 'k+', markersize=12)
     plt.plot(forkCoM[0, i].nominal_value, -forkCoM[1, i].nominal_value, 'k+', markersize=12)
