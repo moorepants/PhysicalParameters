@@ -786,10 +786,10 @@ def inertia_components(I, alpha):
     Parameters
     ----------
 
-    I : A vector of at least three moments of inertia
+    I : A vector of at least three moments of inertia about various axes
 
-    alpha : A vector of orientation angles corresponding to the moments of
-            inertia
+    alpha : A vector of orientation angles (positive rotation) relative to the
+    known frame corresponding to the moments of inertia
 
     Returns
     -------
@@ -801,7 +801,7 @@ def inertia_components(I, alpha):
     from numpy.linalg import lstsq
     sa = sin(alpha)
     ca = cos(alpha)
-    A = vstack((ca**2, 2*sa*ca, sa**2)).T
+    A = vstack((ca**2, -2*sa*ca, sa**2)).T
     Iorth = lstsq(A, I)[0]
     Inew = array([[Iorth[0], Iorth[1]], [Iorth[1], Iorth[2]]])
     return Inew
@@ -831,7 +831,7 @@ def inertia_components_uncert(I, alpha):
     from uncertainties import unumpy
     sa = unumpy.sin(alpha)
     ca = unumpy.cos(alpha)
-    A = unumpy.matrix(vstack((ca**2, 2*sa*ca, sa**2)).T)
+    A = unumpy.matrix(vstack((ca**2, -2*sa*ca, sa**2)).T)
     Iorth = dot(A.I, I)
     Iorth = array([Iorth[0, 0], Iorth[0, 1], Iorth[0, 2]], dtype='object')
     Inew = array([[Iorth[0], Iorth[1]], [Iorth[1], Iorth[2]]])
