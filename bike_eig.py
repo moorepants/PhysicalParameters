@@ -54,7 +54,11 @@ eigFig = plt.figure(num=nBk + 1)#, figsize=figsize)
 #plt.axes([0.125,0.2,0.95-0.125,0.95-0.2])
 
 # caluculate eigenvalues/vectors over this range
-vel = np.linspace(0, 20, num=1000)
+vel = np.linspace(0, 10, num=1000)
+
+# color scale for root loci plot
+
+
 for i, name in enumerate(data['bikes']):
     fname = ''.join(name.split()) + fend
     f = open(direct + fname)
@@ -82,7 +86,14 @@ for i, name in enumerate(data['bikes']):
     plt.savefig('plots/' + ''.join(name.split()) + 'EigPlot.png')
     # plot root loci
     plt.figure(nBk + i)
-    plt.plot(evals.real, evals.imag, '.k')
+    for j in range(len(evals[0, :])):
+        plt.scatter(evals[:,j].real, evals[:,j].imag, s=2, c=vel,
+                cmap=plt.cm.gist_rainbow, edgecolors='none')
+    plt.colorbar()
+    plt.grid()
+    plt.axis('equal')
+    plt.title('{name}\nEigenvalues vs Speed'.format(name=name))
+    plt.savefig('plots/' + ''.join(name.split()) + 'RootLoci.png')
     # plot all bikes on the same plot
     plt.figure(2*nBk + 1)
     plt.plot(vel, np.abs(np.imag(wea['evals'])), color=colors[i], label='_nolegend_', linestyle='--')
@@ -99,7 +110,7 @@ plt.title('Eigenvalues vs Speed')
 plt.xlabel('Speed [m/s]')
 plt.ylabel('Real and Imaginary Parts of the Eigenvalue [1/s]')
 try:
-    plt.savefig('report/figures/bike_eig.pdf')
+    plt.savefig('plots/bike_eig.png')
 except:
     pass
 # make a plot comparing the critical speeds of each bike
@@ -112,4 +123,4 @@ except:
 #plt.plot(vc - vw, bike)
 #plt.legend([r'$v_d$', r'$v_c$', r'$v_w$', 'stable speed range'])
 #plt.yticks(np.arange(8), tuple(data['bikes']))
-plt.show()
+#plt.show()
