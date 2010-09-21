@@ -859,7 +859,8 @@ def trail(rF, lam, fo):
     rF: float
         The front wheel radius
     lam: float
-        The steer axis tilt (pi/2 - headtube angle)
+        The steer axis tilt (pi/2 - headtube angle). The angle between the
+        headtube and a vertical line.
     fo: float
         The fork offset
 
@@ -867,12 +868,14 @@ def trail(rF, lam, fo):
     --------
     c: float
         Trail
-    c: float
+    cm: float
         Mechanical Trail
 
     '''
     from math import sin, cos
 
+    # trail
     c = (rF*sin(lam) - fo)/cos(lam)
+    # mechanical trail
     cm = c*cos(lam)
     return c, cm
