@@ -80,8 +80,11 @@ for i, name in enumerate(data['bikes']):
     plt.xlabel('Speed [m/s]')
     plt.ylabel('Real and Imaginary Parts of the Eigenvalue [1/s]')
     plt.savefig('plots/' + ''.join(name.split()) + 'EigPlot.png')
+    # plot root loci
+    plt.figure(nBk + i)
+    plt.plot(evals.real, evals.imag, '.k')
     # plot all bikes on the same plot
-    plt.figure(nBk + 1)
+    plt.figure(2*nBk + 1)
     plt.plot(vel, np.abs(np.imag(wea['evals'])), color=colors[i], label='_nolegend_', linestyle='--')
     plt.plot(vel, np.abs(np.imag(cap['evals'])), color=colors[i], label='_nolegend_', linestyle='--')
     plt.plot(vel, np.zeros_like(vel), 'k-', label='_nolegend_', linewidth=3)
