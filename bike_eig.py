@@ -123,4 +123,4 @@ except:
 #plt.plot(vc - vw, bike)
 #plt.legend([r'$v_d$', r'$v_c$', r'$v_w$', 'stable speed range'])
 #plt.yticks(np.arange(8), tuple(data['bikes']))
-#plt.show()
+plt.show()
