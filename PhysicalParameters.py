@@ -1,5 +1,5 @@
 import pickle
-from re import findall, sub
+from re
 from os import system, walk
 from copy import copy
 from numpy.linalg import inv, eig, lstsq
@@ -27,7 +27,7 @@ from matplotlib.pyplot import axis, ylim, xticks, show
 def fit_data():
 
     dirs, subdirs, filenames = list(walk('data/pendDat/p'))[0]
-    f = open('data/period.txt', 'w')
+    periodfile = open('data/period.txt', 'w')
     filenames.sort()
     period = {}
     #for name in ['YellowRevForkTorsionalFirst1.p']:
@@ -66,7 +66,7 @@ def fit_data():
         wd = (1. - zeta**2.)**(1./2.)*wo
         f = wd/2./pi
         T = 1./f
-        fig = plt.figure(1)
+        fig = figure(1)
         plot_osfit(x, y, lscurve, p1, rsq, T, fig=fig)
         savefig('data/pendDat/graphs/' + name[:-2] + '.png')
         close()
@@ -81,7 +81,7 @@ def fit_data():
         except:
             note = ''
         line = name + ',' + str(T) + ',' + str(rsq) + ',' + str(sigma) + ',' + str(note) + '\n'
-        file.write(line)
+        periodfile.write(line)
         print line
         # if the filename is already in the period dictionary...
         if name[:-3] in period.keys():
@@ -91,7 +91,7 @@ def fit_data():
         else:
             # start a new list
             period[name[:-3]] = [T]
-    f.close()
+    periodfile.close()
     f = open('data/period.p', 'w')
     pickle.dump(period, f)
     f.close()
@@ -116,8 +116,8 @@ def tor_com():
     # average the periods
     for k, v in period.items():
         # substitute names so the camel case function works
-        km = sub('BrowserIns', 'Browserins', k)
-        km = sub('YellowRev', 'Yellowrev', km)
+        km = re.sub('BrowserIns', 'Browserins', k)
+        km = re.sub('YellowRev', 'Yellowrev', km)
         desc = space_out_camel_case(km).split()
         print desc
         if desc[0] == 'Rod':
@@ -572,10 +572,10 @@ def replace_values(directory, template, newfile, replacers):
     for line in f:
         print 'This is the template line:\n', line
         # find all of the matches in the line
-        test = findall('\|(\w*.)\|', line)
+        test = re.findall('\|(\w*.)\|', line)
         print 'these are all the matches', test
-        print 'search for nom: ', findall('\|(\w*)(?!\?)\|', line)
-        print 'search for un: ',  findall('\|(\w*\?)\|', line)
+        print 'search for nom: ', re.findall('\|(\w*)(?!\?)\|', line)
+        print 'search for un: ',  re.findall('\|(\w*\?)\|', line)
         # if there are matches
         if test:
             # go through each match and make a substitution
@@ -597,38 +597,38 @@ def replace_values(directory, template, newfile, replacers):
                         try:
                             replacement = uround(value).split('+/-')[1]
                             print "with this:", replacement
-                            line = sub('\|(\w*\?)\|', replacement, line, count=1)
+                            line = re.sub('\|(\w*\?)\|', replacement, line, count=1)
                         except: # there is no uncertainty
                             replacement = '0.0'
                             print "with this:", replacement
-                            line = sub('\|(\w*\?)\|', replacement, line, count=1)
+                            line = re.sub('\|(\w*\?)\|', replacement, line, count=1)
                     else:
                         try:
                             replacement = uround(value).split('+/-')[0]
                             print "with this:", replacement
-                            line = sub('\|(\w*(?!\?))\|', replacement, line, count=1)
+                            line = re.sub('\|(\w*(?!\?))\|', replacement, line, count=1)
                         except: # there is no uncertainty
                             replacement = str(value)
                             print "with this:", replacement
-                            line = sub('\|(\w*(?!\?))\|', replacement, line, count=1)
+                            line = re.sub('\|(\w*(?!\?))\|', replacement, line, count=1)
                     del var, row, col
                 # else the match is just a scalar
                 else:
                     # if the match has a question mark it is an uncertainty value
                     if match[-1] == '?':
                         try:
-                            line = sub('\|(\w*\?)\|',
+                            line = re.sub('\|(\w*\?)\|',
                                     uround(replacers[match[:-1]]).split('+/-')[1], line, count=1)
                             print line
                         except:
                             pass
                     else:
                         try:
-                            line = sub('\|(\w*(?!\?))\|',
+                            line = re.sub('\|(\w*(?!\?))\|',
                                     uround(replacers[match]).split('+/-')[0], line, count=1)
                             print line
                         except:
-                            line = sub('\|(\w*(?!\?))\|', str(replacers[match][i]), line, count=1)
+                            line = re.sub('\|(\w*(?!\?))\|', str(replacers[match][i]), line, count=1)
         print line
         fn.write(line)
     f.close()
@@ -726,7 +726,7 @@ def space_out_camel_case(s):
         >>> space_out_camel_case('DMLSServicesOtherBSTextLLC')
         'DMLS Services Other BS Text LLC'
         """
-        return sub('((?=[A-Z][a-z])|(?<=[a-z])(?=[A-Z]))', ' ', s).strip()
+        return re.sub('((?=[A-Z][a-z])|(?<=[a-z])(?=[A-Z]))', ' ', s).strip()
 
 def bode(ABCD=None, numden=None, w=None, fig=None, n=None, label=None,
         title=None, color=None):
