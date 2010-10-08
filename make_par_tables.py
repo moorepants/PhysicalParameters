@@ -56,10 +56,8 @@ for i, name in enumerate(data['bikes']):
     f.close()
     fn.close()
     os.system('pdflatex -output-directory=parTables ' + direct + fname + 'Par.tex')
-    os.system('rm parTables/*.aux')
-    os.system('rm parTables/*.log')
 
-# make the master table
+# make the master parameter table
 template = open('parTables/MasterParTableTemplate.tex', 'r')
 final = open('parTables/MasterParTable.tex', 'w')
 
@@ -83,5 +81,42 @@ for line in template:
 template.close()
 final.close()
 os.system('pdflatex -output-directory=parTables ' + direct + 'MasterParTable.tex')
+
+
+# make the master canonical matrix table
+template = open('parTables/MasterCanTableTemplate.tex', 'r')
+final = open('parTables/MasterCanTable.tex', 'w')
+
+abbrev = ['B', 'B*', 'C', 'G', 'P', 'S', 'Y', 'Y*']
+for line in template:
+    if line[0] == '%':
+        varname, indice, fline = line[1:].split('%')
+        # remove the \n
+        fline = fline[:-1]
+        for i, bike in enumerate(data['bikes']):
+            fcan = open('data/bikeCanonical/' + ''.join(bike.split()) + 'Can.p')
+            can = pickle.load(fcan)
+            fcan.close()
+            if varname == 'bike':
+                fline = fline + ' & \multicolumn{2}{c}{' + abbrev[i] + '}'
+            else:
+                try:
+                    val, sig = uround(can[varname][indice[0], indice[1]]).split('+/-')
+                except:
+                    val = str(can[varname][indice[0], indice[1]])
+                    sig = '0.0'
+                fline = fline + ' & ' + val + ' & ' + sig
+        fline = fline + r'\\' + '\n'
+        final.write(fline)
+    else:
+        final.write(line)
+
+template.close()
+final.close()
+os.system('pdflatex -output-directory=parTables ' + direct + 'MasterCanTable.tex')
+
 os.system('rm parTables/*.aux')
 os.system('rm parTables/*.log')
+os.system('rm parTables/*.out')
+os.system('rm parTables/*.blg')
+os.system('rm parTables/*.bbl')
