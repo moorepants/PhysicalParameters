@@ -13,9 +13,12 @@ from uncertainties.unumpy.ulinalg import inv as uinv
 from uncertainties.unumpy import nominal_values, std_devs, uarray
 from uncertainties.unumpy import matrix as umatrix
 from uncertainties.unumpy.core import wrap_array_func
-from uncertainties.unumpy import sin as usin
-from uncertainties.unumpy import cos as ucos
-from uncertainties.unumpy import tan as utan
+from uncertainties.unumpy import sin as unsin
+from uncertainties.unumpy import cos as uncos
+from uncertainties.unumpy import tan as untan
+from uncertainties.umath import sin as usin
+from uncertainties.umath import cos as ucos
+from uncertainties.umath import tan as utan
 from scipy.optimize import leastsq
 from matplotlib.pyplot import figure, plot, xlabel, ylabel, title, legend, gca
 from matplotlib.pyplot import axes, xlim, setp, close, savefig, subplot, Circle
@@ -161,15 +164,15 @@ def calc_parameters():
 
     # calculate the front wheel trail
     forkOffset = ddU['forkOffset']
-    par['c'] = (par['rF']*usin(par['lambda'])
-                  - forkOffset)/ucos(par['lambda'])
+    par['c'] = (par['rF']*unsin(par['lambda'])
+                  - forkOffset)/uncos(par['lambda'])
 
     # wheelbase
     par['w'] = ddU['wheelbase']
 
     # calculate the dees
-    par['d1'] = ucos(par['lambda'])*(par['c']+par['w']-par['rR']*utan(par['lambda']))
-    par['d3'] = -ucos(par['lambda'])*(par['c']-par['rF']*utan(par['lambda']))
+    par['d1'] = uncos(par['lambda'])*(par['c']+par['w']-par['rR']*untan(par['lambda']))
+    par['d3'] = -uncos(par['lambda'])*(par['c']-par['rF']*untan(par['lambda']))
 
     # calculate the frame rotation angle
     # alpha is the angle between the negative z pendulum (horizontal) and the
@@ -180,24 +183,24 @@ def calc_parameters():
     betaFrame = par['lambda'] - alphaFrame*pi/180
 
     # calculate the slope of the CoM line
-    frameM = -utan(betaFrame)
+    frameM = -untan(betaFrame)
 
     # calculate the z-intercept of the CoM line
     # frameMassDist is positive according to the pendulum ref frame
     frameMassDist = ddU['frameMassDist']
-    cb = ucos(betaFrame)
+    cb = uncos(betaFrame)
     frameB = -frameMassDist/cb - par['rR']
 
     # calculate the fork rotation angle
     betaFork = par['lambda'] - ddU['forkAngle']*pi/180.
 
     # calculate the slope of the fork CoM line
-    forkM = -utan(betaFork)
+    forkM = -untan(betaFork)
 
     # calculate the z-intercept of the CoM line
     forkMassDist = ddU['forkMassDist']
-    cb = ucos(betaFork)
-    tb = utan(betaFork)
+    cb = uncos(betaFork)
+    tb = untan(betaFork)
     forkB = - par['rF'] - forkMassDist/cb + par['w']*tb
 
     # plot the CoM lines
@@ -248,12 +251,12 @@ def calc_parameters():
         deex = zeros(4)
         deez = zeros(4)
         deex[0] = 0.
-        deex[1] = (par['d1'][i]*ucos(par['lambda'][i])).nominal_value
-        deex[2] = (par['w'][i]-par['d3'][i]*ucos(par['lambda'][i])).nominal_value
+        deex[1] = (par['d1'][i]*uncos(par['lambda'][i])).nominal_value
+        deex[2] = (par['w'][i]-par['d3'][i]*uncos(par['lambda'][i])).nominal_value
         deex[3] = par['w'][i].nominal_value
         deez[0] = -par['rR'][i].nominal_value
-        deez[1] = -(par['rR'][i]+par['d1'][i]*usin(par['lambda'][i])).nominal_value
-        deez[2] = -(par['rF'][i]-par['d3'][i]*usin(par['lambda'][i])).nominal_value
+        deez[1] = -(par['rR'][i]+par['d1'][i]*unsin(par['lambda'][i])).nominal_value
+        deez[2] = -(par['rF'][i]-par['d3'][i]*unsin(par['lambda'][i])).nominal_value
         deez[3] = -par['rF'][i].nominal_value
         plot(deex, -deez, 'k')
         # plot the centers of mass
@@ -818,7 +821,7 @@ def sort_modes(evals, evecs):
 
     This only works on the standard bicycle eigenvalues, not necessarily on any
     general eigenvalues for the bike model (e.g. there isn't always a distinct weave,
-    capsize and caster). Some type of check using the derivative of the curves
+    capsize and caster). Some type of check unsing the derivative of the curves
     could make it more robust.
     '''
     evalsorg = zeros_like(evals)
@@ -1030,11 +1033,11 @@ def bmp2cm(filename):
     IAxx = p['IHxx'] + p['IFxx'] + p['mH']*(p['zH'] - zA)**2 + p['mF']*(p['rF'] + zA)**2
     IAxz = p['IHxz'] - p['mH']*(p['xH'] - xA)*(p['zH'] - zA) + p['mF']*(p['w'] - xA)*(p['rF'] + zA)
     IAzz = p['IHzz'] + p['IFzz'] + p['mH']*(p['xH'] - xA)**2 + p['mF']*(p['w'] - xA)**2
-    uA = (xA - p['w'] - p['c'])*cos(p['lambda']) - zA*sin(p['lambda'])
-    IAll = mA*uA**2 + IAxx*sin(p['lambda'])**2 + 2*IAxz*sin(p['lambda'])*cos(p['lambda']) + IAzz*cos(p['lambda'])**2
-    IAlx = -mA*uA*zA + IAxx*sin(p['lambda']) + IAxz*cos(p['lambda'])
-    IAlz = mA*uA*xA + IAxz*sin(p['lambda']) + IAzz*cos(p['lambda'])
-    mu = p['c']/p['w']*cos(p['lambda'])
+    uA = (xA - p['w'] - p['c'])*ucos(p['lambda']) - zA*usin(p['lambda'])
+    IAll = mA*uA**2 + IAxx*usin(p['lambda'])**2 + 2*IAxz*usin(p['lambda'])*ucos(p['lambda']) + IAzz*ucos(p['lambda'])**2
+    IAlx = -mA*uA*zA + IAxx*usin(p['lambda']) + IAxz*ucos(p['lambda'])
+    IAlz = mA*uA*xA + IAxz*usin(p['lambda']) + IAzz*ucos(p['lambda'])
+    mu = p['c']/p['w']*ucos(p['lambda'])
     SR = p['IRyy']/p['rR']
     SF = p['IFyy']/p['rF']
     ST = SR + SF
@@ -1047,17 +1050,17 @@ def bmp2cm(filename):
     K0pp = mT*zT # this value only reports to 13 digit precision it seems?
     K0pd = -SA
     K0dp = K0pd
-    K0dd = -SA*sin(p['lambda'])
+    K0dd = -SA*usin(p['lambda'])
     K0 = array([[K0pp, K0pd], [K0dp, K0dd]])
     K2pp = 0.
-    K2pd = (ST - mT*zT)/p['w']*cos(p['lambda'])
+    K2pd = (ST - mT*zT)/p['w']*ucos(p['lambda'])
     K2dp = 0.
-    K2dd = (SA + SF*sin(p['lambda']))/p['w']*cos(p['lambda'])
+    K2dd = (SA + SF*usin(p['lambda']))/p['w']*ucos(p['lambda'])
     K2 = array([[K2pp, K2pd], [K2dp, K2dd]])
     C1pp = 0.
-    C1pd = mu*ST + SF*cos(p['lambda']) + ITxz/p['w']*cos(p['lambda']) - mu*mT*zT
-    C1dp = -(mu*ST + SF*cos(p['lambda']))
-    C1dd = IAlz/p['w']*cos(p['lambda']) + mu*(SA + ITzz/p['w']*cos(p['lambda']))
+    C1pd = mu*ST + SF*ucos(p['lambda']) + ITxz/p['w']*ucos(p['lambda']) - mu*mT*zT
+    C1dp = -(mu*ST + SF*ucos(p['lambda']))
+    C1dd = IAlz/p['w']*ucos(p['lambda']) + mu*(SA + ITzz/p['w']*ucos(p['lambda']))
     C1 = array([[C1pp, C1pd], [C1dp, C1dd]])
     return M, C1, K0, K2, p
 
@@ -1209,8 +1212,8 @@ def inertia_components_uncert(I, alpha):
     Inew : An inertia tensor
 
     '''
-    sa = usin(alpha)
-    ca = ucos(alpha)
+    sa = unsin(alpha)
+    ca = uncos(alpha)
     A = umatrix(vstack((ca**2, -2*sa*ca, sa**2)).T)
     Iorth = dot(A.I, I)
     Iorth = array([Iorth[0, 0], Iorth[0, 1], Iorth[0, 2]], dtype='object')
