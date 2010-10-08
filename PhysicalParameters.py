@@ -7,15 +7,19 @@ from numpy import sin, cos, vstack, array, zeros, dot, diag
 from numpy import exp, sqrt, ones_like, sum, mean, pi, unwrap
 from numpy import argmin, abs, real, imag, zeros_like, max
 from numpy import hsplit, finfo, eye, hstack, log10, arctan2
-from numpy import poly1d, linspace
+from numpy import poly1d, linspace, shape, ones, arange
 from uncertainties import ufloat
 from uncertainties.unumpy.ulinalg import inv as uinv
 from uncertainties.unumpy import nominal_values, std_devs, uarray
+from uncertainties.unumpy import matrix as umatrix
 from uncertainties.unumpy.core import wrap_array_func
-from uncertainties.umath import sin, cos, matrix as usin, ucos, umatrix
+from uncertainties.unumpy import sin as usin
+from uncertainties.unumpy import cos as ucos
+from uncertainties.unumpy import tan as utan
 from scipy.optimize import leastsq
-from matplotlib.pyplot import figure, plot, xlabel, ylabel, title, legend,
-axes, xlim, setp, close, savefig
+from matplotlib.pyplot import figure, plot, xlabel, ylabel, title, legend, gca
+from matplotlib.pyplot import axes, xlim, setp, close, savefig, subplot, Circle
+from matplotlib.pyplot import axis, ylim, xticks, show
 
 def fit_data():
 
@@ -57,7 +61,7 @@ def fit_data():
         wo = ufloat((p1[4], sigp[4]))
         zeta = ufloat((p1[3], sigp[3]))
         wd = (1. - zeta**2.)**(1./2.)*wo
-        f = wd/2./np.pi
+        f = wd/2./pi
         T = 1./f
         fig = plt.figure(1)
         plot_osfit(x, y, lscurve, p1, rsq, T, fig=fig)
@@ -89,7 +93,7 @@ def fit_data():
     pickle.dump(period, f)
     f.close()
 
-def tocom():
+def tor_com():
 
     f = open('data/period.p', 'r')
     period = pickle.load(f)
@@ -131,6 +135,252 @@ def tocom():
     avgPer['rodPer'] = rodPeriod
     f = open('data/avgPer.p', 'w')
     pickle.dump(avgPer, f)
+    f.close()
+
+def calc_parameters():
+    # load the data file
+    f = open('data/udata.p', 'r')
+    ddU = pickle.load(f)
+    f.close()
+
+    # the number of different bikes
+    nBk = len(ddU['bikes'])
+
+    # make a list of the bikes' names
+    bikeNames = ddU['bikes']
+
+    # calculate all the benchmark parameters
+    par = {}
+
+    # calculate the wheel radii
+    par['rR'] = ddU['rearWheelDist']/2./pi/ddU['rearWheelRot']
+    par['rF'] = ddU['frontWheelDist']/2./pi/ddU['frontWheelRot']
+
+    # steer axis tilt in radians
+    par['lambda'] = pi/180.*(90. - ddU['headTubeAngle'])
+
+    # calculate the front wheel trail
+    forkOffset = ddU['forkOffset']
+    par['c'] = (par['rF']*usin(par['lambda'])
+                  - forkOffset)/ucos(par['lambda'])
+
+    # wheelbase
+    par['w'] = ddU['wheelbase']
+
+    # calculate the dees
+    par['d1'] = ucos(par['lambda'])*(par['c']+par['w']-par['rR']*utan(par['lambda']))
+    par['d3'] = -ucos(par['lambda'])*(par['c']-par['rF']*utan(par['lambda']))
+
+    # calculate the frame rotation angle
+    # alpha is the angle between the negative z pendulum (horizontal) and the
+    # positive (up) steer axis, rotation about positive y
+    alphaFrame = ddU['frameAngle']
+    # beta is the angle between the x bike frame and the x pendulum frame, rotation
+    # about positive y
+    betaFrame = par['lambda'] - alphaFrame*pi/180
+
+    # calculate the slope of the CoM line
+    frameM = -utan(betaFrame)
+
+    # calculate the z-intercept of the CoM line
+    # frameMassDist is positive according to the pendulum ref frame
+    frameMassDist = ddU['frameMassDist']
+    cb = ucos(betaFrame)
+    frameB = -frameMassDist/cb - par['rR']
+
+    # calculate the fork rotation angle
+    betaFork = par['lambda'] - ddU['forkAngle']*pi/180.
+
+    # calculate the slope of the fork CoM line
+    forkM = -utan(betaFork)
+
+    # calculate the z-intercept of the CoM line
+    forkMassDist = ddU['forkMassDist']
+    cb = ucos(betaFork)
+    tb = utan(betaFork)
+    forkB = - par['rF'] - forkMassDist/cb + par['w']*tb
+
+    # plot the CoM lines
+    comFig = figure(num=1)
+    # intialize the matrices for the center of mass locations
+    frameCoM = zeros((2, shape(frameM)[1]), dtype='object')
+    forkCoM = zeros((2, shape(forkM)[1]), dtype='object')
+    # for each of the bikes...
+    for i in range(shape(frameM)[1]):
+        comb = array([[0, 1], [0, 2], [1, 2]])
+        # calculate the frame center of mass position
+        # initialize the matrix to store the line intersections
+        lineX = zeros((3, 2), dtype='object')
+        # for each line intersection...
+        for j, row in enumerate(comb):
+            a = umatrix(vstack([-frameM[row, i], ones((2))]).T)
+            b = frameB[row, i]
+            lineX[j] = dot(a.I, b)
+        frameCoM[:, i] = mean(lineX, axis=0)
+        # calculate the fork center of mass position
+        # reinitialize the matrix to store the line intersections
+        lineX = zeros((3, 2), dtype='object')
+        # for each line intersection...
+        for j, row in enumerate(comb):
+            a = umatrix(vstack([-forkM[row, i], ones((2))]).T)
+            b = forkB[row, i]
+            lineX[j] = dot(a.I, b)
+        forkCoM[:, i] = mean(lineX, axis=0)
+        # make a subplot for this bike
+        subplot(2, 4, i + 1)
+        # plot the rear wheel
+        c = Circle((0, par['rR'][i].nominal_value), radius=par['rR'][i].nominal_value)
+        gca().add_patch(c)
+        # plot the front wheel
+        c = Circle((par['w'][i].nominal_value, par['rF'][i].nominal_value), radius=par['rF'][i].nominal_value)
+        gca().add_patch(c)
+        # plot the lines (pendulum axes)
+        x = linspace(-par['rR'][i].nominal_value, par['w'][i].nominal_value + par['rF'][i].nominal_value, 2)
+        # for each line...
+        for j in range(len(frameM)):
+            framey = -frameM[j, i].nominal_value*x - frameB[j, i].nominal_value
+            forky = -forkM[j, i].nominal_value*x - forkB[j, i].nominal_value
+            plot(x,framey, 'r')
+            plot(x,forky, 'g')
+        # plot the ground line
+        plot(x, zeros_like(x), 'k')
+        # plot the fundamental bike
+        deex = zeros(4)
+        deez = zeros(4)
+        deex[0] = 0.
+        deex[1] = (par['d1'][i]*ucos(par['lambda'][i])).nominal_value
+        deex[2] = (par['w'][i]-par['d3'][i]*ucos(par['lambda'][i])).nominal_value
+        deex[3] = par['w'][i].nominal_value
+        deez[0] = -par['rR'][i].nominal_value
+        deez[1] = -(par['rR'][i]+par['d1'][i]*usin(par['lambda'][i])).nominal_value
+        deez[2] = -(par['rF'][i]-par['d3'][i]*usin(par['lambda'][i])).nominal_value
+        deez[3] = -par['rF'][i].nominal_value
+        plot(deex, -deez, 'k')
+        # plot the centers of mass
+        plot(frameCoM[0, i].nominal_value, -frameCoM[1, i].nominal_value, 'k+', markersize=12)
+        plot(forkCoM[0, i].nominal_value, -forkCoM[1, i].nominal_value, 'k+', markersize=12)
+        axis('equal')
+        ylim((0, 1))
+        title(bikeNames[i])
+    par['xB'] = frameCoM[0, :]
+    par['zB'] = frameCoM[1, :]
+    par['xH'] = forkCoM[0, :]
+    par['zH'] = forkCoM[1, :]
+
+    # load the average period data
+    f = open('data/avgPer.p', 'r')
+    avgPer = pickle.load(f)
+    f.close()
+    # torsional, compound and rod periods
+    tor = avgPer['tor']
+    com = avgPer['com']
+    # the yellow bikes have the same frame
+    tor[:3, 7] = tor[:3, 6]
+    com[0, 7] = com[0, 6]
+    # the browser's have the same fork
+    tor[3:6, 0] = tor[3:6, 1]
+    com[1, 0] = com[1, 1]
+    # the browsers have the same front and rear wheels
+    tor[6, 1] = tor[6, 0]
+    tor[9, 1] = tor[9, 0]
+    com[2, 1] = com[2, 0]
+    com[3, 1] = com[3, 0]
+    # the yellow bikes have the same front and rear wheels
+    tor[6, 7] = tor[6, 6]
+    tor[9, 7] = tor[9, 6]
+    com[2, 7] = com[2, 6]
+    com[3, 7] = com[3, 6]
+
+    tRod = avgPer['rodPer']
+    # calculate the stiffness of the torsional pendulum
+    iRod = tube_inertia(ddU['lRod'], ddU['mRod'], ddU['rRod'], 0.)[1]
+    k = tor_stiffness(iRod, tRod)
+
+    # masses
+    par['mR'] = ddU['rearWheelMass']
+    par['mF'] = ddU['frontWheelMass']
+    par['mB'] = ddU['frameMass']
+    par['mH'] = ddU['forkMass']
+
+    # calculate the wheel y inertias
+    par['g'] = 9.81*ones(ddU['forkMass'].shape, dtype=float)
+    par['IRyy'] = com_inertia(par['mR'], par['g'], ddU['rWheelPendLength'], com[3, :])
+    par['IFyy'] = com_inertia(par['mF'], par['g'], ddU['fWheelPendLength'], com[2, :])
+
+    # calculate the wheel x/z inertias
+    par['IRxx'] = tor_inertia(k, tor[6, :])
+    par['IFxx'] = tor_inertia(k, tor[9, :])
+
+    # calculate the y inertias for the frame and fork
+    framePendLength = (frameCoM[0, :]**2 + (frameCoM[1, :] + par['rR'])**2)**(0.5)
+    par['IByy'] = com_inertia(par['mB'], par['g'], framePendLength, com[0, :])
+    forkPendLength = ((forkCoM[0, :] - par['w'])**2 + (forkCoM[1, ] + par['rF'])**2)**(0.5)
+    par['IHyy'] = com_inertia(par['mH'], par['g'], forkPendLength, com[1, :])
+
+    # calculate the fork in-plane moments of inertia
+    Ipend = tor_inertia(k, tor)
+    par['IHxx'] = []
+    par['IHxz'] = []
+    par['IHzz'] = []
+    for i, row in enumerate(Ipend[3:6, :].T):
+        Imat = inertia_components_uncert(row, betaFork[:, i])
+        par['IHxx'].append(Imat[0, 0])
+        par['IHxz'].append(Imat[0, 1])
+        par['IHzz'].append(Imat[1, 1])
+    par['IHxx'] = array(par['IHxx'])
+    par['IHxz'] = array(par['IHxz'])
+    par['IHzz'] = array(par['IHzz'])
+
+    # calculate the frame in-plane moments of inertia
+    par['IBxx'] = []
+    par['IBxz'] = []
+    par['IBzz'] = []
+    for i, row in enumerate(Ipend[:3, :].T):
+        Imat = inertia_components_uncert(row, betaFrame[:, i])
+        par['IBxx'].append(Imat[0, 0])
+        par['IBxz'].append(Imat[0, 1])
+        par['IBzz'].append(Imat[1, 1])
+    par['IBxx'] = array(par['IBxx'])
+    par['IBxz'] = array(par['IBxz'])
+    par['IBzz'] = array(par['IBzz'])
+    par['v'] = ones_like(par['g'])
+
+    # make a dictionary with only the nominal values
+    par_n = {}
+    for k, v in par.items():
+        if type(v[0]) == type(par['rF'][0]) or type(v[0]) == type(par['mF'][0]):
+            par_n[k] = nominal_values(v)
+        else:
+            par_n[k] = par[k]
+
+    # plot all the parameters to look for crazy numbers
+    parFig = figure(num=2)
+    i = 1
+    xt = ['B', 'BI', 'C', 'F', 'P', 'S', 'Y', 'YR']
+    for k, v in par_n.items():
+        subplot(5, 6, i)
+        plot(v, '-D', markersize=14)
+        title(k)
+        xticks(arange(8), tuple(xt))
+        i += 1
+    show()
+
+    # write the parameter files
+    for i, name in enumerate(bikeNames):
+        dir = 'data/bikeParameters/'
+        fname = ''.join(name.split())
+        f = open(dir + fname + 'Par.txt', 'w')
+        for k, v in par.items():
+            if type(v[i]) == type(par['rF'][0]) or type(v[i]) == type(par['mF'][0]):
+                line = k + ',' + str(v[i].nominal_value) + ',' + str(v[i].std_dev()) + '\n'
+            else:
+                line = k + ',' + str(v[i]) + ',' + '0.0' + '\n'
+            f.write(line)
+        f.close()
+
+    # pickle the parameters too
+    f = open('data/par.p', 'w')
+    pickle.dump(par, f)
     f.close()
 
 def ab_to_mck(A, B):
@@ -437,7 +687,7 @@ def space_out_camel_case(s):
         >>> space_out_camel_case('DMLSServicesOtherBSTextLLC')
         'DMLS Services Other BS Text LLC'
         """
-        return re.sub('((?=[A-Z][a-z])|(?<=[a-z])(?=[A-Z]))', ' ', s).strip()
+        return sub('((?=[A-Z][a-z])|(?<=[a-z])(?=[A-Z]))', ' ', s).strip()
 
 def bode(ABCD=None, numden=None, w=None, fig=None, n=None, label=None,
         title=None, color=None):
