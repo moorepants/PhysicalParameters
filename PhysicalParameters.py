@@ -1,5 +1,5 @@
 import pickle
-from re
+import re
 from os import system, walk
 from copy import copy
 from numpy.linalg import inv, eig, lstsq
@@ -20,6 +20,7 @@ from uncertainties.umath import sin as usin
 from uncertainties.umath import cos as ucos
 from uncertainties.umath import tan as utan
 from scipy.optimize import leastsq
+from scipy.io import savemat
 from matplotlib.pyplot import figure, plot, xlabel, ylabel, title, legend, gca
 from matplotlib.pyplot import axes, xlim, setp, close, savefig, subplot, Circle
 from matplotlib.pyplot import axis, ylim, xticks, show
@@ -421,6 +422,90 @@ def calc_canon():
         f.close()
         # build some pretty tex files
         replace_values(directory, 'CanonTemplate.tex', fname + 'Can.tex', canon)
+
+def calc_jason_on_bikes():
+
+    # load in the base data file
+    f = open('data/data.p', 'r')
+    data = pickle.load(f)
+    f.close()
+
+    # load in the parameter file
+    f = open('data/par.p', 'r')
+    par = pickle.load(f)
+    f.close()
+
+    nBk = len(data['bikes'])
+
+    # remove the uncertainties
+    par_n = {}
+    for k, v in par.items():
+        if type(v[0]) == type(par['rF'][0]) or type(v[0]) == type(par['mF'][0]):
+            par_n[k] = nominal_values(v)
+        else:
+            par_n[k] = par[k]
+
+    # Jason's parameters (sitting on the Batavus Browser)
+    IBJ = array([[7.9985, 0 , -1.9272], [0, 8.0689, 0], [ -1.9272, 0, 2.3624]])
+    mBJ = 72.
+    xBJ = 0.2909
+    zBJ = -1.1091
+
+    # compute the total mass
+    mB = par_n['mB'] + mBJ
+    # compute the new CoM
+    xB = (mBJ*xBJ + par_n['mB']*par_n['xB'])/mB
+    zB = (mBJ*zBJ + par_n['mB']*par_n['zB'])/mB
+    # compute the new moment of inertia
+    dJ = vstack((xB, zeros(nBk), zB)) - vstack((xBJ, 0., zBJ))
+    dB = vstack((xB, zeros(nBk), zB)) - vstack((par_n['xB'], zeros(nBk), par_n['zB']))
+    IB = zeros((3, 3))
+    for i in range(nBk):
+        IB[0] = array([par_n['IBxx'][i], 0., par_n['IBxz'][i]])
+        IB[1] = array([0., par_n['IByy'][i], 0.])
+        IB[2] = array([par_n['IBxz'][i], 0., par_n['IBzz'][i]])
+        I = parallel_axis(IBJ, mBJ, dJ[:, i]) + parallel_axis(IB, par_n['mB'][i], dB[:, i])
+        par_n['IBxx'][i] = I[0, 0]
+        par_n['IBxz'][i] = I[0, 2]
+        par_n['IByy'][i] = I[1, 1]
+        par_n['IBzz'][i] = I[2, 2]
+        par_n['mB'][i] = mB[i]
+        par_n['xB'][i] = xB[i]
+        par_n['zB'][i] = zB[i]
+
+    f = open('data/parWithRider.p', 'w')
+    pickle.dump(par_n, f)
+    f.close()
+
+    speeds = [2.5, 4., 5., 5.8, 7.5, 12.0]
+
+    # write the parameter files
+    for i, name in enumerate(data['bikes']):
+        direct = 'data/bikeRiderParameters/'
+        fname = ''.join(name.split())
+        f = open(direct + fname  + 'RiderPar.txt', 'w')
+        for k, v in par_n.items():
+            line = k + ',' + str(v[i]) + '\n'
+            f.write(line)
+        f.close()
+        M, C1, K0, K2, param = bmp2cm(direct + fname + 'RiderPar.txt')
+        direct = 'data/bikeRiderCanonical/'
+        f = open(direct + fname + 'RiderCan.txt', 'w')
+        for mat in ['M','C1', 'K0', 'K2']:
+            f.write(mat + '\n')
+            f.write(str(eval(mat)) + '\n')
+        f.write("The states are [roll rate, steer rate, roll angle, steer angle]\n")
+        for v in speeds:
+            A, B = abMatrix(M, C1, K0, K2, v, param['g'])
+            for mat in ['A', 'B']:
+                f.write(mat + ' (v = ' + str(v) + ')\n')
+                f.write(str(eval(mat)) + '\n')
+        f.close()
+        mdict = {'M':M, 'C1':C1, 'K0':K0, 'K2':K2}
+        f = open(direct + fname + 'RiderCan.p', 'w')
+        pickle.dump(mdict, f)
+        f.close()
+        savemat(direct + fname + 'RiderCan.mat', mdict)
 
 def ab_to_mck(A, B):
     '''
