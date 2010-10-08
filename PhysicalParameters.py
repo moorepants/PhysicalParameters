@@ -1,64 +1,47 @@
 import pickle
 import re
-from os import system, walk
 from copy import copy
-from numpy.linalg import inv, eig, lstsq, norm
-from numpy import sin, cos, vstack, array, zeros, dot, diag
-from numpy import exp, sqrt, ones_like, sum, mean, pi, unwrap
-from numpy import argmin, abs, real, imag, zeros_like, max
-from numpy import hsplit, finfo, eye, hstack, log10, arctan2
-from numpy import poly1d, linspace, shape, ones, arange
-from numpy import arccos, rad2deg
-from uncertainties import ufloat
-from uncertainties.unumpy.ulinalg import inv as uinv
-from uncertainties.unumpy import nominal_values, std_devs, uarray
-from uncertainties.unumpy import matrix as umatrix
+from math import pi
+import numpy as np
+from uncertainties import ufloat, unumpy, umath
 from uncertainties.unumpy.core import wrap_array_func
-from uncertainties.unumpy import sin as unsin
-from uncertainties.unumpy import cos as uncos
-from uncertainties.unumpy import tan as untan
-from uncertainties.umath import sin as usin
-from uncertainties.umath import cos as ucos
-from uncertainties.umath import tan as utan
 from scipy.optimize import leastsq
 from scipy.io import savemat
-from matplotlib.pyplot import figure, plot, xlabel, ylabel, title, legend, gca
-from matplotlib.pyplot import axes, xlim, setp, close, savefig, subplot, Circle
-from matplotlib.pyplot import axis, ylim, xticks, show
+import matplotlib.pyplot as plt
 
 def hunch_angle():
 
     def uvec(x):
-        xhat = x/norm(x)
+        xhat = x/np.linalg.norm(x)
         return xhat
     # Victor on the Stratos
     # name the four points from the inkscape superimposed lines
-    a = array([190.716, 1052.483])
-    b = array([457.633, 533.479])
-    c = array([-312.107, -371.112])
-    d = array([645.204, -352.409])
+    a = np.array([190.716, 1052.483])
+    b = np.array([457.633, 533.479])
+    c = np.array([-312.107, -371.112])
+    d = np.array([645.204, -352.409])
     # calculate the two vectors
     v1 = a - b
     v2 = c -d
     # calculate the angle between the two vectors
-    theta = arccos(dot(uvec(v1), uvec(v2)))
-    print "Victor on the Stratos =", rad2deg(theta)
+    theta = np.arccos(np.dot(uvec(v1), uvec(v2)))
+    print "Victor on the Stratos =", np.rad2deg(theta)
     # Victor on the Browser
     # name the four points from the inkscape superimposed lines
-    a = array([406.081, 989.949])
-    b = array([512.147, 453.558])
-    c = array([-334.360, -175.767])
-    d = array([705.086, -125.259])
+    a = np.array([406.081, 989.949])
+    b = np.array([512.147, 453.558])
+    c = np.array([-334.360, -175.767])
+    d = np.array([705.086, -125.259])
     # calculate the two vectors
     v1 = a - b
     v2 = c -d
     # calculate the angle between the two vectors
-    theta = arccos(dot(uvec(v1), uvec(v2)))
-    print "Victor on the Browser =", rad2deg(theta)
+    theta = np.arccos(np.dot(uvec(v1), uvec(v2)))
+    print "Victor on the Browser =", np.rad2deg(theta)
 
 def fit_data():
 
-    dirs, subdirs, filenames = list(walk('data/pendDat/p'))[0]
+    dirs, subdirs, filenames = list(os.walk('data/pendDat/p'))[0]
     periodfile = open('data/period.txt', 'w')
     filenames.sort()
     period = {}
@@ -71,11 +54,11 @@ def fit_data():
         df.close()
         y = pendDat['data'].ravel()
         time = pendDat['duration']
-        x = linspace(0, time, num=len(y))
+        x = np.linspace(0, time, num=len(y))
         # decaying oscillating exponential function
-        fitfunc = lambda p, t: p[0] + exp(-p[3]*p[4]*t)*(p[1]*sin(p[4]*sqrt(1-p[3]**2)*t) + p[2]*cos(p[4]*sqrt(1-p[3]**2)*t))
+        fitfunc = lambda p, t: p[0] + np.exp(-p[3]*p[4]*t)*(p[1]*np.sin(p[4]*np.sqrt(1-p[3]**2)*t) + p[2]*np.cos(p[4]*np.sqrt(1-p[3]**2)*t))
         # initial guesses
-        p0 = array([1.35, -.5, -.75, 0.01, 3.93])
+        p0 = np.array([1.35, -.5, -.75, 0.01, 3.93])
         # create the error function
         errfunc = lambda p, t, y: fitfunc(p, t) - y
         # minimize the error function
@@ -83,25 +66,25 @@ def fit_data():
         # plot the fitted curve
         lscurve = fitfunc(p1, x)
         rsq, SSE, SST, SSR = fit_goodness(y, lscurve)
-        sigma = sqrt(SSE/(len(y)-len(p0)))
+        sigma = np.sqrt(SSE/(len(y)-len(p0)))
         # calculate the jacobian
         L = jac_fitfunc(p1, x)
         # the Hessian
-        H = dot(L.T, L)
+        H = np.dot(L.T, L)
         # the covariance matrix
-        U = sigma**2.*inv(H)
+        U = sigma**2.*np.linalg.inv(H)
         # the standard deviations
-        sigp = sqrt(U.diagonal())
+        sigp = np.sqrt(U.diagonal())
         # frequency and period
         wo = ufloat((p1[4], sigp[4]))
         zeta = ufloat((p1[3], sigp[3]))
         wd = (1. - zeta**2.)**(1./2.)*wo
         f = wd/2./pi
         T = 1./f
-        fig = figure(1)
+        fig = plt.figure(1)
         plot_osfit(x, y, lscurve, p1, rsq, T, fig=fig)
-        savefig('data/pendDat/graphs/' + name[:-2] + '.png')
-        close()
+        plt.savefig('data/pendDat/graphs/' + name[:-2] + '.png')
+        plt.close()
         # add a star in the R value is low
         if rsq <= 0.99:
             rsq = str(rsq) + '*'
@@ -134,8 +117,8 @@ def tor_com():
     period = pickle.load(f)
     f.close()
 
-    tor = zeros((12, 8), dtype='object')
-    com = zeros((4, 8), dtype='object')
+    tor = np.zeros((12, 8), dtype='object')
+    com = np.zeros((4, 8), dtype='object')
     # list of bike names (only first letter is capatilized)
     bN = ['Browser', 'Browserins', 'Crescendo', 'Fisher', 'Pista', 'Stratos',
             'Yellow', 'Yellowrev']
@@ -153,17 +136,17 @@ def tor_com():
         desc = space_out_camel_case(km).split()
         print desc
         if desc[0] == 'Rod':
-            rodPeriod = mean(v)
+            rodPeriod = np.mean(v)
         else:
             # if torsional, put it in the torsional matrix
             if desc[2] == tc[0]:
                 r = fffr.index(desc[1])*3 + fst.index(desc[3])
                 c = bN.index(desc[0])
-                tor[r, c] = mean(v)
+                tor[r, c] = np.mean(v)
                 print 'Added torsional to [', r, ',', c, ']'
             # if compound, put in in the compound matrix
             elif desc[2] == tc[1]:
-                com[fffr.index(desc[1]), bN.index(desc[0])] = mean(v)
+                com[fffr.index(desc[1]), bN.index(desc[0])] = np.mean(v)
     avgPer = {}
     avgPer['tor'] = tor
     avgPer['com'] = com
@@ -196,15 +179,15 @@ def calc_parameters():
 
     # calculate the front wheel trail
     forkOffset = ddU['forkOffset']
-    par['c'] = (par['rF']*unsin(par['lambda'])
-                  - forkOffset)/uncos(par['lambda'])
+    par['c'] = (par['rF']*unumpy.sin(par['lambda'])
+                  - forkOffset)/unumpy.cos(par['lambda'])
 
     # wheelbase
     par['w'] = ddU['wheelbase']
 
     # calculate the dees
-    par['d1'] = uncos(par['lambda'])*(par['c']+par['w']-par['rR']*untan(par['lambda']))
-    par['d3'] = -uncos(par['lambda'])*(par['c']-par['rF']*untan(par['lambda']))
+    par['d1'] = unumpy.cos(par['lambda'])*(par['c']+par['w']-par['rR']*unumpy.tan(par['lambda']))
+    par['d3'] = -unumpy.cos(par['lambda'])*(par['c']-par['rF']*unumpy.tan(par['lambda']))
 
     # calculate the frame rotation angle
     # alpha is the angle between the negative z pendulum (horizontal) and the
@@ -215,88 +198,88 @@ def calc_parameters():
     betaFrame = par['lambda'] - alphaFrame*pi/180
 
     # calculate the slope of the CoM line
-    frameM = -untan(betaFrame)
+    frameM = -unumpy.tan(betaFrame)
 
     # calculate the z-intercept of the CoM line
     # frameMassDist is positive according to the pendulum ref frame
     frameMassDist = ddU['frameMassDist']
-    cb = uncos(betaFrame)
+    cb = unumpy.cos(betaFrame)
     frameB = -frameMassDist/cb - par['rR']
 
     # calculate the fork rotation angle
     betaFork = par['lambda'] - ddU['forkAngle']*pi/180.
 
     # calculate the slope of the fork CoM line
-    forkM = -untan(betaFork)
+    forkM = -unumpy.tan(betaFork)
 
     # calculate the z-intercept of the CoM line
     forkMassDist = ddU['forkMassDist']
-    cb = uncos(betaFork)
-    tb = untan(betaFork)
+    cb = unumpy.cos(betaFork)
+    tb = unumpy.tan(betaFork)
     forkB = - par['rF'] - forkMassDist/cb + par['w']*tb
 
     # plot the CoM lines
-    comFig = figure(num=1)
+    comFig = plt.figure(num=1)
     # intialize the matrices for the center of mass locations
-    frameCoM = zeros((2, shape(frameM)[1]), dtype='object')
-    forkCoM = zeros((2, shape(forkM)[1]), dtype='object')
+    frameCoM = np.zeros((2, np.shape(frameM)[1]), dtype='object')
+    forkCoM = np.zeros((2, np.shape(forkM)[1]), dtype='object')
     # for each of the bikes...
-    for i in range(shape(frameM)[1]):
-        comb = array([[0, 1], [0, 2], [1, 2]])
+    for i in range(np.shape(frameM)[1]):
+        comb = np.array([[0, 1], [0, 2], [1, 2]])
         # calculate the frame center of mass position
         # initialize the matrix to store the line intersections
-        lineX = zeros((3, 2), dtype='object')
+        lineX = np.zeros((3, 2), dtype='object')
         # for each line intersection...
         for j, row in enumerate(comb):
-            a = umatrix(vstack([-frameM[row, i], ones((2))]).T)
+            a = unumpy.matrix(np.vstack([-frameM[row, i], np.ones((2))]).T)
             b = frameB[row, i]
-            lineX[j] = dot(a.I, b)
-        frameCoM[:, i] = mean(lineX, axis=0)
+            lineX[j] = np.dot(a.I, b)
+        frameCoM[:, i] = np.mean(lineX, axis=0)
         # calculate the fork center of mass position
         # reinitialize the matrix to store the line intersections
-        lineX = zeros((3, 2), dtype='object')
+        lineX = np.zeros((3, 2), dtype='object')
         # for each line intersection...
         for j, row in enumerate(comb):
-            a = umatrix(vstack([-forkM[row, i], ones((2))]).T)
+            a = unumpy.matrix(np.vstack([-forkM[row, i], np.ones((2))]).T)
             b = forkB[row, i]
-            lineX[j] = dot(a.I, b)
-        forkCoM[:, i] = mean(lineX, axis=0)
+            lineX[j] = np.dot(a.I, b)
+        forkCoM[:, i] = np.mean(lineX, axis=0)
         # make a subplot for this bike
-        subplot(2, 4, i + 1)
+        plt.subplot(2, 4, i + 1)
         # plot the rear wheel
-        c = Circle((0, par['rR'][i].nominal_value), radius=par['rR'][i].nominal_value)
-        gca().add_patch(c)
+        c = plt.Circle((0, par['rR'][i].nominal_value), radius=par['rR'][i].nominal_value)
+        plt.gca().add_patch(c)
         # plot the front wheel
-        c = Circle((par['w'][i].nominal_value, par['rF'][i].nominal_value), radius=par['rF'][i].nominal_value)
-        gca().add_patch(c)
+        c = plt.Circle((par['w'][i].nominal_value, par['rF'][i].nominal_value), radius=par['rF'][i].nominal_value)
+        plt.gca().add_patch(c)
         # plot the lines (pendulum axes)
-        x = linspace(-par['rR'][i].nominal_value, par['w'][i].nominal_value + par['rF'][i].nominal_value, 2)
+        x = np.linspace(-par['rR'][i].nominal_value, par['w'][i].nominal_value + par['rF'][i].nominal_value, 2)
         # for each line...
         for j in range(len(frameM)):
             framey = -frameM[j, i].nominal_value*x - frameB[j, i].nominal_value
             forky = -forkM[j, i].nominal_value*x - forkB[j, i].nominal_value
-            plot(x,framey, 'r')
-            plot(x,forky, 'g')
+            plt.plot(x,framey, 'r')
+            plt.plot(x,forky, 'g')
         # plot the ground line
-        plot(x, zeros_like(x), 'k')
+        plt.plot(x, np.zeros_like(x), 'k')
         # plot the fundamental bike
-        deex = zeros(4)
-        deez = zeros(4)
+        deex = np.zeros(4)
+        deez = np.zeros(4)
         deex[0] = 0.
-        deex[1] = (par['d1'][i]*uncos(par['lambda'][i])).nominal_value
-        deex[2] = (par['w'][i]-par['d3'][i]*uncos(par['lambda'][i])).nominal_value
+        deex[1] = (par['d1'][i]*unumpy.cos(par['lambda'][i])).nominal_value
+        deex[2] = (par['w'][i]-par['d3'][i]*unumpy.cos(par['lambda'][i])).nominal_value
         deex[3] = par['w'][i].nominal_value
         deez[0] = -par['rR'][i].nominal_value
-        deez[1] = -(par['rR'][i]+par['d1'][i]*unsin(par['lambda'][i])).nominal_value
-        deez[2] = -(par['rF'][i]-par['d3'][i]*unsin(par['lambda'][i])).nominal_value
+        deez[1] = -(par['rR'][i]+par['d1'][i]*unumpy.sin(par['lambda'][i])).nominal_value
+        deez[2] = -(par['rF'][i]-par['d3'][i]*unumpy.sin(par['lambda'][i])).nominal_value
         deez[3] = -par['rF'][i].nominal_value
-        plot(deex, -deez, 'k')
+        plt.plot(deex, -deez, 'k')
         # plot the centers of mass
-        plot(frameCoM[0, i].nominal_value, -frameCoM[1, i].nominal_value, 'k+', markersize=12)
-        plot(forkCoM[0, i].nominal_value, -forkCoM[1, i].nominal_value, 'k+', markersize=12)
-        axis('equal')
-        ylim((0, 1))
-        title(bikeNames[i])
+        plt.plot(frameCoM[0, i].nominal_value, -frameCoM[1, i].nominal_value, 'k+', markersize=12)
+        plt.plot(forkCoM[0, i].nominal_value, -forkCoM[1, i].nominal_value, 'k+', markersize=12)
+        plt.axis('equal')
+        plt.ylim((0, 1))
+        plt.title(bikeNames[i])
     par['xB'] = frameCoM[0, :]
     par['zB'] = frameCoM[1, :]
     par['xH'] = forkCoM[0, :]
@@ -338,7 +321,7 @@ def calc_parameters():
     par['mH'] = ddU['forkMass']
 
     # calculate the wheel y inertias
-    par['g'] = 9.81*ones(ddU['forkMass'].shape, dtype=float)
+    par['g'] = 9.81*np.ones(ddU['forkMass'].shape, dtype=float)
     par['IRyy'] = com_inertia(par['mR'], par['g'], ddU['rWheelPendLength'], com[3, :])
     par['IFyy'] = com_inertia(par['mF'], par['g'], ddU['fWheelPendLength'], com[2, :])
 
@@ -362,9 +345,9 @@ def calc_parameters():
         par['IHxx'].append(Imat[0, 0])
         par['IHxz'].append(Imat[0, 1])
         par['IHzz'].append(Imat[1, 1])
-    par['IHxx'] = array(par['IHxx'])
-    par['IHxz'] = array(par['IHxz'])
-    par['IHzz'] = array(par['IHzz'])
+    par['IHxx'] = np.array(par['IHxx'])
+    par['IHxz'] = np.array(par['IHxz'])
+    par['IHzz'] = np.array(par['IHzz'])
 
     # calculate the frame in-plane moments of inertia
     par['IBxx'] = []
@@ -375,30 +358,30 @@ def calc_parameters():
         par['IBxx'].append(Imat[0, 0])
         par['IBxz'].append(Imat[0, 1])
         par['IBzz'].append(Imat[1, 1])
-    par['IBxx'] = array(par['IBxx'])
-    par['IBxz'] = array(par['IBxz'])
-    par['IBzz'] = array(par['IBzz'])
-    par['v'] = ones_like(par['g'])
+    par['IBxx'] = np.array(par['IBxx'])
+    par['IBxz'] = np.array(par['IBxz'])
+    par['IBzz'] = np.array(par['IBzz'])
+    par['v'] = np.ones_like(par['g'])
 
     # make a dictionary with only the nominal values
     par_n = {}
     for k, v in par.items():
         if type(v[0]) == type(par['rF'][0]) or type(v[0]) == type(par['mF'][0]):
-            par_n[k] = nominal_values(v)
+            par_n[k] = unumpy.nominal_values(v)
         else:
             par_n[k] = par[k]
 
     # plot all the parameters to look for crazy numbers
-    parFig = figure(num=2)
+    parFig = plt.figure(num=2)
     i = 1
     xt = ['B', 'BI', 'C', 'F', 'P', 'S', 'Y', 'YR']
     for k, v in par_n.items():
-        subplot(5, 6, i)
-        plot(v, '-D', markersize=14)
-        title(k)
-        xticks(arange(8), tuple(xt))
+        plt.subplot(5, 6, i)
+        plt.plot(v, '-D', markersize=14)
+        plt.title(k)
+        plt.xticks(np.arange(8), tuple(xt))
         i += 1
-    show()
+    plt.show()
 
     # write the parameter files
     for i, name in enumerate(bikeNames):
@@ -472,12 +455,12 @@ def calc_jason_on_bikes():
     par_n = {}
     for k, v in par.items():
         if type(v[0]) == type(par['rF'][0]) or type(v[0]) == type(par['mF'][0]):
-            par_n[k] = nominal_values(v)
+            par_n[k] = unumpy.nominal_values(v)
         else:
             par_n[k] = par[k]
 
     # Jason's parameters (sitting on the Batavus Browser)
-    IBJ = array([[7.9985, 0 , -1.9272], [0, 8.0689, 0], [ -1.9272, 0, 2.3624]])
+    IBJ = np.array([[7.9985, 0 , -1.9272], [0, 8.0689, 0], [ -1.9272, 0, 2.3624]])
     mBJ = 72.
     xBJ = 0.2909
     zBJ = -1.1091
@@ -488,13 +471,13 @@ def calc_jason_on_bikes():
     xB = (mBJ*xBJ + par_n['mB']*par_n['xB'])/mB
     zB = (mBJ*zBJ + par_n['mB']*par_n['zB'])/mB
     # compute the new moment of inertia
-    dJ = vstack((xB, zeros(nBk), zB)) - vstack((xBJ, 0., zBJ))
-    dB = vstack((xB, zeros(nBk), zB)) - vstack((par_n['xB'], zeros(nBk), par_n['zB']))
-    IB = zeros((3, 3))
+    dJ = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((xBJ, 0., zBJ))
+    dB = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((par_n['xB'], np.zeros(nBk), par_n['zB']))
+    IB = np.zeros((3, 3))
     for i in range(nBk):
-        IB[0] = array([par_n['IBxx'][i], 0., par_n['IBxz'][i]])
-        IB[1] = array([0., par_n['IByy'][i], 0.])
-        IB[2] = array([par_n['IBxz'][i], 0., par_n['IBzz'][i]])
+        IB[0] = np.array([par_n['IBxx'][i], 0., par_n['IBxz'][i]])
+        IB[1] = np.array([0., par_n['IByy'][i], 0.])
+        IB[2] = np.array([par_n['IBxz'][i], 0., par_n['IBzz'][i]])
         I = parallel_axis(IBJ, mBJ, dJ[:, i]) + parallel_axis(IB, par_n['mB'][i], dB[:, i])
         par_n['IBxx'][i] = I[0, 0]
         par_n['IBxz'][i] = I[0, 2]
@@ -560,9 +543,9 @@ def ab_to_mck(A, B):
 
     '''
     numRow, numCol = A.shape
-    M = inv(B[numRow/2:, :])
-    C = -dot(M, A[numRow/2:, numCol/2:])
-    K = -dot(M, A[numRow/2:, :numCol/2])
+    M = np.linalg.inv(B[numRow/2:, :])
+    C = -np.dot(M, A[numRow/2:, numCol/2:])
+    K = -np.dot(M, A[numRow/2:, :numCol/2])
 
     return M, C, K
 
@@ -599,25 +582,25 @@ def ueig(uA):
     '''
 
     # separate the nominal values from the uncertainties
-    sA = std_devs(uA)
+    sA = unumpy.std_devs(uA)
 
     # create the covariance matrix for A
-    CA = diag(sA.flatten())
+    CA = np.diag(sA.flatten())
 
     # pull out the nominal A
-    A = nominal_values(uA)
+    A = unumpy.nominal_values(uA)
 
     # the nominal eigenvalues and eigenvectors
-    w, v = eig(A)
+    w, v = np.linalg.eig(A)
     print 'w=', w
 
     # FA is the jacobian
-    FAw = zeros((w.shape[0], A.flatten().shape[0]))
-    FAv = zeros((v.flatten().shape[0], A.flatten().shape[0]))
+    FAw = np.zeros((w.shape[0], A.flatten().shape[0]))
+    FAv = np.zeros((v.flatten().shape[0], A.flatten().shape[0]))
 
     # pw is the perturbed eigenvectors used in the FA calc
-    pw = zeros((w.shape[0], A.flatten().shape[0]), dtype=complex)
-    pv = zeros((w.shape[0]**2, A.flatten().shape[0]), dtype=complex)
+    pw = np.zeros((w.shape[0], A.flatten().shape[0]), dtype=complex)
+    pv = np.zeros((w.shape[0]**2, A.flatten().shape[0]), dtype=complex)
 
     # calculate the perturbed eigenvalues for each A entry
     for i, a in enumerate(A.flatten()):
@@ -625,7 +608,7 @@ def ueig(uA):
         if a == 0.:
             delta = 1e-8
         else:
-            delta = sqrt(finfo(float).eps)*a
+            delta = np.sqrt(np.finfo(float).eps)*a
 
         # make a copy of A
         pA = copy(A).flatten()
@@ -634,13 +617,13 @@ def ueig(uA):
         pA[i] = pA[i] + delta
 
         # back to matrix
-        pA = hsplit(pA, A.shape[0])
+        pA = np.hsplit(pA, A.shape[0])
         print 'A', A
         print 'pA', pA
 
         # calculate the eigenvalues
-        print eig(pA)[0]
-        pw[:, i], tpv = eig(pA)
+        print np.linalg.eig(pA)[0]
+        pw[:, i], tpv = np.linalg.eig(pA)
         print 'perturbed eig', pw[:, i]
         print 'nom eig', w
         print 'delta', delta
@@ -650,14 +633,14 @@ def ueig(uA):
         FAv[:, i] = (pv[:, i] - v.flatten('F'))/delta
 
     # calculate the covariance matrix for the eigenvalues
-    Cw = dot(dot(FAw, CA), FAw.T)
-    Cv = dot(dot(FAv, CA), FAv.T)
+    Cw = np.dot(np.dot(FAw, CA), FAw.T)
+    Cv = np.dot(np.dot(FAv, CA), FAv.T)
     print FAw
 
     # build the eigenvalues with uncertainties
-    uw = uarray((w, diag(Cw)))
-    uv = uarray((v.flatten('F'), diag(Cv)))
-    uv = vstack(hsplit(uv, w.shape[0])).T
+    uw = unumpy.uarray((w, np.diag(Cw)))
+    uv = unumpy.uarray((v.flatten('F'), np.diag(Cv)))
+    uv = np.vstack(np.hsplit(uv, w.shape[0])).T
     return uw, uv
 
 def replace_values(directory, template, newfile, replacers):
@@ -749,9 +732,9 @@ def replace_values(directory, template, newfile, replacers):
         fn.write(line)
     f.close()
     fn.close()
-    system('pdflatex -output-directory=' + directory + ' ' + newfile)
-    system('rm ' + directory + '*.aux')
-    system('rm ' + directory + '*.log')
+    os.system('pdflatex -output-directory=' + directory + ' ' + newfile)
+    os.system('rm ' + directory + '*.aux')
+    os.system('rm ' + directory + '*.log')
 
 def uround(value):
     '''Round values according to their uncertainity
@@ -822,18 +805,18 @@ def plot_osfit(t, ym, yf, p, rsq, T, fig=None):
     if fig:
         fig = fig
     else:
-        fig = figure(2)
-    ax1 = axes([0.1, 0.1, 0.8, 0.7])
+        fig = plt.figure(2)
+    ax1 = plt.axes([0.1, 0.1, 0.8, 0.7])
     ax1.plot(t, ym, '.', markersize=2)
-    plot(t, yf, 'k-')
-    xlabel('Time [s]')
-    ylabel('Amplitude [V]')
+    plt.plot(t, yf, 'k-')
+    plt.xlabel('Time [s]')
+    plt.ylabel('Amplitude [V]')
     equation = r'$f(t)={0:1.2f}+e^{{-({3:1.3f})({4:1.1f})t}}\left[{1:1.2f}\sin{{\sqrt{{1-{3:1.3f}^2}}{4:1.1f}t}}+{2:1.2f}\cos{{\sqrt{{1-{3:1.3f}^2}}{4:1.1f}t}}\right]$'.format(p[0], p[1], p[2], p[3], p[4])
     rsquare = '$r^2={0:1.3f}$'.format(rsq)
     period = '$T={0} s$'.format(T)
-    title(equation + '\n' + rsquare + ', ' + period)
-    legend(['Measured', 'Fit'])
-    #xlim((0, 1))
+    plt.title(equation + '\n' + rsquare + ', ' + period)
+    plt.legend(['Measured', 'Fit'])
+    #plt.xlim((0, 1))
     return fig
 
 def space_out_camel_case(s):
@@ -855,10 +838,10 @@ def bode(ABCD=None, numden=None, w=None, fig=None, n=None, label=None,
     Returns magnitude and phase vectors, and figure object.
     """
     if fig == None:
-        fig = figure()
+        fig = plt.figure()
 
-    mag = zeros(len(w))
-    phase = zeros(len(w))
+    mag = np.zeros(len(w))
+    phase = np.zeros(len(w))
     fig.yprops = dict(rotation=90,
                   horizontalalignment='right',
                   verticalalignment='center',
@@ -870,19 +853,19 @@ def bode(ABCD=None, numden=None, w=None, fig=None, n=None, label=None,
 
     if (ABCD):
         A, B, C, D = ABCD
-        I = eye(A.shape[0])
+        I = np.eye(A.shape[0])
         for i, f in enumerate(w):
-            sImA_inv = inv(1j*f*I - A)
-            G = dot(dot(C, sImA_inv), B) + D
-            mag[i] = 20.*log10(abs(G))
-            phase[i] = arctan2(imag(G), real(G))
-        phase = 180./np.pi*unwrap(phase)
+            sImA_inv = np.linalg.inv(1j*f*I - A)
+            G = np.dot(np.dot(C, sImA_inv), B) + D
+            mag[i] = 20.*np.log10(np.abs(G))
+            phase[i] = np.arctan2(np.imag(G), np.real(G))
+        phase = 180./np.pi*np.unwrap(phase)
     elif (numden):
-        n = poly1d(numden[0])
-        d = poly1d(numden[1])
+        n = np.poly1d(numden[0])
+        d = np.poly1d(numden[1])
         Gjw = n(1j*w)/d(1j*w)
-        mag = 20.*log10(abs(Gjw))
-        phase = 180./pi*unwrap(arctan2(imag(Gjw), real(Gjw)))
+        mag = 20.*np.log10(np.abs(Gjw))
+        phase = 180./pi*np.unwrap(np.arctan2(np.imag(Gjw), np.real(Gjw)))
 
     fig.ax1.semilogx(w, mag, label=label)
     if title:
@@ -894,9 +877,9 @@ def bode(ABCD=None, numden=None, w=None, fig=None, n=None, label=None,
     fig.ax1.grid(b=True)
     fig.ax2.grid(b=True)
 
-    setp(fig.ax1.get_xticklabels(), visible=False)
-    setp(fig.ax1.get_yticklabels(), visible=True)
-    setp(fig.ax2.get_yticklabels(), visible=True)
+    plt.setp(fig.ax1.get_xticklabels(), visible=False)
+    plt.setp(fig.ax1.get_yticklabels(), visible=True)
+    plt.setp(fig.ax2.get_yticklabels(), visible=True)
     fig.ax1.set_ylabel('Magnitude [dB]', **fig.yprops)
     fig.ax2.set_ylabel('Phase [deg]', **fig.yprops)
     fig.ax2.set_xlabel('Frequency [rad/s]')
@@ -904,8 +887,8 @@ def bode(ABCD=None, numden=None, w=None, fig=None, n=None, label=None,
         fig.ax1.legend()
 
     if color:
-        setp(fig.ax1.lines, color=color)
-        setp(fig.ax2.lines, color=color)
+        plt.setp(fig.ax1.lines, color=color)
+        plt.setp(fig.ax2.lines, color=color)
 
     return mag, phase, fig
 
@@ -940,8 +923,8 @@ def sort_modes(evals, evecs):
     capsize and caster). Some type of check unsing the derivative of the curves
     could make it more robust.
     '''
-    evalsorg = zeros_like(evals)
-    evecsorg = zeros_like(evecs)
+    evalsorg = np.zeros_like(evals)
+    evecsorg = np.zeros_like(evecs)
     # set the first row to be the same
     evalsorg[0] = evals[0]
     evecsorg[0] = evecs[0]
@@ -953,27 +936,27 @@ def sort_modes(evals, evecs):
         used = []
         for j, e in enumerate(speed):
             try:
-                x, y = real(evalsorg[i, j].nominal_value), imag(evalsorg[i, j].nominal_value)
+                x, y = np.real(evalsorg[i, j].nominal_value), np.imag(evalsorg[i, j].nominal_value)
             except:
-                x, y = real(evalsorg[i, j]), imag(evalsorg[i, j])
+                x, y = np.real(evalsorg[i, j]), np.imag(evalsorg[i, j])
             # for each eigenvalue at the next speed
-            dist = zeros(4)
+            dist = np.zeros(4)
             for k, eignext in enumerate(evals[i + 1]):
                 try:
-                    xn, yn = real(eignext.nominal_value), imag(eignext.nominal_value)
+                    xn, yn = np.real(eignext.nominal_value), np.imag(eignext.nominal_value)
                 except:
-                    xn, yn = real(eignext), imag(eignext)
+                    xn, yn = np.real(eignext), np.imag(eignext)
                 # distance between points in the real/imag plane
-                dist[k] = abs(((xn - x)**2 + (yn - y)**2)**0.5)
-            if argmin(dist) in used:
+                dist[k] = np.abs(((xn - x)**2 + (yn - y)**2)**0.5)
+            if np.argmin(dist) in used:
                 # set the already used indice higher
-                dist[argmin(dist)] = max(dist) + 1.
+                dist[np.argmin(dist)] = np.max(dist) + 1.
             else:
                 pass
-            evalsorg[i + 1, j] = evals[i + 1, argmin(dist)]
-            evecsorg[i + 1, :, j] = evecs[i + 1, :, argmin(dist)]
+            evalsorg[i + 1, j] = evals[i + 1, np.argmin(dist)]
+            evecsorg[i + 1, :, j] = evecs[i + 1, :, np.argmin(dist)]
             # keep track of the indices we've used
-            used.append(argmin(dist))
+            used.append(np.argmin(dist))
     weave = {'evals' : evalsorg[:, 2:], 'evecs' : evecsorg[:, :, 2:]}
     capsize = {'evals' : evalsorg[:, 1], 'evecs' : evecsorg[:, :, 1]}
     caster = {'evals' : evalsorg[:, 0], 'evecs' : evecsorg[:, :, 0]}
@@ -1002,16 +985,16 @@ def critical_speeds(v, weave, capsize):
         The speed at which the capsize mode becomes unstable.
 
     '''
-    vw = v[argmin(abs(real(weave[:, 0])))]
-    vc = v[argmin(abs(real(capsize)))]
-    m = max(abs(imag(weave[:, 0])))
-    w = zeros_like(imag(weave[:, 0]))
-    for i, eig in enumerate(abs(imag(weave[:, 0]))):
+    vw = v[np.argmin(np.abs(np.real(weave[:, 0])))]
+    vc = v[np.argmin(np.abs(np.real(capsize)))]
+    m = np.max(np.abs(np.imag(weave[:, 0])))
+    w = np.zeros_like(np.imag(weave[:, 0]))
+    for i, eig in enumerate(np.abs(np.imag(weave[:, 0]))):
         if eig == 0.:
             w[i] = m + 1.
         else:
             w[i] = eig
-    vd = v[argmin(w)]
+    vd = v[np.argmin(w)]
     return vd, vw, vc
 
 def fit_goodness(ym, yp):
@@ -1031,8 +1014,8 @@ def fit_goodness(ym, yp):
     SSR: regression sum of squares
 
     '''
-    SSR = sum((yp - mean(ym))**2)
-    SST = sum((ym - mean(ym))**2)
+    SSR = np.sum((yp - np.mean(ym))**2)
+    SST = np.sum((ym - np.mean(ym))**2)
     SSE = SST - SSR
     rsq = SSR/SST
     return rsq, SSE, SST, SSR
@@ -1054,12 +1037,12 @@ def jac_fitfunc(p, t):
     parameters vector. A 5 x N matrix where N is the number of time steps.
 
     '''
-    jac = zeros((len(p), len(t)))
-    e = exp(-p[3]*p[4]*t)
-    dampsq = sqrt(1 - p[3]**2)
-    s = sin(dampsq*p[4]*t)
-    c = cos(dampsq*p[4]*t)
-    jac[0] = ones_like(t)
+    jac = np.zeros((len(p), len(t)))
+    e = np.exp(-p[3]*p[4]*t)
+    dampsq = np.sqrt(1 - p[3]**2)
+    s = np.sin(dampsq*p[4]*t)
+    c = np.cos(dampsq*p[4]*t)
+    jac[0] = np.ones_like(t)
     jac[1] = e*s
     jac[2] = e*c
     jac[3] = -p[4]*t*e*(p[1]*s + p[2]*c) + e*(-p[1]*p[3]*p[4]*t/dampsq*c
@@ -1095,11 +1078,11 @@ def bike_eig(M, C1, K0, K2, v, g):
 
     '''
     m, n = 2*M.shape[0], v.shape[0]
-    evals = zeros((n, m), dtype='complex128')
-    evecs = zeros((n, m, m), dtype='complex128')
+    evals = np.zeros((n, m), dtype='complex128')
+    evecs = np.zeros((n, m, m), dtype='complex128')
     for i, speed in enumerate(v):
         A, B = abMatrix(M, C1, K0, K2, speed, g)
-        w, vec = eig(nominal_values(A))
+        w, vec = np.linalg.eig(unumpy.nominal_values(A))
         evals[i] = w
         evecs[i] = vec
     return evals, evecs
@@ -1149,11 +1132,11 @@ def bmp2cm(filename):
     IAxx = p['IHxx'] + p['IFxx'] + p['mH']*(p['zH'] - zA)**2 + p['mF']*(p['rF'] + zA)**2
     IAxz = p['IHxz'] - p['mH']*(p['xH'] - xA)*(p['zH'] - zA) + p['mF']*(p['w'] - xA)*(p['rF'] + zA)
     IAzz = p['IHzz'] + p['IFzz'] + p['mH']*(p['xH'] - xA)**2 + p['mF']*(p['w'] - xA)**2
-    uA = (xA - p['w'] - p['c'])*ucos(p['lambda']) - zA*usin(p['lambda'])
-    IAll = mA*uA**2 + IAxx*usin(p['lambda'])**2 + 2*IAxz*usin(p['lambda'])*ucos(p['lambda']) + IAzz*ucos(p['lambda'])**2
-    IAlx = -mA*uA*zA + IAxx*usin(p['lambda']) + IAxz*ucos(p['lambda'])
-    IAlz = mA*uA*xA + IAxz*usin(p['lambda']) + IAzz*ucos(p['lambda'])
-    mu = p['c']/p['w']*ucos(p['lambda'])
+    uA = (xA - p['w'] - p['c'])*umath.cos(p['lambda']) - zA*umath.sin(p['lambda'])
+    IAll = mA*uA**2 + IAxx*umath.sin(p['lambda'])**2 + 2*IAxz*umath.sin(p['lambda'])*umath.cos(p['lambda']) + IAzz*umath.cos(p['lambda'])**2
+    IAlx = -mA*uA*zA + IAxx*umath.sin(p['lambda']) + IAxz*umath.cos(p['lambda'])
+    IAlz = mA*uA*xA + IAxz*umath.sin(p['lambda']) + IAzz*umath.cos(p['lambda'])
+    mu = p['c']/p['w']*umath.cos(p['lambda'])
     SR = p['IRyy']/p['rR']
     SF = p['IFyy']/p['rF']
     ST = SR + SF
@@ -1162,22 +1145,22 @@ def bmp2cm(filename):
     Mpd = IAlx + mu*ITxz
     Mdp = Mpd
     Mdd = IAll + 2*mu*IAlz + mu**2*ITzz
-    M = array([[Mpp, Mpd], [Mdp, Mdd]])
+    M = np.array([[Mpp, Mpd], [Mdp, Mdd]])
     K0pp = mT*zT # this value only reports to 13 digit precision it seems?
     K0pd = -SA
     K0dp = K0pd
-    K0dd = -SA*usin(p['lambda'])
-    K0 = array([[K0pp, K0pd], [K0dp, K0dd]])
+    K0dd = -SA*umath.sin(p['lambda'])
+    K0 = np.array([[K0pp, K0pd], [K0dp, K0dd]])
     K2pp = 0.
-    K2pd = (ST - mT*zT)/p['w']*ucos(p['lambda'])
+    K2pd = (ST - mT*zT)/p['w']*umath.cos(p['lambda'])
     K2dp = 0.
-    K2dd = (SA + SF*usin(p['lambda']))/p['w']*ucos(p['lambda'])
-    K2 = array([[K2pp, K2pd], [K2dp, K2dd]])
+    K2dd = (SA + SF*umath.sin(p['lambda']))/p['w']*umath.cos(p['lambda'])
+    K2 = np.array([[K2pp, K2pd], [K2dp, K2dd]])
     C1pp = 0.
-    C1pd = mu*ST + SF*ucos(p['lambda']) + ITxz/p['w']*ucos(p['lambda']) - mu*mT*zT
-    C1dp = -(mu*ST + SF*ucos(p['lambda']))
-    C1dd = IAlz/p['w']*ucos(p['lambda']) + mu*(SA + ITzz/p['w']*ucos(p['lambda']))
-    C1 = array([[C1pp, C1pd], [C1dp, C1dd]])
+    C1pd = mu*ST + SF*umath.cos(p['lambda']) + ITxz/p['w']*umath.cos(p['lambda']) - mu*mT*zT
+    C1dp = -(mu*ST + SF*umath.cos(p['lambda']))
+    C1dd = IAlz/p['w']*umath.cos(p['lambda']) + mu*(SA + ITzz/p['w']*umath.cos(p['lambda']))
+    C1 = np.array([[C1pp, C1pd], [C1dp, C1dd]])
     return M, C1, K0, K2, p
 
 def abMatrix(M, C1, K0, K2, v, g):
@@ -1200,10 +1183,10 @@ def abMatrix(M, C1, K0, K2, v, g):
 
     a11 = -v*C1
     a12 = -(g*K0 + v**2*K2)
-    a21 = eye(2)
-    a22 = zeros((2, 2))
-    A = vstack((dot(uinv(M), hstack((a11, a12))), hstack((a21, a22))))
-    B = vstack((uinv(M), zeros((2, 2))))
+    a21 = np.eye(2)
+    a22 = np.zeros((2, 2))
+    A = np.vstack((np.dot(unumpy.ulinalg.inv(M), np.hstack((a11, a12))), np.hstack((a21, a22))))
+    B = np.vstack((unumpy.ulinalg.inv(M), np.zeros((2, 2))))
     return A, B
 
 def tor_inertia(k, T):
@@ -1260,7 +1243,7 @@ def tube_inertia(l, m, ro, ri):
     Ix = m/2.*(ro**2 + ri**2)
     Iy = m/12.*(3*ro**2 + 3*ri**2 + l**2)
     Iz = Iy
-    return array([Ix, Iy, Iz])
+    return np.array([Ix, Iy, Iz])
 
 def tor_stiffness(I, T):
     '''Calculate the stiffness of a torsional pendulum with a known moment of
@@ -1300,11 +1283,11 @@ def inertia_components(I, alpha):
     Inew : An inertia tensor
 
     '''
-    sa = sin(alpha)
-    ca = cos(alpha)
-    A = vstack((ca**2, -2*sa*ca, sa**2)).T
-    Iorth = lstsq(A, I)[0]
-    Inew = array([[Iorth[0], Iorth[1]], [Iorth[1], Iorth[2]]])
+    sa = np.sin(alpha)
+    ca = np.cos(alpha)
+    A = np.vstack((ca**2, -2*sa*ca, sa**2)).T
+    Iorth = np.linalg.lstsq(A, I)[0]
+    Inew = np.array([[Iorth[0], Iorth[1]], [Iorth[1], Iorth[2]]])
     return Inew
 
 def inertia_components_uncert(I, alpha):
@@ -1328,12 +1311,12 @@ def inertia_components_uncert(I, alpha):
     Inew : An inertia tensor
 
     '''
-    sa = unsin(alpha)
-    ca = uncos(alpha)
-    A = umatrix(vstack((ca**2, -2*sa*ca, sa**2)).T)
-    Iorth = dot(A.I, I)
-    Iorth = array([Iorth[0, 0], Iorth[0, 1], Iorth[0, 2]], dtype='object')
-    Inew = array([[Iorth[0], Iorth[1]], [Iorth[1], Iorth[2]]])
+    sa = unumpy.sin(alpha)
+    ca = unumpy.cos(alpha)
+    A = unumpy.matrix(np.vstack((ca**2, -2*sa*ca, sa**2)).T)
+    Iorth = np.dot(A.I, I)
+    Iorth = np.array([Iorth[0, 0], Iorth[0, 1], Iorth[0, 2]], dtype='object')
+    Inew = np.array([[Iorth[0], Iorth[1]], [Iorth[1], Iorth[2]]])
     return Inew
 
 def parallel_axis(Ic, m, d):
@@ -1343,10 +1326,10 @@ def parallel_axis(Ic, m, d):
     a = d[0]
     b = d[1]
     c = d[2]
-    dMat = zeros((3, 3))
-    dMat[0] = array([b**2 + c**2, -a*b, -a*c])
-    dMat[1] = array([-a*b, c**2 + a**2, -b*c])
-    dMat[2] = array([-a*c, -b*c, a**2 + b**2])
+    dMat = np.zeros((3, 3))
+    dMat[0] = np.array([b**2 + c**2, -a*b, -a*c])
+    dMat[1] = np.array([-a*b, c**2 + a**2, -b*c])
+    dMat[2] = np.array([-a*c, -b*c, a**2 + b**2])
     return Ic + m*dMat
 
 def trail(rF, lam, fo):
@@ -1372,7 +1355,7 @@ def trail(rF, lam, fo):
     '''
 
     # trail
-    c = (rF*sin(lam) - fo)/cos(lam)
+    c = (rF*np.sin(lam) - fo)/np.cos(lam)
     # mechanical trail
-    cm = c*cos(lam)
+    cm = c*np.cos(lam)
     return c, cm
