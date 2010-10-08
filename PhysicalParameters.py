@@ -8,7 +8,50 @@ from uncertainties import ufloat, unumpy, umath
 from uncertainties.unumpy.core import wrap_array_func
 from scipy.optimize import leastsq
 from scipy.io import savemat
+import scipy.io.matlab.mio as mio
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+def plot_raw_data():
+    # make a list of the folder contents
+    dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
+    print filenames
+    i = 0
+    while i < len(filenames):
+        d = {}
+        mio.loadmat('data/pendDat/' + filenames[i], mdict=d)
+        print 'Plotting', filenames[i]
+        plt.plot(d['data'])
+        plt.title(filenames[i])
+        plt.show()
+        raw_input()
+        plt.close()
+        i += 1
+
+def plot_evecs():
+
+    f = open('data/bikeRiderCanonical/BianchiPistaRiderCan.p')
+    can = pickle.load(f)
+    f.close()
+
+    vel = np.linspace(0, 20, num=500)
+    evals, evecs = bike_eig(can['M'], can['C1'], can['K0'], can['K2'], vel, 9.81)
+    wea, cap, cas = sort_modes(evals, evecs)
+
+    colors = ['blue', 'red', 'green', 'orange']
+
+    fig = plt.figure()
+    ax = Axes3D(fig)
+    for i, row in enumerate(wea['evecs'][:, :, 1]):
+        for k, component in enumerate(row[:2]):
+            point1 = np.array([0., 0., vel[i]])
+            point2 = np.array([np.abs(np.real(component)),
+                np.abs(np.imag(component)), vel[i]])
+            ax.plot(np.hstack((point1[0], point2[0])), np.hstack((point1[1],
+                point2[1])), zs=vel[i], color=colors[k])
+                #ax.plot(np.abs(np.real(wea['evecs'][:, :, 1])),
+                    #np.abs(np.imag(wea['evecs'][:, :, 1])), zs=vel)
+    plt.show()
 
 def make_tables():
 
