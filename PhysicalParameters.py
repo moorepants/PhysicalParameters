@@ -22,7 +22,7 @@ def make_tables():
     par = pickle.load(f)
     f.close()
 
-    direct = 'parTables/'
+    direct = 'tables/'
     for i, name in enumerate(data['bikes']):
         fname = ''.join(name.split())
         # open the new file
@@ -62,11 +62,11 @@ def make_tables():
             fn.write(line)
         f.close()
         fn.close()
-        os.system('pdflatex -output-directory=parTables ' + direct + fname + 'Par.tex')
+        os.system('pdflatex -output-directory=tables ' + direct + fname + 'Par.tex')
 
     # make the master parameter table
-    template = open('parTables/MasterParTableTemplate.tex', 'r')
-    final = open('parTables/MasterParTable.tex', 'w')
+    template = open('tables/MasterParTableTemplate.tex', 'r')
+    final = open('tables/MasterParTable.tex', 'w')
 
     abbrev = ['B', 'B*', 'C', 'G', 'P', 'S', 'Y', 'Y*']
     for line in template:
@@ -87,12 +87,12 @@ def make_tables():
 
     template.close()
     final.close()
-    os.system('pdflatex -output-directory=parTables ' + direct + 'MasterParTable.tex')
+    os.system('pdflatex -output-directory=tables ' + direct + 'MasterParTable.tex')
 
 
     # make the master canonical matrix table
-    template = open('parTables/MasterCanTableTemplate.tex', 'r')
-    final = open('parTables/MasterCanTable.tex', 'w')
+    template = open('tables/MasterCanTableTemplate.tex', 'r')
+    final = open('tables/MasterCanTable.tex', 'w')
 
     abbrev = ['B', 'B*', 'C', 'G', 'P', 'S', 'Y', 'Y*']
     for line in template:
@@ -120,13 +120,13 @@ def make_tables():
 
     template.close()
     final.close()
-    os.system('pdflatex -output-directory=parTables ' + direct + 'MasterCanTable.tex')
+    os.system('pdflatex -output-directory=tables ' + direct + 'MasterCanTable.tex')
 
-    os.system('rm parTables/*.aux')
-    os.system('rm parTables/*.log')
-    os.system('rm parTables/*.out')
-    os.system('rm parTables/*.blg')
-    os.system('rm parTables/*.bbl')
+    os.system('rm tables/*.aux')
+    os.system('rm tables/*.log')
+    os.system('rm tables/*.out')
+    os.system('rm tables/*.blg')
+    os.system('rm tables/*.bbl')
 
 def bike_bode_plots():
 
