@@ -58,3 +58,30 @@ for i, name in enumerate(data['bikes']):
     os.system('pdflatex -output-directory=parTables ' + direct + fname + 'Par.tex')
     os.system('rm parTables/*.aux')
     os.system('rm parTables/*.log')
+
+# make the master table
+template = open('parTables/MasterParTableTemplate.tex', 'r')
+final = open('parTables/MasterParTable.tex', 'w')
+
+abbrev = ['B', 'B*', 'C', 'G', 'P', 'S', 'Y', 'Y*']
+for line in template:
+    if line[0] == '%':
+        varname, fline = line[1:].split('%')
+        # remove the \n
+        fline = fline[:-1]
+        for i, bike in enumerate(data['bikes']):
+            if varname == 'bike':
+                fline = fline + ' & \multicolumn{2}{c}{' + abbrev[i] + '}'
+            else:
+                val, sig = uround(par[varname][i]).split('+/-')
+                fline = fline + ' & ' + val + ' & ' + sig
+        fline = fline + r'\\' + '\n'
+        final.write(fline)
+    else:
+        final.write(line)
+
+template.close()
+final.close()
+os.system('pdflatex -output-directory=parTables ' + direct + 'MasterParTable.tex')
+os.system('rm parTables/*.aux')
+os.system('rm parTables/*.log')
