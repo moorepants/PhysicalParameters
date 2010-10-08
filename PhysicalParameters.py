@@ -383,6 +383,42 @@ def calc_parameters():
     pickle.dump(par, f)
     f.close()
 
+def calc_canon():
+    '''
+    Calculates the A, B, M, C1, K0, and K2 matrices and saves them to pickled
+    dictionaries and text files.
+
+    '''
+
+    # load in the base data file
+    f = open('data/data.p', 'r')
+    data = pickle.load(f)
+    f.close()
+
+    data['bikes'].append('Jodi Bike')
+
+    # write the parameter files
+    for i, name in enumerate(data['bikes']):
+        directory = 'data/bikeParameters/'
+        fname = ''.join(name.split())
+        M, C1, K0, K2, param = bmp2cm(directory + fname + 'Par.txt')
+        A, B = abMatrix(M, C1, K0, K2, param['v'], param['g'])
+        directory = 'data/bikeCanonical/'
+        f = open(directory + fname + 'Can.txt', 'w')
+        for mat in ['M','C1', 'K0', 'K2', 'A', 'B']:
+            if mat == 'A' or mat == 'B':
+                f.write(mat + ' (v = ' + str(param['v']) + ')\n')
+            else:
+                f.write(mat + '\n')
+            f.write(str(eval(mat)) + '\n')
+        f.close()
+        f = open(directory + fname + 'Can.p', 'w')
+        canon = {'M':M, 'C1':C1, 'K0':K0, 'K2':K2, 'A':A, 'B':B, 'v':param['v']}
+        pickle.dump(canon, f)
+        f.close()
+        # build some pretty tex files
+        replace_values(directory, 'CanonTemplate.tex', fname + 'Can.tex', canon)
+
 def ab_to_mck(A, B):
     '''
     Returns the spring-mass-damper matrices for a general system.
