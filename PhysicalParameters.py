@@ -231,7 +231,15 @@ def plot_evecs():
                     #np.abs(np.imag(wea['evecs'][:, :, 1])), zs=vel)
     plt.show()
 
-def make_tables():
+def make_tables(typ='Bike'):
+    '''
+
+    typ : string
+        'Bike'
+        'BikeRider'
+        'BikeLegs'
+
+    '''
 
     # load in the base data file
     f = open('data/data.p', 'r')
@@ -243,11 +251,14 @@ def make_tables():
     par = pickle.load(f)
     f.close()
 
-    direct = 'tables/'
+    direct = 'tables/' + typ + '/Parameters/'
+    if not os.path.isdir(direct):
+        os.system('mkdir ' + direct)
+
     for i, name in enumerate(data['bikes']):
         fname = ''.join(name.split())
         # open the new file
-        f = open(direct + 'ParameterTable.tex', 'r')
+        f = open('tables/' + 'ParameterTable.tex', 'r')
         fn = open(direct + fname + 'Par.tex', 'w')
         for line in f:
             #print line
@@ -283,11 +294,11 @@ def make_tables():
             fn.write(line)
         f.close()
         fn.close()
-        os.system('pdflatex -output-directory=tables ' + direct + fname + 'Par.tex')
+        os.system('pdflatex -output-directory=' + direct[:-1] + ' ' + direct + fname + 'Par.tex')
 
     # make the master parameter table
     template = open('tables/MasterParTableTemplate.tex', 'r')
-    final = open('tables/MasterParTable.tex', 'w')
+    final = open(direct + 'MasterParTable.tex', 'w')
 
     abbrev = ['B', 'B*', 'C', 'G', 'P', 'S', 'Y', 'Y*']
     for line in template:
@@ -308,12 +319,15 @@ def make_tables():
 
     template.close()
     final.close()
-    os.system('pdflatex -output-directory=tables ' + direct + 'MasterParTable.tex')
-
+    os.system('pdflatex -output-directory=' + direct[:-1] + ' ' + direct + 'MasterParTable.tex')
 
     # make the master canonical matrix table
+    direct = 'tables/' + typ + '/Canonical/'
+    if not os.path.isdir(direct):
+        os.system('mkdir ' + direct)
+
     template = open('tables/MasterCanTableTemplate.tex', 'r')
-    final = open('tables/MasterCanTable.tex', 'w')
+    final = open(direct + 'MasterCanTable.tex', 'w')
 
     abbrev = ['B', 'B*', 'C', 'G', 'P', 'S', 'Y', 'Y*']
     for line in template:
@@ -341,7 +355,7 @@ def make_tables():
 
     template.close()
     final.close()
-    os.system('pdflatex -output-directory=tables ' + direct + 'MasterCanTable.tex')
+    os.system('pdflatex -output-directory=' + direct[:-1] + ' ' + direct + 'MasterCanTable.tex')
 
     os.system('rm tables/*.aux')
     os.system('rm tables/*.log')
@@ -937,7 +951,7 @@ def calc_canon():
         pickle.dump(canon, f)
         f.close()
         # build some pretty tex files
-        replace_values(directory, 'CanonTemplate.tex', fname + 'Can.tex', canon)
+        replace_values('tables/Bike/Canonical', 'CanonTemplate.tex', fname + 'Can.tex', canon)
 
 def calc_jason_on_bikes():
 
