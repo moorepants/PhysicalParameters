@@ -952,13 +952,76 @@ def calc_canon(typ='Bike',speeds=None):
         List of speeds in meters/sec to calculate the A, B matrices.
 
     '''
-    if speeds == None:
-        speeds = [0., 2.5, 4., 5., 5.8, 7.5, 12.0]
-
     # load in the base data file
     f = open('data/data.p', 'r')
     data = pickle.load(f)
     f.close()
+
+    if speeds == None:
+        speeds = [0., 2.5, 4., 5., 5.8, 7.5, 12.0]
+
+    if typ == 'Bike':
+        pass
+    elif typ == 'BikeRider' or typ == 'BikeLegs':
+
+        f = open('data/Bike/Parameters/par.p', 'r')
+        par = pickle.load(f)
+        f.close()
+
+        nBk = len(data['bikes'])
+
+        # remove the uncertainties
+        par_n = {}
+        for k, v in par.items():
+            if type(v[0]) == type(par['rF'][0]) or type(v[0]) == type(par['mF'][0]):
+                par_n[k] = unumpy.nominal_values(v)
+            else:
+                par_n[k] = par[k]
+
+        if typ == 'BikeRider':
+            # Jason's parameters (sitting on the Batavus Browser)
+            IBJ = np.array([[7.9985, 0 , -1.9272], [0, 8.0689, 0], [ -1.9272, 0, 2.3624]])
+            mBJ = 72.
+            xBJ = 0.2909
+            zBJ = -1.1091
+        elif typ == 'BikeLegs':
+            # Jason's leg parameters (sitting on the Batavus Browser)
+            IBJ = np.array([[ 1.371635407777139, 0. ,               -0.355678341037248],
+                            [ 0.,                1.248341633510700,  0.               ],
+                            [-0.355678341037248, 0.,                 0.721984553624527]])
+            mBJ = 23.183999999999997
+            xBJ = 0.41651301147631
+            zBJ = -0.742728766690162
+
+        # compute the total mass
+        mB = par_n['mB'] + mBJ
+        # compute the new CoM
+        xB = (mBJ*xBJ + par_n['mB']*par_n['xB'])/mB
+        zB = (mBJ*zBJ + par_n['mB']*par_n['zB'])/mB
+        # compute the new moment of inertia
+        dJ = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((xBJ, 0., zBJ))
+        dB = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((par_n['xB'], np.zeros(nBk), par_n['zB']))
+        IB = np.zeros((3, 3))
+        for i in range(nBk):
+            IB[0] = np.array([par_n['IBxx'][i], 0., par_n['IBxz'][i]])
+            IB[1] = np.array([0., par_n['IByy'][i], 0.])
+            IB[2] = np.array([par_n['IBxz'][i], 0., par_n['IBzz'][i]])
+            I = parallel_axis(IBJ, mBJ, dJ[:, i]) + parallel_axis(IB, par_n['mB'][i], dB[:, i])
+            par_n['IBxx'][i] = I[0, 0]
+            par_n['IBxz'][i] = I[0, 2]
+            par_n['IByy'][i] = I[1, 1]
+            par_n['IBzz'][i] = I[2, 2]
+            par_n['mB'][i] = mB[i]
+            par_n['xB'][i] = xB[i]
+            par_n['zB'][i] = zB[i]
+
+        if not os.path.isdir('data/' + typ + '/Parameters'):
+            os.system('mkdir data/' + typ + '/')
+            os.system('mkdir data/' + typ + '/Parameters')
+
+        f = open('data/' + typ + '/Parameters/par.p', 'w')
+        pickle.dump(par_n, f)
+        f.close()
 
     #data['bikes'].append('Jodi Bike')
 
@@ -966,6 +1029,12 @@ def calc_canon(typ='Bike',speeds=None):
     for i, name in enumerate(data['shortnames']):
         direct = 'data/' + typ + '/Parameters/'
         fname = ''.join(name.split())
+        if typ == 'BikeRider' or typ == 'BikeLegs':
+            f = open(direct + fname  + 'Par.txt', 'w')
+            for k, v in par_n.items():
+                line = k + ',' + str(v[i]) + '\n'
+                f.write(line)
+            f.close()
         M, C1, K0, K2, param = bmp2cm(direct + fname + 'Par.txt')
         direct = 'data/' + typ + '/Canonical/'
         if not os.path.isdir(direct):
