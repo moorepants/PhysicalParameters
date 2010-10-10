@@ -12,100 +12,6 @@ import scipy.io.matlab.mio as mio
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-def calc_legs_on_bikes():
-
-    # load in the base data file
-    f = open('data/data.p', 'r')
-    data = pickle.load(f)
-    f.close()
-
-    # load in the parameter file
-    f = open('data/par.p', 'r')
-    par = pickle.load(f)
-    f.close()
-
-    nBk = len(data['bikes'])
-
-    # remove the uncertainties
-    par_n = {}
-    for k, v in par.items():
-        if type(v[0]) == type(par['rF'][0]) or type(v[0]) == type(par['mF'][0]):
-            par_n[k] = unumpy.nominal_values(v)
-        else:
-            par_n[k] = par[k]
-
-    # Jason's leg parameters (sitting on the Batavus Browser)
-    IBJ = np.array([[ 1.371635407777139, 0. ,               -0.355678341037248],
-                    [ 0.,                1.248341633510700,  0.               ],
-                    [-0.355678341037248, 0.,                 0.721984553624527]])
-    mBJ = 23.183999999999997
-    xBJ = 0.41651301147631
-    zBJ = -0.742728766690162
-
-    # compute the total mass
-    mB = par_n['mB'] + mBJ
-    # compute the new CoM
-    xB = (mBJ*xBJ + par_n['mB']*par_n['xB'])/mB
-    zB = (mBJ*zBJ + par_n['mB']*par_n['zB'])/mB
-    # compute the new moment of inertia
-    dJ = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((xBJ, 0., zBJ))
-    dB = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((par_n['xB'], np.zeros(nBk), par_n['zB']))
-    IB = np.zeros((3, 3))
-    for i in range(nBk):
-        IB[0] = np.array([par_n['IBxx'][i], 0., par_n['IBxz'][i]])
-        IB[1] = np.array([0., par_n['IByy'][i], 0.])
-        IB[2] = np.array([par_n['IBxz'][i], 0., par_n['IBzz'][i]])
-        I = parallel_axis(IBJ, mBJ, dJ[:, i]) + parallel_axis(IB, par_n['mB'][i], dB[:, i])
-        par_n['IBxx'][i] = I[0, 0]
-        par_n['IBxz'][i] = I[0, 2]
-        par_n['IByy'][i] = I[1, 1]
-        par_n['IBzz'][i] = I[2, 2]
-        par_n['mB'][i] = mB[i]
-        par_n['xB'][i] = xB[i]
-        par_n['zB'][i] = zB[i]
-
-    f = open('data/parWithLegs.p', 'w')
-    pickle.dump(par_n, f)
-    f.close()
-
-    savemat('data/parWithLegs.mat', par_n)
-
-    speeds = [4.0, 5.8, 12]
-    # write the parameter files
-    for i, name in enumerate(data['bikes']):
-        direct = 'data/bikeLegParameters/'
-        fname = ''.join(name.split())
-        try:
-            f = open(direct + fname  + 'LegsPar.txt', 'w')
-        except:
-            os.system('mkdir data/bikeLegParameters/')
-            f = open(direct + fname  + 'LegsPar.txt', 'w')
-        for k, v in par_n.items():
-            line = k + ',' + str(v[i]) + '\n'
-            f.write(line)
-        f.close()
-        M, C1, K0, K2, param = bmp2cm(direct + fname + 'LegsPar.txt')
-        direct = 'data/bikeLegsCanonical/'
-        try:
-            f = open(direct + fname + 'LegsCan.txt', 'w')
-        except:
-            os.system('mkdir data/bikeLegsCanonical/')
-            f = open(direct + fname + 'LegsCan.txt', 'w')
-        for mat in ['M','C1', 'K0', 'K2']:
-            f.write(mat + '\n')
-            f.write(str(eval(mat)) + '\n')
-        f.write("The states are [roll rate, steer rate, roll angle, steer angle]\n")
-        for v in speeds:
-            A, B = abMatrix(M, C1, K0, K2, v, param['g'])
-            for mat in ['A', 'B']:
-                f.write(mat + ' (v = ' + str(v) + ')\n')
-                f.write(str(eval(mat)) + '\n')
-        f.close()
-        f = open(direct + fname + 'LegsCan.p', 'w')
-        pickle.dump({'M':M, 'C1':C1, 'K0':K0, 'K2':K2},
-                f)
-        f.close()
-
 def mat2dic():
 
     # load the main data file into a dictionary
@@ -258,7 +164,7 @@ def make_tables(typ='Bike'):
     f.close()
 
     # load in the parameter data file
-    f = open('data/par.p', 'r')
+    f = open('data/' + typ + '/Parameters/par.p', 'r')
     par = pickle.load(f)
     f.close()
 
@@ -269,7 +175,7 @@ def make_tables(typ='Bike'):
     for i, name in enumerate(data['bikes']):
         fname = ''.join(name.split())
         # open the new file
-        f = open('tables/' + 'ParameterTable.tex', 'r')
+        f = open('tables/' + 'ParameterTableTemplate.tex', 'r')
         fn = open(direct + fname + 'Par.tex', 'w')
         for line in f:
             #print line
@@ -346,8 +252,8 @@ def make_tables(typ='Bike'):
             varname, indice, fline = line[1:].split('%')
             # remove the \n
             fline = fline[:-1]
-            for i, bike in enumerate(data['bikes']):
-                fcan = open('data/bikeCanonical/' + ''.join(bike.split()) + 'Can.p')
+            for i, bike in enumerate(data['shortnames']):
+                fcan = open('data/' + typ + '/Canonical/' + ''.join(bike.split()) + 'Can.p')
                 can = pickle.load(fcan)
                 fcan.close()
                 if varname == 'bike':
@@ -368,11 +274,11 @@ def make_tables(typ='Bike'):
     final.close()
     os.system('pdflatex -output-directory=' + direct[:-1] + ' ' + direct + 'MasterCanTable.tex')
 
-    os.system('rm tables/*.aux')
-    os.system('rm tables/*.log')
-    os.system('rm tables/*.out')
-    os.system('rm tables/*.blg')
-    os.system('rm tables/*.bbl')
+    os.system('rm tables/' + typ + '/*.aux')
+    os.system('rm tables/' + typ + '/*.log')
+    os.system('rm tables/' + typ + '/*.out')
+    os.system('rm tables/' + typ + '/*.blg')
+    os.system('rm tables/' + typ + '/*.bbl')
 
 def bike_bode_plots():
 
@@ -1059,90 +965,6 @@ def calc_canon(typ='Bike',speeds=None):
         for k, v in canon.items():
             canon[k] = unumpy.nominal_values(v)
         savemat(direct + fname + 'Can.mat', canon)
-
-def calc_jason_on_bikes():
-
-    # load in the base data file
-    f = open('data/data.p', 'r')
-    data = pickle.load(f)
-    f.close()
-
-    # load in the parameter file
-    f = open('data/par.p', 'r')
-    par = pickle.load(f)
-    f.close()
-
-    nBk = len(data['bikes'])
-
-    # remove the uncertainties
-    par_n = {}
-    for k, v in par.items():
-        if type(v[0]) == type(par['rF'][0]) or type(v[0]) == type(par['mF'][0]):
-            par_n[k] = unumpy.nominal_values(v)
-        else:
-            par_n[k] = par[k]
-
-    # Jason's parameters (sitting on the Batavus Browser)
-    IBJ = np.array([[7.9985, 0 , -1.9272], [0, 8.0689, 0], [ -1.9272, 0, 2.3624]])
-    mBJ = 72.
-    xBJ = 0.2909
-    zBJ = -1.1091
-
-    # compute the total mass
-    mB = par_n['mB'] + mBJ
-    # compute the new CoM
-    xB = (mBJ*xBJ + par_n['mB']*par_n['xB'])/mB
-    zB = (mBJ*zBJ + par_n['mB']*par_n['zB'])/mB
-    # compute the new moment of inertia
-    dJ = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((xBJ, 0., zBJ))
-    dB = np.vstack((xB, np.zeros(nBk), zB)) - np.vstack((par_n['xB'], np.zeros(nBk), par_n['zB']))
-    IB = np.zeros((3, 3))
-    for i in range(nBk):
-        IB[0] = np.array([par_n['IBxx'][i], 0., par_n['IBxz'][i]])
-        IB[1] = np.array([0., par_n['IByy'][i], 0.])
-        IB[2] = np.array([par_n['IBxz'][i], 0., par_n['IBzz'][i]])
-        I = parallel_axis(IBJ, mBJ, dJ[:, i]) + parallel_axis(IB, par_n['mB'][i], dB[:, i])
-        par_n['IBxx'][i] = I[0, 0]
-        par_n['IBxz'][i] = I[0, 2]
-        par_n['IByy'][i] = I[1, 1]
-        par_n['IBzz'][i] = I[2, 2]
-        par_n['mB'][i] = mB[i]
-        par_n['xB'][i] = xB[i]
-        par_n['zB'][i] = zB[i]
-
-    f = open('data/parWithRider.p', 'w')
-    pickle.dump(par_n, f)
-    f.close()
-
-    speeds = [2.5, 4., 5., 5.8, 7.5, 12.0]
-
-    # write the parameter files
-    for i, name in enumerate(data['bikes']):
-        direct = 'data/bikeRiderParameters/'
-        fname = ''.join(name.split())
-        f = open(direct + fname  + 'RiderPar.txt', 'w')
-        for k, v in par_n.items():
-            line = k + ',' + str(v[i]) + '\n'
-            f.write(line)
-        f.close()
-        M, C1, K0, K2, param = bmp2cm(direct + fname + 'RiderPar.txt')
-        direct = 'data/bikeRiderCanonical/'
-        f = open(direct + fname + 'RiderCan.txt', 'w')
-        for mat in ['M','C1', 'K0', 'K2']:
-            f.write(mat + '\n')
-            f.write(str(eval(mat)) + '\n')
-        f.write("The states are [roll rate, steer rate, roll angle, steer angle]\n")
-        for v in speeds:
-            A, B = abMatrix(M, C1, K0, K2, v, param['g'])
-            for mat in ['A', 'B']:
-                f.write(mat + ' (v = ' + str(v) + ')\n')
-                f.write(str(eval(mat)) + '\n')
-        f.close()
-        mdict = {'M':M, 'C1':C1, 'K0':K0, 'K2':K2}
-        f = open(direct + fname + 'RiderCan.p', 'w')
-        pickle.dump(mdict, f)
-        f.close()
-        savemat(direct + fname + 'RiderCan.mat', mdict)
 
 def ab_to_mck(A, B):
     '''
