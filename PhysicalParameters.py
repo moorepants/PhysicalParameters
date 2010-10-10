@@ -274,11 +274,11 @@ def make_tables(typ='Bike'):
     final.close()
     os.system('pdflatex -output-directory=' + direct[:-1] + ' ' + direct + 'MasterCanTable.tex')
 
-    os.system('rm tables/' + typ + '/*.aux')
-    os.system('rm tables/' + typ + '/*.log')
-    os.system('rm tables/' + typ + '/*.out')
-    os.system('rm tables/' + typ + '/*.blg')
-    os.system('rm tables/' + typ + '/*.bbl')
+    os.system('rm tables/' + typ + '/Parameters/*.aux')
+    os.system('rm tables/' + typ + '/Parameters/*.log')
+    os.system('rm tables/' + typ + '/Parameters/*.out')
+    os.system('rm tables/' + typ + '/Parameters/*.blg')
+    os.system('rm tables/' + typ + '/Parameters/*.bbl')
 
 def bike_bode_plots():
 
@@ -321,19 +321,10 @@ def bike_bode_plots():
     # plot the bike names on the eigenvalue plot
     plt.show()
 
-def bike_eig_plots():
+def bike_eig_plots(typ='Bike'):
 
-    # choose the bike alone, bike with rigid legs or bike with rider
-    # bike alone
-    direct = 'data/bikeCanonical/'
+    direct = 'data/' + typ + '/Canonical/'
     fend = 'Can.p'
-    # bike with rider's legs
-    #direct = 'data/bikeLegsCanonical/'
-    #fend = 'LegsCan.p'
-    # bike with rider
-    #direct = 'data/bikeRiderCanonical/'
-    #fend = 'RiderCan.p'
-
 
     # load in the base data file
     f = open('data/data.p', 'r')
@@ -375,8 +366,13 @@ def bike_eig_plots():
 
     # color scale for root loci plot
 
+    directp = 'plots/' + typ
 
-    for i, name in enumerate(data['bikes']):
+    if not os.path.isdir(directp):
+        os.system('mkdir plots/' + typ)
+        os.system('mkdir ' + directp)
+
+    for i, name in enumerate(data['shortnames']):
         fname = ''.join(name.split()) + fend
         f = open(direct + fname)
         can = pickle.load(f)
@@ -397,10 +393,10 @@ def bike_eig_plots():
         plt.plot(vel, np.real(cas['evals']), color='green', label='Real Caster')
         plt.ylim((-10, 10))
         plt.xlim((0, 10))
-        plt.title('{name}\nEigenvalues vs Speed'.format(name=name))
+        plt.title('{name}\nEigenvalues vs Speed'.format(name=data['bikes'][i]))
         plt.xlabel('Speed [m/s]')
         plt.ylabel('Real and Imaginary Parts of the Eigenvalue [1/s]')
-        plt.savefig('plots/' + ''.join(name.split()) + 'EigPlot.png')
+        plt.savefig(directp + '/' + name + 'EigPlot.png')
         # plot root loci
         plt.figure(nBk + i)
         for j in range(len(evals[0, :])):
@@ -409,8 +405,8 @@ def bike_eig_plots():
         plt.colorbar()
         plt.grid()
         plt.axis('equal')
-        plt.title('{name}\nEigenvalues vs Speed'.format(name=name))
-        plt.savefig('plots/' + ''.join(name.split()) + 'RootLoci.png')
+        plt.title('{name}\nEigenvalues vs Speed'.format(name=data['bikes'][i]))
+        plt.savefig(directp + '/' + name + 'RootLoci.png')
         # plot all bikes on the same plot
         plt.figure(2*nBk + 1)
         plt.plot(vel, np.abs(np.imag(wea['evals'])), color=colors[i], label='_nolegend_', linestyle='--')
@@ -427,7 +423,7 @@ def bike_eig_plots():
     plt.xlabel('Speed [m/s]')
     plt.ylabel('Real and Imaginary Parts of the Eigenvalue [1/s]')
     try:
-        plt.savefig('plots/bike_eig.png')
+        plt.savefig(directp + '/eig_plot.png')
     except:
         pass
     # make a plot comparing the critical speeds of each bike
@@ -440,7 +436,7 @@ def bike_eig_plots():
     #plt.plot(vc - vw, bike)
     #plt.legend([r'$v_d$', r'$v_c$', r'$v_w$', 'stable speed range'])
     #plt.yticks(np.arange(8), tuple(data['bikes']))
-    plt.show()
+    #plt.show()
 
 def hunch_angle():
 
