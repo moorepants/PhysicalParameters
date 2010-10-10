@@ -118,6 +118,15 @@ def mat2dic():
         # get rid of the weird matlab unicoding
         bikeNames.append(bike[0][0].encode('ascii'))
 
+    d['shortnames'] = ['Browser',
+                       'Browserins',
+                       'Crescendo',
+                       'Gary',
+                       'Pista',
+                       'Stratos',
+                       'Yellow',
+                       'Yellowrev']
+
     # clean up the matlab imports
     d['bikes'] = bikeNames
     del(d['__globals__'], d['__header__'], d['__version__'])
@@ -147,6 +156,7 @@ def mat2dic():
             ddU[k] = ddU[k].reshape((ddU[k].shape[0]/8, -1))
 
     ddU['bikes'] = d['bikes']
+    ddU['shortnames'] = d['shortnames']
 
     # bring in the calibration rod data
     f = open('data/CalibrationRod.txt', 'r')
@@ -190,6 +200,7 @@ def mat2dic():
         f = open('data/pendDat/p/' + name[:-4] + '.p', 'w')
         pickle.dump(pendDat, f, protocol=2)
         f.close()
+
     def plot_raw_data():
         # make a list of the folder contents
         dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
@@ -905,7 +916,7 @@ def calc_parameters():
     #plt.show()
 
     # write the parameter files
-    for i, name in enumerate(bikeNames):
+    for i, name in enumerate(ddU['shortnames']):
         direct = 'data/Bike/Parameters/'
         if not os.path.isdir(direct):
             os.system('mkdir data/Bike')
@@ -925,41 +936,60 @@ def calc_parameters():
     pickle.dump(par, f)
     f.close()
 
-def calc_canon():
+def calc_canon(typ='Bike',speeds=None):
     '''
     Calculates the A, B, M, C1, K0, and K2 matrices and saves them to pickled
     dictionaries and text files.
 
+    Parameters
+    ----------
+    typ : string
+        'Bike'
+        'BikeRider'
+        'BikeLegs'
+
+    speeds : list
+        List of speeds in meters/sec to calculate the A, B matrices.
+
     '''
+    if speeds == None:
+        speeds = [0., 2.5, 4., 5., 5.8, 7.5, 12.0]
 
     # load in the base data file
     f = open('data/data.p', 'r')
     data = pickle.load(f)
     f.close()
 
-    data['bikes'].append('Jodi Bike')
+    #data['bikes'].append('Jodi Bike')
 
-    # write the parameter files
-    for i, name in enumerate(data['bikes']):
-        directory = 'data/bikeParameters/'
+    # write the matrix files
+    for i, name in enumerate(data['shortnames']):
+        direct = 'data/' + typ + '/Parameters/'
         fname = ''.join(name.split())
-        M, C1, K0, K2, param = bmp2cm(directory + fname + 'Par.txt')
-        A, B = abMatrix(M, C1, K0, K2, param['v'], param['g'])
-        directory = 'data/bikeCanonical/'
-        f = open(directory + fname + 'Can.txt', 'w')
-        for mat in ['M','C1', 'K0', 'K2', 'A', 'B']:
-            if mat == 'A' or mat == 'B':
-                f.write(mat + ' (v = ' + str(param['v']) + ')\n')
-            else:
-                f.write(mat + '\n')
+        M, C1, K0, K2, param = bmp2cm(direct + fname + 'Par.txt')
+        direct = 'data/' + typ + '/Canonical/'
+        if not os.path.isdir(direct):
+            os.system('mkdir data/' + typ + '/')
+            os.system('mkdir ' + direct)
+        f = open(direct + fname + 'Can.txt', 'w')
+        f.write("The states are [roll angle, steer angle]\n")
+        for mat in ['M','C1', 'K0', 'K2']:
+            f.write(mat + '\n')
             f.write(str(eval(mat)) + '\n')
+        f.write("The states are [roll rate, steer rate, roll angle, steer angle]\n")
+        for v in speeds:
+            A, B = abMatrix(M, C1, K0, K2, v, param['g'])
+            for mat in ['A', 'B']:
+                f.write(mat + ' (v = ' + str(v) + ')\n')
+                f.write(str(eval(mat)) + '\n')
         f.close()
-        f = open(directory + fname + 'Can.p', 'w')
-        canon = {'M':M, 'C1':C1, 'K0':K0, 'K2':K2, 'A':A, 'B':B, 'v':param['v']}
+        f = open(direct + fname + 'Can.p', 'w')
+        canon = {'M':M, 'C1':C1, 'K0':K0, 'K2':K2}
         pickle.dump(canon, f)
         f.close()
-        # build some pretty tex files
-        replace_values('tables/Bike/Canonical', 'CanonTemplate.tex', fname + 'Can.tex', canon)
+        for k, v in canon.items():
+            canon[k] = unumpy.nominal_values(v)
+        savemat(direct + fname + 'Can.mat', canon)
 
 def calc_jason_on_bikes():
 
