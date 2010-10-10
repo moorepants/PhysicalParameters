@@ -672,6 +672,11 @@ def tor_com():
     f.close()
 
 def calc_parameters():
+    '''
+    Calculates the benchmark parameters from the measured data
+
+    '''
+
     # load the data file
     f = open('data/udata.p', 'r')
     ddU = pickle.load(f)
@@ -897,13 +902,16 @@ def calc_parameters():
         plt.title(k)
         plt.xticks(np.arange(8), tuple(xt))
         i += 1
-    plt.show()
+    #plt.show()
 
     # write the parameter files
     for i, name in enumerate(bikeNames):
-        dir = 'data/bikeParameters/'
+        direct = 'data/Bike/Parameters/'
+        if not os.path.isdir(direct):
+            os.system('mkdir data/Bike')
+            os.system('mkdir ' + direct)
         fname = ''.join(name.split())
-        f = open(dir + fname + 'Par.txt', 'w')
+        f = open(direct + fname + 'Par.txt', 'w')
         for k, v in par.items():
             if type(v[i]) == type(par['rF'][0]) or type(v[i]) == type(par['mF'][0]):
                 line = k + ',' + str(v[i].nominal_value) + ',' + str(v[i].std_dev()) + '\n'
@@ -913,7 +921,7 @@ def calc_parameters():
         f.close()
 
     # pickle the parameters too
-    f = open('data/par.p', 'w')
+    f = open('data/Bike/Parameters/par.p', 'w')
     pickle.dump(par, f)
     f.close()
 
