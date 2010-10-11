@@ -280,46 +280,98 @@ def make_tables(typ='Bike'):
     os.system('rm tables/' + typ + '/Parameters/*.blg')
     os.system('rm tables/' + typ + '/Parameters/*.bbl')
 
-def bike_bode_plots():
+def bike_bode_plots(typ='Bike', speeds=None):
+    '''
+    Makes several bode plots for the bicycles.
+
+    Parameters:
+    -----------
+    typ : string
+        'Bike', 'BikeRider', 'BikeLegs'
+
+    '''
+    if speeds == None:
+        speeds = [0., 2.5, 4., 5., 5.8, 7.5, 12.0]
 
     # load in the base data file
     f = open('data/data.p', 'r')
     data = pickle.load(f)
     f.close()
 
+    # figure properties
+    figwidth = 5. # in inches
+    goldenMean = (np.sqrt(5)-1.0)/2.0
+    figsize = [figwidth, figwidth*goldenMean]
+    params = {#'backend': 'ps',
+        'axes.labelsize': 8,
+        'text.fontsize': 8,
+        'legend.fontsize': 6,
+        'xtick.labelsize': 8,
+        'ytick.labelsize': 8,
+        #'text.usetex': True,
+        'figure.figsize': figsize
+        }
+    plt.rcParams.update(params)
+
     nBk = len(data['bikes'])
 
-    colors = ['k', 'r', 'b', 'g', 'y', 'm', 'c', 'orange']
+    colors = ['k', 'r', 'b', 'g', 'y', 'm', 'c', 'orange', 'red']
+    #colors = ['#000000',
+              #'#FF0000',
+              #'#00FF00',
+              #'#0000FF',
+              #'#FFFF00',
+              #'#00FFFF',
+              #'#FF00FF',
+              #'#C0C0C0']
 
-    Tdel2phi = plt.figure(num=1)
-    Tdel2del = plt.figure(num=2)
-    Tphi2phi = plt.figure(num=3)
-    Tphi2del = plt.figure(num=4)
+    plotlist = ['Tdel2phi', 'Tdel2del', 'Tphi2phi', 'Tphi2del']
 
-    dir = 'data/bikeRiderCanonical/'
-    for i, name in enumerate(data['bikes']):
-        fname = ''.join(name.split()) + 'RiderCan.p'
-        file = open(dir + fname)
-        can = pickle.load(file)
-        file.close()
-        # make some bode plots
-        A, B = abMatrix(can['M'], can['C1'], can['K0'], can['K2'], 1., 9.81)
-        # y is [phidot, deldot, phi, del]
-        C = np.eye(A.shape[0])
-        freq = np.logspace(0, 2, 5000)
-        plt.figure(1)
-        bode(ABCD=(A, B[:, 1], C[2], 0.), w=freq, fig=Tdel2phi)
-        plt.figure(2)
-        bode(ABCD=(A, B[:, 1], C[3], 0.), w=freq, fig=Tdel2del)
-        plt.figure(3)
-        bode(ABCD=(A, B[:, 0], C[2], 0.), w=freq, fig=Tphi2phi)
-        plt.figure(4)
-        bode(ABCD=(A, B[:, 0], C[3], 0.), w=freq, fig=Tphi2del)
-    #for i, line in enumerate(Tdel2phi.ax1.lines):
-    #    plt.setp(line, color=colors[i])
-    #    plt.setp(Tdel2phi.ax2.lines[i], color=colors[i])
-    # plot the bike names on the eigenvalue plot
-    plt.show()
+    plots = {}
+
+    for i, plot in enumerate(plotlist):
+        plots[plot] = plt.figure(num=i, figsize=figsize)
+
+    direct = 'data/' + typ + '/Canonical/'
+    # for each plot
+    for j, plot in enumerate(plotlist):
+        for i, name in enumerate(data['shortnames']):
+            # load in the data
+            fname = ''.join(name.split()) + 'Can.p'
+            f = open(direct + fname)
+            can = pickle.load(f)
+            f.close()
+            # calulate the A and B matrices
+            A, B = abMatrix(can['M'], can['C1'], can['K0'], can['K2'], 1., 9.81)
+            A = unumpy.nominal_values(A)
+            B = unumpy.nominal_values(B)
+            # y is [phidot, deldot, phi, del]
+            C = np.eye(A.shape[0])
+            freq = np.logspace(0, 2, 5000)
+            if plot.split('2')[0] == 'Tdel': BEE = B[:, 1]
+            elif plot.split('2')[0] == 'Tphi': BEE = B[:, 0]
+            if plot.split('2')[1] == 'del': CEE = C[3]
+            elif plot.split('2')[1] == 'phi': CEE = C[2]
+            mag, phase, plots[plot] = bode(ABCD=(A, BEE, CEE, 0.), w=freq,
+                    fig=plots[plot])
+
+    direct = 'plots/' + typ + '/Bode'
+    if not os.path.isdir(direct):
+        os.system('mkdir ' + direct)
+
+
+    for k, v in plots.items():
+        print len(v.ax1.lines)
+        v.ax2.legend(data['bikes'], 'lower right')
+        for i, line in enumerate(v.ax1.lines):
+            print i, colors[i]
+            plt.setp(line, color=colors[i])
+            plt.setp(v.ax2.lines[i], color=colors[i])
+        v.savefig(direct + '/' + k + '.png')
+
+    return plots
+
+    #plt.show()
 
 def bike_eig_plots(typ='Bike'):
 
@@ -427,16 +479,16 @@ def bike_eig_plots(typ='Bike'):
     except:
         pass
     # make a plot comparing the critical speeds of each bike
-    #critFig = plt.figure(num=2)
-    #plt.clf()
-    #bike = np.arange(len(vd))
-    #plt.plot(vd, bike, '|', markersize=50)
-    #plt.plot(vc, bike, '|', markersize=50, linewidth=6)
-    #plt.plot(vw, bike, '|', markersize=50, linewidth=6)
-    #plt.plot(vc - vw, bike)
-    #plt.legend([r'$v_d$', r'$v_c$', r'$v_w$', 'stable speed range'])
-    #plt.yticks(np.arange(8), tuple(data['bikes']))
-    #plt.show()
+    critFig = plt.figure(num=plt.gcf().number)
+    plt.clf()
+    bike = np.arange(len(vd))
+    plt.plot(vd, bike, '|', markersize=50)
+    plt.plot(vc, bike, '|', markersize=50, linewidth=6)
+    plt.plot(vw, bike, '|', markersize=50, linewidth=6)
+    plt.plot(vc - vw, bike)
+    plt.legend([r'$v_d$', r'$v_c$', r'$v_w$', 'stable speed range'])
+    plt.yticks(np.arange(8), tuple(data['bikes']))
+    plt.savefig(directp + '/critical_speeds.png')
 
 def hunch_angle():
 
@@ -467,6 +519,10 @@ def hunch_angle():
     # calculate the angle between the two vectors
     theta = np.arccos(np.dot(uvec(v1), uvec(v2)))
     print "Victor on the Browser =", np.rad2deg(theta)
+
+direct = 'plots/PendFit/'
+if not os.path.isdir(direct):
+    os.system('mkdir ' + direct)
 
 def fit_data():
 
@@ -512,7 +568,7 @@ def fit_data():
         T = 1./f
         fig = plt.figure(1)
         plot_osfit(x, y, lscurve, p1, rsq, T, fig=fig)
-        plt.savefig('data/pendDat/graphs/' + name[:-2] + '.png')
+        plt.savefig(direct + name[:-2] + '.png')
         plt.close()
         # add a star in the R value is low
         if rsq <= 0.99:
@@ -1289,8 +1345,8 @@ def bode(ABCD=None, numden=None, w=None, fig=None, n=None, label=None,
                   x=-0.01)
 
     fig.axprops = {}
-    fig.ax1 = fig.add_axes([0.1, 0.5, 0.8, 0.4], **fig.axprops)
-    fig.ax2 = fig.add_axes([0.1, 0.1, 0.8, 0.4], **fig.axprops)
+    fig.ax1 = fig.add_axes([0.125, 0.5, 0.95-0.125, 0.475-0.2], **fig.axprops)
+    fig.ax2 = fig.add_axes([0.125, 0.2, 0.95-0.125, 0.475-0.2], **fig.axprops)
 
     if (ABCD):
         A, B, C, D = ABCD
@@ -1328,6 +1384,7 @@ def bode(ABCD=None, numden=None, w=None, fig=None, n=None, label=None,
         fig.ax1.legend()
 
     if color:
+        print color
         plt.setp(fig.ax1.lines, color=color)
         plt.setp(fig.ax2.lines, color=color)
 
