@@ -1345,8 +1345,9 @@ def bode(ABCD=None, numden=None, w=None, fig=None, n=None, label=None,
                   x=-0.01)
 
     fig.axprops = {}
-    fig.ax1 = fig.add_axes([0.125, 0.5, 0.95-0.125, 0.475-0.2], **fig.axprops)
-    fig.ax2 = fig.add_axes([0.125, 0.2, 0.95-0.125, 0.475-0.2], **fig.axprops)
+    # axes [left, bottom, width, height]
+    fig.ax1 = fig.add_axes([.125, .525, .825, .275], **fig.axprops)
+    fig.ax2 = fig.add_axes([.125, .2, .825, .275], **fig.axprops)
 
     if (ABCD):
         A, B, C, D = ABCD

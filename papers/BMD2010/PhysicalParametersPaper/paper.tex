@@ -3,6 +3,7 @@
 %\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
 \usepackage{graphicx}
 \usepackage{subfiles}
+\usepackage{subfig}
 
 \begin{document}
 
@@ -95,78 +96,46 @@ was able to use much of the same apparatus and refine the measurement
 technique.
 
 \section{Bicycle Descriptions}
-\subsection{Yellow Bicycle}
-The yellow is a bicycle used in the lab to demonstrate that a bicycle is stable
-at certain speeds. It is an aluminum road frame of unknown make with the
-majority of components removed. The wheels, drop handlebar, seat, seat post and
-bottom bracket are the only parts on the bike. The fork has been reversed to
-''increase`` the stability of the bicycle. The bicycle was measured with both
-the fork in normal position and the fork reversed.
+\begin{description}
+    \item[Batavus Browser]{The Batavus Browser is lower priced Dutch city bike.
+        We measured the physical proprieties of the stock Browser model and
+        also the same bike with the instrumentation used in our experiments.}
+    \item[Batavus Crescendo Deluxe]{The Batavus Crescendo Deluxe is a
+        contemporary of all-round cycling in cool black and white. A great bike
+        for a good end to touring. And that works fine with 8 gears, suspension
+        fork and suspension seatpost.}
+    \item[Gary Fisher Mountain Bike]{The Gary Fisher Ziggurat is a modern front
+        suspended mountain bike.}
+    \item[2007 Bianchi Pista]{The Pista is a modern steel track bicycle.}
+    \item[Batavus Stratos Deluxe]{Is a Dutch sport bicycle.}
+    \item[Yellow Bicycle]{The yellow is a bicycle used in the lab to
+        demonstrate that a bicycle is stable at certain speeds. It is an
+        aluminum road frame of unknown make with the majority of components
+        removed. The wheels, drop handlebar, seat, seat post and bottom bracket
+        are the only parts on the bike. The fork has been reversed to
+        ''increase``~\cite{Kooijman2006} the stability of the bicycle. The
+        bicycle was measured with both the fork in normal position and the fork
+        reversed.}
+\end{description}
 \begin{figure}[htbp]
-    \begin{center}
-        \includegraphics[width=4in]{../../../images/yellow.jpg}
-    \end{center}
-    \caption{Side view of the yellow bicycle with the fork in the reversed
-    posistion.}
-    \label{fig:YellowBike}
-\end{figure}
-\subsection{Batavus Browser}
-The Batavus Browser is lower priced Dutch city bike. We measured the physical
-proprieties of the stock Browser model and also the same bike with the
-instrumentation used in our experiments.
-\begin{figure}[htbp]
-    \begin{center}
-        \includegraphics[width=4in]{../../../images/browser.jpg}
-    \end{center}
-    \caption{Side view of the Batavus Browser as from the factory.}
-    \label{fig:browser}
-\end{figure}
-\begin{figure}[htbp]
-    \begin{center}
-        \includegraphics[width=4in]{../../../images/browserIns.jpg}
-    \end{center}
-    \caption{The Batavus Browser with instrumentation as used
-    in~\cite{Kooijman2009}}
-    \label{fig:browserIns}
-\end{figure}
-
-\subsection{2007 Bianchi Pista}
-The Pista is a modern steel track bicycle. Specifications, taken from the Bianchi
-website~\cite{Bianchi2009}, are as follows:
-\begin{figure}[htbp]
-    \begin{center}
-        \includegraphics[width=4in]{../../../images/pista.jpg}
-    \end{center}
-    \caption{The Bianchi Pista hanging from a spring scale.}
-    \label{fig:pista}
-\end{figure}
-\subsection{Gary Fisher Mountain Bike}
-The Gary Fisher Ziggurat is a modern front suspended mountain bike.
-\begin{figure}[htbp]
-    \begin{center}
-        \includegraphics[width=4in]{../../../images/fisher.jpg}
-    \end{center}
-    \caption{The Gary Fisher mountain bike hanging from a spring scale.}
-    \label{fig:fisher}
-\end{figure}
-\subsection{Batavus Crescendo Deluxe}
-The Batavus Crescendo Deluxe is a contemporary of all-round cycling in cool
-black and white. A great bike for a good end to touring. And that works fine
-with 8 gears, suspension fork and suspension seatpost.
-\begin{figure}[htbp]
-    \begin{center}
-        \includegraphics[width=4in]{../../../images/crescendo.jpg}
-    \end{center}
-    \caption{A side view of the Batavus Crescendo Deluxe.}
-    \label{fig:crescendo}
-\end{figure}
-\subsection{Batavus Stratos Deluxe}
-\begin{figure}[htbp]
-    \begin{center}
-        \includegraphics[width=4in]{../../../images/stratos.jpg}
-    \end{center}
-    \caption{A side view of the Batavus Stratos Deluxe}
-    \label{fig:stratos}
+    \centering
+    \subfloat[Batavus Browser]{
+        \label{fig:browser}\includegraphics[width=1.75in]{../../../images/browserIns_sub.jpg}}
+    \subfloat[Batavus Crescendo Deluxe]{
+        \label{fig:crescendo}\includegraphics[width=1.75in]{../../../images/crescendo_sub.jpg}}
+    \subfloat[Gary Fisher]{
+        \label{fig:fisher}\includegraphics[width=1.75in]{../../../images/fisher_sub.jpg}}
+        \\
+    \subfloat[Bianchi Pista]{
+        \label{fig:pista}\includegraphics[width=1.75in]{../../../images/pista_sub.jpg}}
+    \subfloat[Batavus Stratos Deluxe]{
+        \label{fig:stratos}\includegraphics[width=1.75in]{../../../images/stratos_sub.jpg}}
+    \subfloat[Yellow Bicycle]{
+        \label{fig:yellow}\includegraphics[width=1.75in]{../../../images/yellow_sub.jpg}}
+    \caption{The six bicycles measured in the experiments. The Batavus
+    Browser~\subref{fig:browser} is shown with the instrumentation and the
+    Yellow Bicycle~\subref{fig:yellow} is shown with its fork reversed.}
+    \label{fig:bicycles}
 \end{figure}
 \section{Accuracy}
 Error propagation theory was utilized to calculate what the accuracy the
