@@ -31,10 +31,7 @@ Delft University of Technology\\
 Mekelweg 2, 2628CD Delft, The Netherlands\\
 e-mail: a.l.schwab@tudelft.nl, jodikooijman@gmail.com\\
 \end{tabular} \\ \vspace{2.5ex}
-
 \end{center}
-
-
 \section*{ABSTRACT}
 Accurate measurements of a bicycle's physical parameters are required for
 realistic dynamic simulations and analysis. For the most basic models the
@@ -248,6 +245,7 @@ calculated by
 	\label{fig:tireChalk}
 \end{figure}
 \subsection{HEAD TUBE ANGLE}
+\label{sec:headtube}
 The head tube angle was measured directly using an electronic level with a
 $\pm0.2^{\circ}$ accuracy. The bicycle frame was fixed perdenpicular to the
 ground, the steering angle was set to the nominal, the tire pressures were are
@@ -277,13 +275,17 @@ surface.
     f_o\sec{\lambda}\tan{\lambda}\right)^2
     \label{eq:TrailVar}
 \end{equation}
-\subsection{Wheelbase}
-The wheelbase was measured directly using a tape measure while the bicycle was
-in the same upright fixed position used when measuring the head tube angle.
-\section{Mass}
+\subsection{WHEELBASE}
+We measured the wheelbase when the bicycle was in the same nominal
+configuration as described in Sec.~\ref{sec:headtube}. We used a tape measure
+to measure the distance from one wheel axle center to the other with a 0.002 m
+accuracy.
+\section{MASS}
 The total mass of each bicycle was measured using a spring scale with a
-resolution of 100g. Then each of the four bicycle parts were measured using a
-Molen 20kg scale with a resolution of 20g.
+resolution of 100 grams. The total mass was only used for comparison purposes.
+Each of the four bicycle parts were measured using a Molen 20 kilogram scale with a
+resolution of 20 grams. The accuracy was conservatively assumed to also be
+$\pm20$ grams.
 \begin{figure}[htbp]
     \begin{center}
         \includegraphics[width=3in]{../../../images/massScale.jpg}
@@ -291,35 +293,37 @@ Molen 20kg scale with a resolution of 20g.
     \caption{The scale used to measure the mass of each bicycle component.}
     \label{fig:massScale}
 \end{figure}
-\section{Center of Mass}
-\subsection{Wheels}
-The centers of mass of the wheels are assumed to be at their geometrical centers.
-\subsection{Rear frame}
-The rear frame was hung in three orientations as a torsional pendulum (the
-pendulum was used to measure moments of inertia). I
-assumed that the frame was laterally symmetric. The
-frame could rotate about a joint such that gravity aligned the center of mass
-with the pendulum axis. The orientation angle of the headtube $\alpha$
-Figure~\ref{fig:angles} relative
-to the earth was
-measured using the digital level Figure~\ref{fig:level}. A string was aligned with the pendulum axis
+\section{CENTER OF MASS}
+\subsection{WHEELS}
+The centers of mass of the wheels are assumed to be at their geometrical
+centers to comply with the Whipple model.
+\subsection{REAR FRAME}
+The rear frame was hung in three orientations as a torsional pendulum (both for
+the center of mass measurements and the moment of inertia measurements
+described in Sec.~\ref{sec:moi}). We assumed that the frame was laterally
+symmetric, complying with the Whipple model. The frame could rotate about a joint
+such that gravity aligned the center of mass with the pendulum axis. The
+orientation angle of the headtube, $\alpha_\mathrm{B}$, Fig.~\ref{fig:angles} relative
+to the earth was measured using a digital level ($\pm0.2^{\circ}$ accuracy),
+Figure~\ref{fig:level}. A string was aligned with the pendulum axis
 and allowed to pass by the frame. The horizontal distance $a_\mathrm{B}$ between the rear
-axle and the string (CoM line) was measured by aligning a ruler perpendicular to
-the string. The distance $a$ was negative if the string fell to the right of
+axle and the string was measured by aligning a ruler perpendicular to
+the string. The distance $a_\mathrm{B}$ was negative if the string fell to the right of
 the rear axle and positive if it fell to the left of the rear axle. These
 measurements allow for the calculation of the center of mass location in the
 global reference frame.
-\begin{figure}[htbp]
-    \begin{center}
-        \includegraphics[width=3in]{../../../images/pendDist.jpg}
-    \end{center}
-    \caption{Measuring the distance from the pendulum axis to the rear wheel
-    axle using level ruler.}
-    \label{fig:PendDist}
+\begin{figure}[tb]
+    \centering
+    \subfloat[]{\label{fig:angles}\includegraphics[width=3in]{../../../figures/angles.pdf}}
+    \subfloat[]{\label{fig:triangle}\includegraphics[width=3in]{../../../figures/triangle.pdf}}
+    \caption{\subref{fig:angles} Pictorial description of the angles and dimensions that related
+    the nominal bicycle reference frame $XYZ_B$ with the pendulum reference frame
+    $XYZ_P$. \subref{fig:triangle} Exaggerated intersection of the three pendulum axes and the
+    location of the center of mass.}
 \end{figure}
 \begin{figure}[tb]
 	\begin{center}
-		\includegraphics[width=4in]{../../../images/level.jpg}
+		\includegraphics[width=3in]{../../../images/level.jpg}
 	\end{center}
 	\caption{The digital level was mounted to a straight edge that was aligned
     with the headtube of the bicycle frame. This was done without allowing the
@@ -329,26 +333,28 @@ global reference frame.
     decrease the oscillation.}
 	\label{fig:level}
 \end{figure}
-The frame rotation angle $\beta$ is defined as rotation of the frame in the
-nominal configuration to the hanging orientation, rotated about the $Y$ axis.
-\begin{figure}[tb]
-	\begin{center}
-		\includegraphics[width=4in]{../../../figures/angles.pdf}
-	\end{center}
-	\caption{Pictorial description of the angles and dimensions that related
-    the nominal bicycle reference frame $XYZ_B$ with the pendulum reference frame
-    $XYZ_P$.}
-	\label{fig:angles}
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics[width=3in]{../../../images/pendDist.jpg}
+    \end{center}
+    \caption{Measuring the distance from the pendulum axis to the rear wheel
+    axle using level ruler.}
+    \label{fig:PendDist}
 \end{figure}
+The frame rotation angle $\beta_\mathrm{B}$ is defined as rotation of the frame in the
+nominal configuration to the hanging orientation, rotated about the $Y$ axis.
 \begin{equation}
-	\beta=\lambda-\alpha
+    \beta=\lambda-\alpha
     \label{eq:frameRotAng}
 \end{equation}
 \begin{equation}
     \sigma_{\beta}^{2} = \sigma_{\lambda}^{2} + \sigma_{\alpha}^{2}
     \label{eq:FrameRotAngVar}
 \end{equation}
-The pendulum axis $X_P$ is simply a line in the nominal bicycle reference frame with a slope $m$ and a z-intercept $b$. The slope can be shown to be
+The center of mass can be found by realizing that the pendulum axis $X_P$ is
+simply a line in the nominal bicycle reference frame with a slope $m$ and a
+z-intercept $b$ where the $i$ subscript corresponds the different frame
+orientations~\ref{fig:triangle}. The slope can be shown to be
 \begin{equation}
 	m_i=-\tan{\beta_i}
 \label{eq:slope}
@@ -372,23 +378,15 @@ Only two lines are required to calculate the center of mass of the laterally
 symmetric frame, but more orientations increase the center of mass measurement
 accuracy. The three lines are defined as:
 \begin{equation}
-   y = m_ix+b_i
+   z = m_ix+b_i
    \label{eq:line}
 \end{equation}
-The CoM location can be calculated by finding the intersection of these three
+The mass center location can be calculated by finding the intersection of these three
 lines. Two approaches were used used to calculate the center of mass. Intuition
-leads me to think that the center of mass is located at the centroid of the
+lead us to think that the center of mass is located at the centroid of the
 triangle made by the three intersecting lines. The centroid can be found by
 calculating the intersection point of each pair of lines and then averaging the
 three intersection points.
-\begin{figure}[htpb]
-    \begin{center}
-        \includegraphics{../../../figures/triangle.pdf}
-    \end{center}
-    \caption{Exaggerated intersection of the three pendulum axes and the
-    location of the center of mass.}
-    \label{fig:triangle}
-\end{figure}
 \begin{equation}
 	\left[
 	\begin{array}{cc}
@@ -465,6 +463,7 @@ frame but the z-intercept is different:
     \label{eq:zIntForkVar}
 \end{equation}
 \section{Moment of Inertia}
+\label{sec:moi}
 The moments of inertia of the wheels, frame and fork were measured by taking
 advantage of the assumed symmetry of the parts and by hanging the parts as both
 compound and torsional pendulums and measuring their period of oscillation when
