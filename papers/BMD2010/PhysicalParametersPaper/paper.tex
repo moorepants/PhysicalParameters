@@ -249,13 +249,14 @@ calculated by
 \end{figure}
 \begin{table}
     \centering
-	\begin{tabular}{llllllll}
-	Bicycle   & B      & B*     & C      & G      & P      & S      & Y \& Y*\\
+	\begin{tabular}{lllllllll}
+	Bicycle   & B      & B*     & C      & G      & P      & S      & Y & Y*\\
     \hline
 	Front\\
     \hline
-    $p_\mathrm{F}$ [bar] & 3.5    & 3.5    & 4      & 4      & 6.9    & 4.5    & 4      \\
-    $d_\mathrm{F}$ [m]   & 28.060 & 27.980 & 27.980 & 29.044 & 29.366 & 27.772 & 27.925 \\
+    $p_\mathrm{F}$ [bar] & 3.5    & 3.5    & 4      & 4      & 6.9    & 4.5 & 4 & 4 \\
+    $d_\mathrm{F}$ [m]   & 28.060 & 27.980 & 27.980 & 29.044 & 29.366 & 27.772
+    & 27.925 & 27.925\\
     $n_\mathrm{F}$ []    & 13     & 13     & 13     & 14     & 14     & 13     & 13     \\
     \hline
 	Rear\\
@@ -263,8 +264,9 @@ calculated by
 	$p_\mathrm{R}$ [bar] & 3.5    & 3.5    & 4      & 4      & 6.9    & 4.5    & 3.5    \\
 	$d_\mathrm{R}$       & 27.850 & 27.835 & 27.768 & 29.788 & 29.212 & 29.774 & 27.884 \\
 	$n_\mathrm{R}$ []    & 13     & 13     & 13     & 14     & 14     & 14     & 13     \\
+    $\lambda_{ht}$ & 67.1 & 67.1 & 69.0 & 71.1 & 74.2 & 73.1 & 72.7 & 70.6\\
 	\end{tabular}
-	\caption{Raw data for the wheel radius measurements.}
+	\caption{Raw data.}
 	\label{tab:wheelRadius}
 \end{table}
 \subsection{HEAD TUBE ANGLE}
@@ -278,14 +280,13 @@ tilt $\lambda$ is the complement to the head tube angle.
     =\frac{\pi}{180^{\circ}}(90^{\circ}-\lambda_{ht})
     \pm\left(\frac{\pi}{180^\circ}\right)\sigma_{\lambda_{ht}}
 \label{eq:headTubeAngle}
+\end{equation}
 \begin{table}
 	\begin{tabular}{lllllllll}
-    \hline
 	Bicycle   & B      & B*     & C      & G      & P      & S      & Y      & Y*\\
-	Head tube angle & 67.1 & 67.1 & 69.0 & 71.1 & 74.2 & 73.1 & 72.7 & 70.6\\
-	Steer axis tilt & 0.400 & 0.400 & 0.367 & 0.330 & 0.276 & 0.295 & 0.302 & 0.339
+    \hline
 	\end{tabular}
-	\caption{Head tube angle and steer axis tilt}
+	\caption{Head tube angle raw data}
 	\label{tab:lambda}
 \end{table}
 
