@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="230.31496"
+   height="139.27542"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   version="1.0"
+   sodipodi:docbase="F:\Bicycle Mechanics\ISEA 2008\presentation"
+   sodipodi:docname="bikeGeometry.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-filename="D:\Jason's Documents\TU Delft\MSNDC 2009\presentation\bikeGeomRWR.png"
+   inkscape:export-xdpi="136.41562"
+   inkscape:export-ydpi="136.41562">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 372.04724 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="1052.3622 : 372.04724 : 1"
+       inkscape:persp3d-origin="526.18109 : 248.03149 : 1"
+       id="perspective47" />
+    <marker
+       inkscape:stockid="Arrow2Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow2Mend"
+       style="overflow:visible">
+      <path
+         id="path13940"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.97309,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z"
+         transform="scale(-0.6,-0.6)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Mstart"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow2Mstart"
+       style="overflow:visible">
+      <path
+         id="path13937"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.97309,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z"
+         transform="scale(0.6,0.6)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Mend"
+       style="overflow:visible">
+      <path
+         id="path13922"
+         d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mstart"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Mstart"
+       style="overflow:visible">
+      <path
+         id="path13919"
+         d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
+         transform="matrix(0.4,0,0,0.4,4,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path13913"
+         d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
+         transform="matrix(0.8,0,0,0.8,10,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.9028572"
+     inkscape:cx="144.71998"
+     inkscape:cy="65.630864"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     width="1052.3622px"
+     height="744.09448px"
+     showborder="true"
+     showgrid="true"
+     inkscape:window-width="1280"
+     inkscape:window-height="753"
+     inkscape:window-x="-4"
+     inkscape:window-y="-4"
+     showguides="true"
+     inkscape:guide-bbox="true" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-258.00002,-529.82498)">
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.64777488px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 259.61944,653.22608 L 470.06379,653.04719"
+       id="path2160"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:4.15399265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path2162"
+       sodipodi:cx="326.88339"
+       sodipodi:cy="572.51367"
+       sodipodi:rx="66.432564"
+       sodipodi:ry="72.151924"
+       d="M 393.31596,572.51367 A 66.432564,72.151924 0 1 1 260.45083,572.51367 A 66.432564,72.151924 0 1 1 393.31596,572.51367 z"
+       transform="matrix(0.4875432,0,0,0.4488965,131.99065,363.19021)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#000000;stroke-width:3.99913049;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path2164"
+       sodipodi:cx="662.12585"
+       sodipodi:cy="577.79309"
+       sodipodi:rx="66.432564"
+       sodipodi:ry="66.872513"
+       d="M 728.55842,577.79309 A 66.432564,66.872513 0 1 1 595.69329,577.79309 A 66.432564,66.872513 0 1 1 728.55842,577.79309 z"
+       transform="matrix(0.4875432,0,0,0.4843357,114.2139,340.42466)" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.94332457;stroke-linecap:round;stroke-linejoin:miter;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 291.85014,620.68139 L 389.84649,559.08375"
+       id="path2166"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.94332457;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 426.74536,615.74929 L 385.73832,543.75213 L 369.16403,543.75213"
+       id="path2170"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.94332457;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 387.35241,553.26587 L 393.63522,564.29063"
+       id="path22003"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.94332457;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 393.40835,550.02699 L 399.42141,561.18266"
+       id="path22005"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.94332457;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 437.43364,620.71633 C 431.36165,626.38256 425.89831,614.23138 425.89831,614.23138"
+       id="path2313"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.64777488;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.29554974, 0.64777487;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 428.00177,617.59846 L 450.67389,652.61745"
+       id="path3173"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.64001685px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 291.6843,656.13336 L 291.6843,668.78039"
+       id="path4144" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.64001685px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 437.43364,656.13336 L 437.43364,668.78039"
+       id="path4146" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.64001685px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 450.38914,656.13336 L 450.38914,668.78039"
+       id="path4148" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.6312269px;stroke-linecap:butt;stroke-linejoin:miter;marker-start:url(#Arrow1Mstart);stroke-opacity:1"
+       d="M 292.86545,661.52615 L 330.23517,661.52615"
+       id="path4150"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.64777488px;stroke-linecap:butt;stroke-linejoin:miter;marker-start:url(#Arrow1Mstart);stroke-opacity:1"
+       d="M 436.62212,661.32327 L 404.86364,661.52615"
+       id="path4154"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.64777488px;stroke-linecap:butt;stroke-linejoin:miter;marker-start:url(#Arrow1Mstart);marker-end:url(#Arrow1Mend);stroke-opacity:1"
+       d="M 438.46286,619.5904 L 459.49712,598.65285"
+       id="path4156"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.64777488px;stroke-linecap:butt;stroke-linejoin:miter;marker-start:url(#Arrow1Mstart);marker-end:none;stroke-opacity:1"
+       d="M 451.19886,661.28594 L 464.15436,661.28594"
+       id="path5127"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:7.77329825999999980px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="333.74792"
+       y="665.69067"
+       id="text5129"><tspan
+         sodipodi:role="line"
+         id="tspan5131"
+         x="333.74792"
+         y="665.69067"
+         style="font-size:14.25104713000000000px;fill:#000000">wheelbase</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.64777488px;stroke-linecap:butt;stroke-linejoin:miter;marker-start:url(#Arrow1Mstart);stroke-opacity:1"
+       d="M 398.07231,570.01223 C 380.87075,580.93172 379.45779,591.03969 379.45779,591.03969"
+       id="path5133"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.64777488px;stroke-linecap:butt;stroke-linejoin:miter;marker-start:url(#Arrow1Mstart);stroke-opacity:1"
+       d="M 378.41027,652.21169 C 371.04671,641.14362 372.33107,627.31509 372.33107,627.31509"
+       id="path5135"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:7.77329825999999980px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="370.68753"
+       y="604.80365"
+       id="text5137"
+       inkscape:export-filename="D:\Jason's Documents\TU Delft\MSNDC 2009\presentation\bikeGeomHTA.png"
+       inkscape:export-xdpi="136.41562"
+       inkscape:export-ydpi="136.41562"><tspan
+         sodipodi:role="line"
+         id="tspan5139"
+         x="370.68753"
+         y="604.80365"
+         style="font-size:14.25104713000000000px;fill:#000000">head tube</tspan><tspan
+         sodipodi:role="line"
+         x="370.68753"
+         y="622.61743"
+         id="tspan5149"
+         style="font-size:14.25104713000000000px;fill:#000000">angle</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:7.77329825999999980px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="438.65201"
+       y="540.20013"
+       id="text5141"
+       inkscape:export-filename="D:\Jason's Documents\TU Delft\MSNDC 2009\presentation\bikeGeomFWR.png"
+       inkscape:export-xdpi="136.41562"
+       inkscape:export-ydpi="136.41562"><tspan
+         sodipodi:role="line"
+         id="tspan5143"
+         x="440.62823"
+         y="540.20013"
+         style="font-size:14.25104713000000000px;text-align:center;text-anchor:middle;fill:#000000">front </tspan><tspan
+         sodipodi:role="line"
+         x="440.62823"
+         y="558.01392"
+         style="font-size:14.25104713000000000px;text-align:center;text-anchor:middle;fill:#000000"
+         id="tspan2333">wheel </tspan><tspan
+         sodipodi:role="line"
+         x="438.65201"
+         y="575.82776"
+         style="font-size:14.25104713000000000px;text-align:center;text-anchor:middle;fill:#000000"
+         id="tspan2335">radius</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:7.77329825999999980px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="466.33301"
+       y="665.69067"
+       id="text5145"><tspan
+         sodipodi:role="line"
+         id="tspan5147"
+         x="466.33301"
+         y="665.69067"
+         style="font-size:14.25104713000000000px;fill:#000000">trail</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.64777488px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 447.15026,610.79683 C 437.43364,601.0802 436.41204,580.42968 436.41204,580.42968"
+       id="path5155"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.64777488px;stroke-linecap:butt;stroke-linejoin:miter;marker-start:url(#Arrow1Mstart);marker-end:url(#Arrow1Mend);stroke-opacity:1"
+       d="M 269.87462,642.70895 L 290.90888,621.7714"
+       id="path2440"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:7.77329825999999980px;font-style:normal;font-weight:normal;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="280.93808"
+       y="543.05408"
+       id="text2442"
+       inkscape:export-filename="D:\Jason's Documents\TU Delft\MSNDC 2009\presentation\bikeGeomTrail.png"
+       inkscape:export-xdpi="136.41562"
+       inkscape:export-ydpi="136.41562"><tspan
+         sodipodi:role="line"
+         id="tspan2444"
+         x="282.91431"
+         y="543.05408"
+         style="font-size:14.25104713000000000px;text-align:center;text-anchor:middle;fill:#ff0000">rear </tspan><tspan
+         sodipodi:role="line"
+         x="282.91431"
+         y="560.86786"
+         style="font-size:14.25104713000000000px;text-align:center;text-anchor:middle;fill:#ff0000"
+         id="tspan2446">wheel </tspan><tspan
+         sodipodi:role="line"
+         x="280.93808"
+         y="578.6817"
+         style="font-size:14.25104713000000000px;text-align:center;text-anchor:middle;fill:#ff0000"
+         id="tspan2448">radius</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.64777488px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 283.69394,628.47689 C 273.97732,618.76026 273.30021,582.26328 273.30021,582.26328"
+       id="path2450"
+       sodipodi:nodetypes="cc" />
+  </g>
+</svg>
