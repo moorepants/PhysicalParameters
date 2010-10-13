@@ -4,6 +4,7 @@
 \usepackage{graphicx}
 \usepackage{subfiles}
 \usepackage{subfig}
+\usepackage{amsmath}
 
 \begin{document}
 
@@ -94,8 +95,27 @@ inertia of a bicycle and rider~\cite{Patterson2004}. This work is based off of t
 done by Kooijman~\cite{Kooijman2006}. I worked with Jodi Kooijman for a year and
 was able to use much of the same apparatus and refine the measurement
 technique.
-
-\section{Bicycle Descriptions}
+\section{BENCHMARK BICYCLE MODEL}
+Recently, the Whipple bicycle model has been benchmarked~\cite{Meijaard2007}
+and this model is widely used for bicycle dynamics studies. The unforced two
+degree-of-freedom, $\mathbf{q}$ = [steer and roll], model takes the form:
+\begin{equation}
+    \mathbf{M\ddot{q}}
+    +v\mathbf{C}_1\mathbf{\dot{q}}
+    +\left[g\mathbf{K}_0
+    +v^2\mathbf{K}_2\right]\mathbf{q}
+    =0
+    \label{eq:canonical}
+\end{equation}
+Where the entries to the $\mathbf{M}$, $\mathbf{C}_1$, $\mathbf{K}_0$ and $\mathbf{K}_2$
+matrices are combinations of 25 of the bicycle's physical parameters that
+include the geometry, mass, mass location and mass distribution of the four
+rigid bodies. The 25 parameters presented in \cite{Meijaard2007} are not
+necessarily a minimun set for the Whipple model, as shown in \cite{Sharp2008},
+but are useful as they represent more easily measurable quantities.
+Furthermore, many more parameters are not needed due to the assumptions of the
+Whipple model such as no-slip tires, lateral symmetry, knife edge wheels, etc.
+\section{BICYCLE DESCRIPTIONS}
 We choose to measure the physical parameters of six bicycles
 Figs.~\ref{fig:bicycles}. The three Batavus bicycles were donated by the
 manufacturer. We asked for a bicycle that they considered stable and one that
@@ -104,30 +124,30 @@ Stratos was ``nervous''. The Fisher and the Pista were chosen to provide some
 variety, a mountatin and road bike. The yellow bike is used to demonstrate
 bicycle stability.
 \begin{description}
-    \item[Batavus Browser]{The Batavus Browser Fig.~\ref{fig:browser} is an averaged priced Dutch city
+    \item[Batavus Browser (B, B*)]{The Batavus Browser Fig.~\ref{fig:browser} is an averaged priced Dutch city
         bike. It has a steel frame, a three speed internal rear hub, handle
         bars for an upright posture and includes various accerories for utility
         puposes. We measured the physical proprieties of the stock Browser model and
         also equipped with the instrumentation used in our other
         experiments~\cite{Kooijman2009}.}
-    \item[Batavus Crescendo Deluxe]{The Batavus Crescendo Deluxe
+    \item[Batavus Crescendo Deluxe (C)]{The Batavus Crescendo Deluxe
         Fig.~\ref{fig:crescendo} is also a
         Dutch city bike that is setup for touring. It has an aluminum frame, an
         eight speed internal hub, upright handlebars, accesories for utility
         and a suspension fork and suspension seatpost.}
-    \item[Gary Fisher Ziggurat]{The Gary Fisher Ziggurat Fig.~\ref{fig:fisher} is a modern
+    \item[Gary Fisher Ziggurat (G)]{The Gary Fisher Ziggurat Fig.~\ref{fig:fisher} is a modern
         lightweight front suspended mountain bike. It has a ?? frame, large low
         pressure mountain bike tires, and is setup for racing with few extra accerories.}
-    \item[2007 Bianchi Pista]{The Bianchi Pista Fig.~\ref{fig:pista} is a modern lightweight steel track
+    \item[Bianchi Pista (P)]{The Bianchi Pista Fig.~\ref{fig:pista} is a modern lightweight steel track
         bicycle. It has a single gear ratio and minimal extras to keep the
         weight low. It has drop handlebars and high pressure racing tires.}
-    \item[Batavus Stratos Deluxe]{The Batavus Stratos Deluxe
+    \item[Batavus Stratos Deluxe (S)]{The Batavus Stratos Deluxe
         Fig.~\ref{fig:stratos} is a sporty Dutch city bicycle. The frame is
         made of aluminum and it has a seven speed internal hub. It has mountain
         style handle bars for a less upright seating posture, but also includes
         accesories for utility such as a rear rack, fenders, light and
         chainguard.}
-    \item[Yellow Bicycle]{The yellow bicycle Fig.~\ref{fig:yellow} used in the lab to
+    \item[Yellow Bicycle (Y, Y*)]{The yellow bicycle Fig.~\ref{fig:yellow} used in the lab to
         demonstrate that a bicycle is stable at certain speeds. It is an
         aluminum road frame of unknown make with the majority of components
         removed. The wheels, drop handlebar, seat, seat post and bottom bracket
@@ -138,30 +158,45 @@ bicycle stability.
 \begin{figure}[htbp]
     \centering
     \subfloat[Batavus Browser]{
-        \label{fig:browser}\includegraphics[width=1.75in]{../../../images/browserIns_sub.jpg}}
+        \label{fig:browser}
+        \includegraphics[width=1.75in]{../../../images/browserIns_sub.jpg}
+        }
     \subfloat[Batavus Crescendo Deluxe]{
-        \label{fig:crescendo}\includegraphics[width=1.75in]{../../../images/crescendo_sub.jpg}}
+        \label{fig:crescendo}
+        \includegraphics[width=1.75in]{../../../images/crescendo_sub.jpg}
+        }
     \subfloat[Gary Fisher]{
-        \label{fig:fisher}\includegraphics[width=1.75in]{../../../images/fisher_sub.jpg}}
-        \\
+        \label{fig:fisher}
+        \includegraphics[width=1.75in]{../../../images/fisher_sub.jpg}
+        }\\
     \subfloat[Bianchi Pista]{
-        \label{fig:pista}\includegraphics[width=1.75in]{../../../images/pista_sub.jpg}}
+        \label{fig:pista}
+        \includegraphics[width=1.75in]{../../../images/pista_sub.jpg}
+        }
     \subfloat[Batavus Stratos Deluxe]{
-        \label{fig:stratos}\includegraphics[width=1.75in]{../../../images/stratos_sub.jpg}}
+        \label{fig:stratos}
+        \includegraphics[width=1.75in]{../../../images/stratos_sub.jpg}
+        }
     \subfloat[Yellow Bicycle]{
-        \label{fig:yellow}\includegraphics[width=1.75in]{../../../images/yellow_sub.jpg}}
+        \label{fig:yellow}
+        \includegraphics[width=1.75in]{../../../images/yellow_sub.jpg}
+        }
     \caption{The six bicycles measured in the experiments. The Batavus
     Browser~\subref{fig:browser} is shown with the instrumentation and the
     Yellow Bicycle~\subref{fig:yellow} is shown with its fork reversed.}
     \label{fig:bicycles}
 \end{figure}
-\section{Accuracy}
-Error propagation theory was utilized to calculate what the accuracy the
-benchmark ideal parameters are based on the measurements taken. If $x$ is a
-random variable and is defined as $x=f(u,v,\ldots)$ then the sample variance of
-$x$ is defined as
+\section{ACCURACY}
+We took great care too improve upon the accuracy and report the accuracy of the
+measurements of the bicycle parameters. Following the vain of
+~\cite{Roland1971} we used error propagation theory to calculate accuracy of
+the 25 benchmark parameters. We start by estimating the standard deviation of
+the actual measurements taken. If $x$ is a parameter and is a function of
+the measurments, $u,v,\ldots$, then $x$ is a random variable defined as
+$x=f(u,v,\ldots)$. The sample variance of $x$ is defined as
 \begin{equation}
-    s_x^2 = \frac{1}{N-1}\sum^N_{i=1}
+    s_x^2 =
+    \frac{1}{N-1}\sum^N_{i=1}
     \left[(u_i - \bar{u})^2\left(\frac{\partial x}{\partial u}\right)^2 +
     (v_i - \bar{v})^2\left(\frac{\partial x}{\partial v}\right)^2 +
     2(u_i - \bar{u})(v_i - \bar{v})\left(\frac{\partial x}{\partial u}\right)\left(\frac{\partial x}{\partial v}\right)
@@ -177,35 +212,33 @@ Equation~\ref{eqn:sampleVariance} can be simplified to
             + \ldots
     \label{eqn:variance}
 \end{equation}
-If $u$ and $v$ are uncorrelated then $s_{uv}=0$. We assume that the all the
-random variables hereafter are uncorrelated. Equation~\ref{eqn:variance} can be
-used to calculated the variance of all types of functions. The most basic are
-functions such as addtion
+If $u$ and $v$ are uncorrelated then $s_{uv}=0$. Most of the calculations
+hereafter have uncorrelate variables but a few do not and the covariance has to
+be taken into account. Equation~\ref{eqn:variance} can be
+used to calculated the variance of all types of functions. Simple addition of
+two random variables may be the most basic example:
 \begin{eqnarray}
     \label{eqn:addition}
     x &=&  au + bv\\
     s_x &=& a^2s_u^2 + b^2s_v^2
 \end{eqnarray}
-
-\section{Geometry}
-
-\subsection{Wheel radius}
+\section{GEOMETRY}
+\subsection{WHEEL RADII}
 The radius of the front $r_\mathrm{F}$ and rear $r_\mathrm{R}$ wheels were
-measured by measuring the linear distance traversed along the ground through
+estimated by measuring the linear distance traversed along the ground through
 either 13 or 14 rotations of the wheel. Each wheel was measured separately and
 the measurements were taken with a 72kg rider seated on the bicycle. A 30 meter
-tape measure (resolution: 2mm) was taped on a flat level smooth floor. The tire
-was marked with chalk and aligned with the tape measure. The accuracy of the
-distance measurement is approximately $\pm0.005$m. The tires were pumped to the
+tape measure (resolution: 2mm) was pulled taught and taped on a flat level smooth floor. The tire
+was marked with chalk and aligned with the tape measure
+Fig.~\ref{fig:tireChalk}. The accuracy of the
+distance measurement is approximately $\pm0.01$m. The tires were pumped to the
 recommended inflation pressure before the measurements. The wheel radius is
 calculated by
 \begin{equation}
-	r=\frac{\textrm{distance}}{2\cdot\pi\cdot\textrm{rotations}}
+	r\pm\sigma_r=
+    \frac{d}{2\pi n}
+    \pm\left(\frac{\sigma_d}{2\pi n}\right)
 	\label{eq:wheelRadius}
-\end{equation}
-\begin{equation}
-    \sigma_r^{2}=\left(\frac{\sigma_d}{2\pi n}\right)^{2}
-    \label{eq:WheelRadVar}
 \end{equation}
 \begin{figure}[tb]
 	\begin{center}
@@ -215,36 +248,36 @@ calculated by
 	\label{fig:tireChalk}
 \end{figure}
 \begin{table}
+    \centering
 	\begin{tabular}{llllllll}
 	Bicycle   & B      & B*     & C      & G      & P      & S      & Y \& Y*\\
     \hline
 	Front\\
-	Pressure  & 3.5    & 3.5    & 4      & 4      & 6.9    & 4.5    & 4      \\
-	Distance  & 28.060 & 27.980 & 27.980 & 29.044 & 29.366 & 27.772 & 27.925 \\
-	Rotations & 13     & 13     & 13     & 14     & 14     & 13     & 13     \\
-	Radius    & 0.344  & 0.343  & 0.343  & 0.330  & 0.334  & 0.340  & 0.342  \\
+    \hline
+    $p_\mathrm{F}$ [bar] & 3.5    & 3.5    & 4      & 4      & 6.9    & 4.5    & 4      \\
+    $d_\mathrm{F}$ [m]   & 28.060 & 27.980 & 27.980 & 29.044 & 29.366 & 27.772 & 27.925 \\
+    $n_\mathrm{F}$ []    & 13     & 13     & 13     & 14     & 14     & 13     & 13     \\
+    \hline
 	Rear\\
-	Pressure  & 3.5    & 3.5    & 4      & 4      & 6.9    & 4.5    & 3.5    \\
-	Distance  & 27.850 & 27.835 & 27.768 & 29.788 & 29.212 & 29.774 & 27.884 \\
-	Rotations & 13     & 13     & 13     & 14     & 14     & 14     & 13     \\
-	Radius    & 0.341  & 0.341  & 0.340  & 0.339  & 0.332  & 0.338  & 0.341
+    \hline
+	$p_\mathrm{R}$ [bar] & 3.5    & 3.5    & 4      & 4      & 6.9    & 4.5    & 3.5    \\
+	$d_\mathrm{R}$       & 27.850 & 27.835 & 27.768 & 29.788 & 29.212 & 29.774 & 27.884 \\
+	$n_\mathrm{R}$ []    & 13     & 13     & 13     & 14     & 14     & 14     & 13     \\
 	\end{tabular}
-	\caption{}
+	\caption{Raw data for the wheel radius measurements.}
 	\label{tab:wheelRadius}
 \end{table}
-\subsection{Head tube angle}
+\subsection{HEAD TUBE ANGLE}
 The head tube angle was measured directly using an electronic level with a
-$\pm0.2^{\circ}$ accuracy. The bicycle was fixed vertically, the front wheel
-was aligned with the rear frame and the bicycle was unloaded. The steer axis
+$\pm0.2^{\circ}$ accuracy. The bicycle frame was fixed perdenpicular to the
+ground, the steering angle was set to the nominal, the tire pressures were are
+recommended levels and the bicycle was unloaded. The steer axis
 tilt $\lambda$ is the complement to the head tube angle.
 \begin{equation}
-    \lambda=\frac{\pi}{180^{\circ}}(90^{\circ}-\lambda_{ht})
+    \lambda\pm\sigma_\lambda
+    =\frac{\pi}{180^{\circ}}(90^{\circ}-\lambda_{ht})
+    \pm\left(\frac{\pi}{180^\circ}\right)\sigma_{\lambda_{ht}}
 \label{eq:headTubeAngle}
-\end{equation}
-\begin{equation}
-    \sigma_\lambda^{2}=-\sigma_{\lambda_{ht}}^{2}\left(\frac{\pi}{180^\circ}\right)^2
-    \label{eq:HeadTubeAngleVar}
-\end{equation}
 \begin{table}
 	\begin{tabular}{lllllllll}
     \hline
