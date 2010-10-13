@@ -247,28 +247,6 @@ calculated by
 	\caption{Wheel and tire with chalk mark aligned to the tape measure.}
 	\label{fig:tireChalk}
 \end{figure}
-\begin{table}
-    \centering
-	\begin{tabular}{lllllllll}
-	Bicycle   & B      & B*     & C      & G      & P      & S      & Y & Y*\\
-    \hline
-	Front\\
-    \hline
-    $p_\mathrm{F}$ [bar] & 3.5    & 3.5    & 4      & 4      & 6.9    & 4.5 & 4 & 4 \\
-    $d_\mathrm{F}$ [m]   & 28.060 & 27.980 & 27.980 & 29.044 & 29.366 & 27.772
-    & 27.925 & 27.925\\
-    $n_\mathrm{F}$ []    & 13     & 13     & 13     & 14     & 14     & 13     & 13     \\
-    \hline
-	Rear\\
-    \hline
-	$p_\mathrm{R}$ [bar] & 3.5    & 3.5    & 4      & 4      & 6.9    & 4.5    & 3.5    \\
-	$d_\mathrm{R}$       & 27.850 & 27.835 & 27.768 & 29.788 & 29.212 & 29.774 & 27.884 \\
-	$n_\mathrm{R}$ []    & 13     & 13     & 13     & 14     & 14     & 14     & 13     \\
-    $\lambda_{ht}$ & 67.1 & 67.1 & 69.0 & 71.1 & 74.2 & 73.1 & 72.7 & 70.6\\
-	\end{tabular}
-	\caption{Raw data.}
-	\label{tab:wheelRadius}
-\end{table}
 \subsection{HEAD TUBE ANGLE}
 The head tube angle was measured directly using an electronic level with a
 $\pm0.2^{\circ}$ accuracy. The bicycle frame was fixed perdenpicular to the
@@ -281,16 +259,7 @@ tilt $\lambda$ is the complement to the head tube angle.
     \pm\left(\frac{\pi}{180^\circ}\right)\sigma_{\lambda_{ht}}
 \label{eq:headTubeAngle}
 \end{equation}
-\begin{table}
-	\begin{tabular}{lllllllll}
-	Bicycle   & B      & B*     & C      & G      & P      & S      & Y      & Y*\\
-    \hline
-	\end{tabular}
-	\caption{Head tube angle raw data}
-	\label{tab:lambda}
-\end{table}
-
-\subsection{Trail}
+\subsection{TRAIL}
 Trail is difficult to measure directly so we instead chose to measure the fork
 offset. The fork offset was measured by clamping the steer tube of the front
 fork into a v-block on a flat table. A ruler was used to measure the height of
@@ -308,56 +277,20 @@ surface.
     f_o\sec{\lambda}\tan{\lambda}\right)^2
     \label{eq:TrailVar}
 \end{equation}
-\begin{table}
-	\begin{tabular}{lllllllll}
-	Bicycle     & B     & B*    & C     & G     & P     & S     & Y     & Y*\\
-    \hline
-	Fork offset & 0.071 & 0.071 & 0.045 & 0.039 & 0.032 & 0.045 & 0.057 & -0.057\\
-	Trail       & 0.069 & 0.068 & 0.083 & 0.072 & 0.062 & 0.056 & 0.047 & 0.180
-	\end{tabular}
-	\caption{Head tube angle and steer axis tilt}
-	\label{tab:trail}
-\end{table}
 \subsection{Wheelbase}
 The wheelbase was measured directly using a tape measure while the bicycle was
 in the same upright fixed position used when measuring the head tube angle.
-\begin{table}
-	\begin{tabular}{lllllllll}
-	Bicycle    & B     & B*    & C     & G     & P     & S     & Y     & Y*\\
-    \hline
-	Wheel base & 1.121 & 1.121 & 1.101 & 1.070 & 0.989 & 1.037 & 1.089 & 0.985
-	\end{tabular}
-	\caption{Wheelbase values.}
-	\label{tab:wheelbase}
-\end{table}
-
 \section{Mass}
 The total mass of each bicycle was measured using a spring scale with a
 resolution of 100g. Then each of the four bicycle parts were measured using a
 Molen 20kg scale with a resolution of 20g.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=4in]{../../../images/massScale.jpg}
+        \includegraphics[width=3in]{../../../images/massScale.jpg}
     \end{center}
     \caption{The scale used to measure the mass of each bicycle component.}
     \label{fig:massScale}
 \end{figure}
-\begin{table}
-    \centering
-	\begin{tabular}{llllllllll}
-		Bicycle &     $\sigma_m$ & B     & B*    & C     & G     & P    & S     & Y     & Y*\\
-        \hline
-		total   &    0.1       & 18.5  & 23.5  & 20.9  & 10.5  & 9.9  & 17.6  & 10.2  & 10.2\\
-        \hline
-		frame   &    0.02      & 9.86  & 14.71 & 9.18  & 4.48  & 4.49 & 7.22  & 3.31  & 3.31\\
-		fork    &    0.02      & 3.22  & 3.22  & 4.57  & 2.52  & 2.27 & 3.04  & 2.45  & 2.45\\
-		rear wheel & 0.02      & 3.11  & 3.11  & 3.96  & 1.94  & 1.38 & 3.96  & 2.57  & 2.57\\
-		front wheel& 0.02      & 2.02  & 2.02  & 3.55  & 1.50  & 1.58 & 3.33  & 1.90  & 1.90\\
-		total sum  & 0.04      & 18.21 & 23.06 & 21.26 & 10.44 & 9.72 & 17.55 & 10.23 & 10.23
-	\end{tabular}
-	\caption{Mass of bicycles and parts}
-	\label{tab:mass}
-\end{table}
 \section{Center of Mass}
 \subsection{Wheels}
 The centers of mass of the wheels are assumed to be at their geometrical centers.
@@ -378,7 +311,7 @@ measurements allow for the calculation of the center of mass location in the
 global reference frame.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=4in]{../../../images/pendDist.jpg}
+        \includegraphics[width=3in]{../../../images/pendDist.jpg}
     \end{center}
     \caption{Measuring the distance from the pendulum axis to the rear wheel
     axle using level ruler.}
@@ -830,20 +763,15 @@ and the unknown global inertia tensor can be solved for.
 \subsection{Canonical Matrices}
 The final results are presented in the form used by the benchmark model. These
 can be used to populate the canonical form
-\begin{equation}
-\mathbf{M\ddot{q}}+v\mathbf{C}_1\mathbf{\dot{q}}+\left[g\mathbf{K}_0+v^2\mathbf{K}_2\right]\mathbf{q}=0
-\label{eq:canonical}
-\end{equation}
 of the linear benchmark equations of motion presented in
-\cite{Meijaard2007}. The coefficient matrices for the
-example rider and bicycle follow in Eqs.~\ref{eq:M}-\ref{eq:K2}.
+\cite{Meijaard2007}.
 \subsection{Eigenvalues}
 \begin{figure}[htbp]
     \begin{center}
         \includegraphics[width=4in]{../../../plots/Bike/CrescendoRootLoci.png}
     \end{center}
     \caption{The root loci with speed as the parameter for the Crescendo.}
-    \label{fig:StratosFork}
+    \label{fig:rootloci}
 \end{figure}
 
 \subsection{Frequency Response}
