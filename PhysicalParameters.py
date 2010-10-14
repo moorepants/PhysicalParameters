@@ -12,6 +12,37 @@ import scipy.io.matlab.mio as mio
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+def cres_evec():
+    f = open('data/cres.p', 'r')
+    cres = pickle.load(f)
+    f.close()
+    # get the 100th evec corresponding to the first eigenvalue
+    evec = cres['evecs'][100, : , 0]
+    # figure properties
+    figwidth = 3. # in inches
+    goldenMean = (np.sqrt(5)-1.0)/2.0
+    figsize = [figwidth, figwidth*goldenMean]
+    params = {
+        'axes.labelsize': 8,
+        'text.fontsize': 8,
+        'axes.titlesize': 8,
+        'legend.fontsize': 6,
+        'xtick.labelsize': 6,
+        'ytick.labelsize': 6,
+        'figure.figsize': figsize
+        }
+    plt.rcParams.update(params)
+    plt.figure(figsize=figsize)
+    plt.axes([0.15, 0.15, 0.95-0.15, 0.85-0.15])
+    plt.grid()
+    for vec in evec:
+        plt.plot([0., vec.real], [0., vec.imag])
+    plt.title('$v=1.001$ m/s, $\lambda=-3.83+0.48j$')
+    plt.xlabel('Real')
+    plt.ylabel('Imaginary')
+    plt.legend(['Roll Rate', 'Steer Rate', 'Roll Angle', 'Steer Angle'])
+    plt.savefig('plots/cres.pdf')
+
 def mat2dic():
 
     # load the main data file into a dictionary
@@ -367,7 +398,7 @@ def bike_bode_plots(typ='Bike', speeds=None):
             print i, colors[i]
             plt.setp(line, color=colors[i])
             plt.setp(v.ax2.lines[i], color=colors[i])
-        v.savefig(direct + '/' + k + '.png')
+        v.savefig(direct + '/' + k + '.pdf')
 
     return plots
 
@@ -381,8 +412,10 @@ def bike_eig_plots(typ='Bike', filetype='pdf'):
         Bike, BikeRider, BikeLegs
     filetype: string
         a matplotlib graphics export type
+
     '''
 
+    # load data from here
     direct = 'data/' + typ + '/Canonical/'
     fend = 'Can.p'
 
@@ -391,41 +424,37 @@ def bike_eig_plots(typ='Bike', filetype='pdf'):
     data = pickle.load(f)
     f.close()
 
-    # add Jodi's thesis bike for comparison (only for bikeCanonical)
-    #data['bikes'].append('Jodi Bike')
-
     nBk = len(data['bikes']) # number of bikes
 
     # one color for each bike
-    colors = ['k', 'r', 'b', 'g', 'y', 'm', 'c', 'orange', 'red']
+    colors = ['k', 'r', 'b', 'g', 'y', 'm', 'c', 'orange']
 
     vd = np.zeros(nBk)
     vw = np.zeros(nBk)
     vc = np.zeros(nBk)
 
     # figure properties
-    figwidth = 4. # in inches
+    figwidth = 6. # in inches
     goldenMean = (np.sqrt(5)-1.0)/2.0
     figsize = [figwidth, figwidth*goldenMean]
     params = {#'backend': 'ps',
-        #'axes.labelsize': 10,
-        #'text.fontsize': 10,
-        'legend.fontsize': 10,
-        #'xtick.labelsize': 8,
-        #'ytick.labelsize': 8,
-        #'text.usetex': True,
-        #'figure.figsize': figsize
+        'axes.labelsize': 8,
+        'text.fontsize': 10,
+        'legend.fontsize': 6,
+        'xtick.labelsize': 6,
+        'ytick.labelsize': 6,
+        'figure.figsize': figsize
         }
     plt.rcParams.update(params)
-    eigFig = plt.figure(num=nBk + 1)#, figsize=figsize)
-    #plt.clf()
-    #plt.axes([0.125,0.2,0.95-0.125,0.95-0.2])
+    eigFig = plt.figure(num=nBk + 1, figsize=figsize)
+    plt.axes([0.125,0.2,0.95-0.125,0.85-0.2])
+    plt.figure(2*nBk + 1, figsize=figsize)
+    plt.axes([0.125,0.2,0.95-0.125,0.85-0.2])
 
     # caluculate eigenvalues/vectors over this range
     vel = np.linspace(0, 10, num=1000)
 
-    # color scale for root loci plot
-
+    # save the plots here
     directp = 'plots/' + typ
 
     if not os.path.isdir(directp):
@@ -440,13 +469,17 @@ def bike_eig_plots(typ='Bike', filetype='pdf'):
         for k, v in can.items():
             can[k] = unumpy.nominal_values(v)
         evals, evecs = bike_eig(can['M'], can['C1'], can['K0'], can['K2'], vel, 9.81)
+        if name == 'Crescendo':
+            c_evals = copy(evals)
+            c_evecs = copy(evecs)
         wea, cap, cas = sort_modes(evals, evecs)
         vd[i], vw[i], vc[i] = critical_speeds(vel, wea['evals'], cap['evals'])
         # plot individual plot
-        plt.figure(i)
+        plt.figure(i, figsize=figsize)
+        plt.axes([0.125,0.2,0.95-0.125,0.85-0.2])
+        plt.plot(vel, np.zeros_like(vel), 'k-', label='_nolegend_', linewidth=1.5)
         plt.plot(vel, np.abs(np.imag(wea['evals'])), color='blue', label='Imaginary Weave', linestyle='--')
         plt.plot(vel, np.abs(np.imag(cap['evals'])), color='red', label='Imaginary Capsize', linestyle='--')
-        plt.plot(vel, np.zeros_like(vel), 'k-', label='_nolegend_', linewidth=2)
         # plot the real parts of the eigenvalues
         plt.plot(vel, np.real(wea['evals']), color='blue', label='Real Weave')
         plt.plot(vel, np.real(cap['evals']), color='red', label='Real Capsize')
@@ -458,7 +491,8 @@ def bike_eig_plots(typ='Bike', filetype='pdf'):
         plt.ylabel('Real and Imaginary Parts of the Eigenvalue [1/s]')
         plt.savefig(directp + '/' + name + 'EigPlot.' + filetype)
         # plot root loci
-        plt.figure(nBk + i)
+        plt.figure(nBk + i, figsize=figsize)
+        plt.axes([0.125,0.2,0.95-0.125,0.85-0.2])
         for j in range(len(evals[0, :])):
             plt.scatter(evals[:,j].real, evals[:,j].imag, s=2, c=vel,
                     cmap=plt.cm.gist_rainbow, edgecolors='none')
@@ -471,12 +505,12 @@ def bike_eig_plots(typ='Bike', filetype='pdf'):
         plt.figure(2*nBk + 1)
         plt.plot(vel, np.abs(np.imag(wea['evals'])), color=colors[i], label='_nolegend_', linestyle='--')
         plt.plot(vel, np.abs(np.imag(cap['evals'])), color=colors[i], label='_nolegend_', linestyle='--')
-        plt.plot(vel, np.zeros_like(vel), 'k-', label='_nolegend_', linewidth=3)
         plt.plot(vel, np.real(wea['evals']), color=colors[i], label='_nolegend_')
         plt.plot(vel, np.real(cap['evals']), color=colors[i], label=data['bikes'][i])
         plt.plot(vel, np.real(cas['evals']), color=colors[i], label='_nolegend_')
+        plt.plot(vel, np.zeros_like(vel), 'k-', label='_nolegend_', linewidth=1.5)
     # plot the bike names on the eigenvalue plot
-    plt.legend()
+    plt.legend(loc='lower right')
     plt.ylim((-10, 10))
     plt.xlim((0, 10))
     plt.title('Eigenvalues vs Speed')

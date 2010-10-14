@@ -774,10 +774,11 @@ and the unknown global inertia tensor can be solved for.
 \section{LINEAR ANALYSIS}
 Once all of the bicycle parameters have been calculated the canonical matrices
 can be formed and the linear dynamics of the bicycles can be explored. We also
-added the same rigid rider to each bicycle for further comparison.
+added the same rigid rider to each bicycle for further comparison. The rigid
+rider was assumed to be in same position and posture for each bicycle relative
+to the rear wheel contact point.
 \begin{table}[tbp]
     \centering
-    \caption{Rider parameters}
     \begin{tabular}{ll}
         Parameter & Value\\
         \hline
@@ -793,8 +794,10 @@ added the same rigid rider to each bicycle for further comparison.
             \end{array}
             \right]$
     \end{tabular}
+    \caption{Mass, center of mass and moment of inertia for the Person relative
+    to the benchmark coordinate system from~\cite{Moore2009a}}
+    \label{tab:riderParam}
 \end{table}
-
 \subsection{EIGENVALUES}
 \begin{figure}[tbp]
     \centering
@@ -802,6 +805,18 @@ added the same rigid rider to each bicycle for further comparison.
     \caption{The eigenvalues verus speed for all eight bicycles.}
     \label{fig:bikeEigPlot}
 \end{figure}
+The eigenvalues can be plotted versus forward speed.
+Figure~\ref{fig:bikeEigPlot} shows that the bikes have the typical
+characteristics of the Whipple bicycle model: four real roots at very slow
+speeds, two of which are unstable; a complex pair that is unstable and lower
+speeds and stable at higher speeds; and a root that is sligthly unstable at
+higher speeds. The one noticable difference is that the capsize and caster
+modes colasece into a complex pair between about 0.5 and 3 m/s. The frequency
+of oscillation is similar to that of the weave mode. The root locus in the real
+and imaginary plane, Fig.~\ref{fig:rootloci}, shows that the mode damps out
+quickly. Examining the eigenvectors reveals that the mode is steer leading
+roll with a 90 degree phase, both of their magitudes being similar,
+Fig~\ref{fig:evec}.
 \begin{figure}[tbp]
     \begin{center}
         \includegraphics[width=4in]{../../../plots/Bike/CrescendoRootLoci.pdf}
@@ -810,6 +825,17 @@ added the same rigid rider to each bicycle for further comparison.
     \label{fig:rootloci}
 \end{figure}
 \begin{figure}[tbp]
+    \begin{center}
+        \includegraphics[width=3in]{../../../plots/cres.pdf}
+    \end{center}
+    \caption{The root loci with speed as the parameter for the Crescendo.}
+    \label{fig:evec}
+\end{figure}
+With the rider added, the second complex pair disappears and the bikes have the
+typical characteristics of the Whipple model. Reversing the fork on the yellow
+bike lowers the weave critical speed. Also the addition of weight to the rear
+rack of the Browser does blank.
+\begin{figure}[tbp]
     \centering
     \includegraphics[width=4in]{../../../plots/BikeRider/eig_plot.pdf}
     \caption{The eigenvalues verus speed for all eight bicycles with the same
@@ -817,9 +843,32 @@ added the same rigid rider to each bicycle for further comparison.
     \label{fig:bikeRiderEigPlot}
 \end{figure}
 \subsection{FREQUENCY RESPONSE}
+The frequency response of the bicycles and bicycle with rider also reveal some
+interesting things. In the steer torque to roll Bode diagram the magnitude
+diffence among bicycles can vary up to 10 dB (0.148 radians per newton meter of
+torque).
+\begin{figure}[tbp]
+    \centering
+    \includegraphics[width=4in]{../../../plots/Bike/Bode/Tdel2phi.pdf}
+    \caption{The eigenvalues verus speed for all eight bicycles with the same
+    rider.}
+    \label{fig:bikeBode}
+\end{figure}
+\begin{figure}[tbp]
+    \centering
+    \includegraphics[width=4in]{../../../plots/BikeRider/Bode/Tdel2phi.pdf}
+    \caption{The eigenvalues verus speed for all eight bicycles with the same
+    rider.}
+    \label{fig:bikeRiderBode}
+\end{figure}
+
 \bibliographystyle{acm}
 \bibliography{bicycle}
 \appendix
+\section{RAW DATA}
+%\begin{landscape}
+%\subfile{../../../tables/Bike/Parameters/MasterParTable.tex}
+%\end{landscape}
 \section{PARAMETERS}
 \subsection{BICYCLE}
 \begin{landscape}
