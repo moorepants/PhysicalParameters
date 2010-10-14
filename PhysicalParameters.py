@@ -531,6 +531,8 @@ def fit_data():
     filenames.sort()
     period = {}
     #for name in ['YellowRevForkTorsionalFirst1.p']:
+    #for name in ['BrowserFrameCompoundFirst1.p']:
+    #for name in ['CrescendoForkTorsionalFirst2.p']: # beating
     #for name in ['YellowFwheelCompoundFirst1.p']:
     #for name in ['StratosFrameCompoundFirst2.p']:
     for name in filenames:
@@ -567,20 +569,22 @@ def fit_data():
         f = wd/2./pi
         T = 1./f
         fig = plt.figure(1)
-        plot_osfit(x, y, lscurve, p1, rsq, T, fig=fig)
-        plt.savefig(direct + name[:-2] + '.png')
-        plt.close()
         # add a star in the R value is low
         if rsq <= 0.99:
-            rsq = str(rsq) + '*'
+            rsqstr = str(rsq) + '*'
+            m = max(x)
         else:
-            pass
+            rsqstr = str(rsq)
+            m = 5.
+        plot_osfit(x, y, lscurve, p1, rsq, T, m=m, fig=fig)
+        plt.savefig(direct + name[:-2] + '.png')
+        plt.close()
         # include the notes for the experiment
         try:
             note = pendDat['notes']
         except:
             note = ''
-        line = name + ',' + str(T) + ',' + str(rsq) + ',' + str(sigma) + ',' + str(note) + '\n'
+        line = name + ',' + str(T) + ',' + rsqstr + ',' + str(sigma) + ',' + str(note) + '\n'
         periodfile.write(line)
         print line
         # if the filename is already in the period dictionary...
@@ -1277,7 +1281,7 @@ def uround(value):
         s = str(value)
     return s
 
-def plot_osfit(t, ym, yf, p, rsq, T, fig=None):
+def plot_osfit(t, ym, yf, p, rsq, T, m=None, fig=None):
     '''Plot fitted data over the measured
 
     Parameters:
@@ -1293,17 +1297,39 @@ def plot_osfit(t, ym, yf, p, rsq, T, fig=None):
         The r squared value of y (the fit)
     T : float
         The period
+    m : float
+        The maximum value to plot
 
     Returns:
     --------
     fig : the figure
 
     '''
+    # figure properties
+    figwidth = 4. # in inches
+    goldenMean = (np.sqrt(5)-1.0)/2.0
+    figsize = [figwidth, figwidth*goldenMean]
+    params = {#'backend': 'ps',
+        'axes.labelsize': 8,
+        'axes.titlesize': 8,
+        'text.fontsize': 8,
+        'legend.fontsize': 8,
+        'xtick.labelsize': 6,
+        'ytick.labelsize': 6,
+        #'text.usetex': True,
+        #'figure.figsize': figsize
+        }
     if fig:
         fig = fig
     else:
         fig = plt.figure(2)
-    ax1 = plt.axes([0.1, 0.1, 0.8, 0.7])
+    fig.set_size_inches(figsize)
+    plt.rcParams.update(params)
+    ax1 = plt.axes([0.125, 0.125, 0.9-0.125, 0.65])
+    #if m == None:
+        #end = len(t)
+    #else:
+        #end = t[round(m/t[-1]*len(t))]
     ax1.plot(t, ym, '.', markersize=2)
     plt.plot(t, yf, 'k-')
     plt.xlabel('Time [s]')
@@ -1313,7 +1339,10 @@ def plot_osfit(t, ym, yf, p, rsq, T, fig=None):
     period = '$T={0} s$'.format(T)
     plt.title(equation + '\n' + rsquare + ', ' + period)
     plt.legend(['Measured', 'Fit'])
-    #plt.xlim((0, 1))
+    if m:
+        plt.xlim((0, m))
+    else:
+        pass
     return fig
 
 def space_out_camel_case(s):

@@ -462,7 +462,7 @@ frame but the z-intercept is different:
     \sigma_{a}^{2}\sec^{2}\beta
     \label{eq:zIntForkVar}
 \end{equation}
-\section{Moment of Inertia}
+\section{MOMENT OF INERTIA}
 \label{sec:moi}
 The moments of inertia of the wheels, frame and fork were measured by taking
 advantage of the assumed symmetry of the parts and by hanging the parts as both
@@ -500,7 +500,7 @@ some of the parts at particular orientations. Roland and
 Massing~\cite{Roland1971} also encountered this problem and used a bearing to
 prevent the torsional pendulum from swinging. Figure~\ref{fig:beating} shows an
 example of the beating like phenomena.
-\begin{figure}[htpb]
+\begin{figure}[tpb]
     \begin{center}
         \includegraphics[width=4in]{../../../plots/PendFit/CrescendoForkTorsionalFirst2.png}
     \end{center}
@@ -576,15 +576,14 @@ center of mass aligned with the torsional pendulum axis and then it was
 secured. The wheel was then perturbed and it oscillated about the pendulum axis.
 The rate gyro was mounted on the clamp in line with the pendulum axis. The
 radial moment of inertia can can calculated as such:
-
-The torsional pendulum was calibrated using a known moment of inertia. 
-\begin{figure}[htbp]
+\begin{figure}[tbp]
     \begin{center}
         \includegraphics[width=4in]{../../../images/rod.jpg}
     \end{center}
     \caption{The steel calibration rod.}
     \label{fig:rod}
 \end{figure}
+The torsional pendulum was calibrated using a known moment of inertia.
 A torsional pendulum almost identical to the one used in
 \cite{Kooijman2006} was used to measure the averaged period $\overline{T}_i$ of
 oscillation of the rear frame at three different
@@ -614,12 +613,20 @@ inertia about the axle is calculated by:
     I_{\mathrm{R}yy} = \left(\frac{\bar{T}}{2\pi}\right)^2m_\mathrm{R}gl_\mathrm{R} -
     m_\mathrm{R}l^2
 \end{equation}
-\begin{figure}[htbp]
-    \begin{center}
-        \includegraphics[width=4in]{../../../images/CrescendoFwheelTorsionalFirst.jpg}
-    \end{center}
-    \caption{The front wheel of the Crescendo hung as a torsional pendulum.}
-    \label{fig:FwheelTor}
+\begin{figure}[tbp]
+    \centering
+    \subfloat[]{
+        \label{fig:FwheelTor}
+        \includegraphics[width=3in]{../../../images/CrescendoFwheelTorsionalFirst.jpg}
+    }
+    \quad
+    \subfloat[]{
+        \label{fig:wheelIyy}
+        \includegraphics[width=3in]{../../../images/wheelIyy.jpg}
+    }
+    \caption{\subref{fig:FwheelTor} The front wheel of the Crescendo hung as a
+    torsional pendulum. \subref{fig:wheelIyy} A wheel hung as a compound pendulum.}
+    \label{fig:wheelPend}
 \end{figure}
 The radial moment of inertia was measured by hanging the wheel as a torsional
 pendulum. A 5mm diameter, 1m long mild steel rod was used as the torsion
@@ -646,13 +653,6 @@ inertia was calculated with a compound pendulum as described in
 where $l=0.303\pm0.002$ m is the pendulum length, $m$ is the mass of the wheel,
 $\overline{T}$ is the averaged period and $g$ is the local acceleration due to
 gravity. Table  gives the calculated values.
-\begin{figure}[htpb]
-    \begin{center}
-        \includegraphics[width=4in]{../../../images/wheelIyy.jpg}
-    \end{center}
-    \caption{A wheel hung as a compoun pendulum.}
-    \label{fig:wheelIyy}
-\end{figure}
 \subsection{Frame}
 Three measurements were made to estimate the globally referenced moments and
 products of inertia ($I_{xx}$, $I_{xz}$ and $I_{zz}$) of the rear frame. The
