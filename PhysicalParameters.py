@@ -373,7 +373,15 @@ def bike_bode_plots(typ='Bike', speeds=None):
 
     #plt.show()
 
-def bike_eig_plots(typ='Bike'):
+def bike_eig_plots(typ='Bike', filetype='pdf'):
+    '''
+    Parameters:
+    -----------
+    typ : string
+        Bike, BikeRider, BikeLegs
+    filetype: string
+        a matplotlib graphics export type
+    '''
 
     direct = 'data/' + typ + '/Canonical/'
     fend = 'Can.p'
@@ -396,7 +404,7 @@ def bike_eig_plots(typ='Bike'):
     vc = np.zeros(nBk)
 
     # figure properties
-    figwidth = 3.25 # in inches
+    figwidth = 4. # in inches
     goldenMean = (np.sqrt(5)-1.0)/2.0
     figsize = [figwidth, figwidth*goldenMean]
     params = {#'backend': 'ps',
@@ -448,7 +456,7 @@ def bike_eig_plots(typ='Bike'):
         plt.title('{name}\nEigenvalues vs Speed'.format(name=data['bikes'][i]))
         plt.xlabel('Speed [m/s]')
         plt.ylabel('Real and Imaginary Parts of the Eigenvalue [1/s]')
-        plt.savefig(directp + '/' + name + 'EigPlot.png')
+        plt.savefig(directp + '/' + name + 'EigPlot.' + filetype)
         # plot root loci
         plt.figure(nBk + i)
         for j in range(len(evals[0, :])):
@@ -458,7 +466,7 @@ def bike_eig_plots(typ='Bike'):
         plt.grid()
         plt.axis('equal')
         plt.title('{name}\nEigenvalues vs Speed'.format(name=data['bikes'][i]))
-        plt.savefig(directp + '/' + name + 'RootLoci.png')
+        plt.savefig(directp + '/' + name + 'RootLoci.' + filetype)
         # plot all bikes on the same plot
         plt.figure(2*nBk + 1)
         plt.plot(vel, np.abs(np.imag(wea['evals'])), color=colors[i], label='_nolegend_', linestyle='--')
@@ -475,7 +483,7 @@ def bike_eig_plots(typ='Bike'):
     plt.xlabel('Speed [m/s]')
     plt.ylabel('Real and Imaginary Parts of the Eigenvalue [1/s]')
     try:
-        plt.savefig(directp + '/eig_plot.png')
+        plt.savefig(directp + '/eig_plot.' + filetype)
     except:
         pass
     # make a plot comparing the critical speeds of each bike
@@ -488,7 +496,7 @@ def bike_eig_plots(typ='Bike'):
     plt.plot(vc - vw, bike)
     plt.legend([r'$v_d$', r'$v_c$', r'$v_w$', 'stable speed range'])
     plt.yticks(np.arange(8), tuple(data['bikes']))
-    plt.savefig(directp + '/critical_speeds.png')
+    plt.savefig(directp + '/critical_speeds.' + filetype)
 
 def hunch_angle():
 

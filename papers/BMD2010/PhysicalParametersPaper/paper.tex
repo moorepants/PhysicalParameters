@@ -5,9 +5,11 @@
 \usepackage{subfiles}
 \usepackage{subfig}
 \usepackage{amsmath}
+\usepackage{pdflscape}
 
 \begin{document}
 
+% title
 \begin{center}
 \fontsize{14}{20}{\bf Accurate Measurement of Bicycle Parameters}
 \end{center}
@@ -183,6 +185,9 @@ bicycle stability.
     Yellow Bicycle~\subref{fig:yellow} is shown with its fork reversed.}
     \label{fig:bicycles}
 \end{figure}
+\section{PARAMETERS}
+The 25 parameters can be estimated by many techniques. Where possible we
+measured the benchmark parameter directly.
 \section{ACCURACY}
 We took great care too improve upon the accuracy and report the accuracy of the
 measurements of the bicycle parameters. Following the vain of
@@ -312,18 +317,18 @@ the string. The distance $a_\mathrm{B}$ was negative if the string fell to the r
 the rear axle and positive if it fell to the left of the rear axle. These
 measurements allow for the calculation of the center of mass location in the
 global reference frame.
-\begin{figure}[tb]
+\begin{figure}[tbp]
     \centering
     \subfloat[]{\label{fig:angles}\includegraphics[width=3in]{../../../figures/angles.pdf}}
-    \subfloat[]{\label{fig:triangle}\includegraphics[width=3in]{../../../figures/triangle.pdf}}
+    \subfloat[]{\label{fig:triangle}\includegraphics[width=2.75in]{../../../figures/triangle.pdf}}
     \caption{\subref{fig:angles} Pictorial description of the angles and dimensions that related
     the nominal bicycle reference frame $XYZ_B$ with the pendulum reference frame
     $XYZ_P$. \subref{fig:triangle} Exaggerated intersection of the three pendulum axes and the
     location of the center of mass.}
 \end{figure}
-\begin{figure}[tb]
+\begin{figure}[tbp]
 	\begin{center}
-		\includegraphics[width=3in]{../../../images/level.jpg}
+		\includegraphics[width=3in]{../../../images/YellowFrameTorsionalThird.jpg}
 	\end{center}
 	\caption{The digital level was mounted to a straight edge that was aligned
     with the headtube of the bicycle frame. This was done without allowing the
@@ -564,7 +569,7 @@ pendulum is made up of a rigid mount, an upper clamp, a torsion rod, and
 various lower clamps.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics[width=4in]{../../../images/fixture.jpg}
+        \includegraphics[width=3in]{../../../images/fixture.jpg}
     \end{center}
     \caption{The rigid pendulumfixture mounted to a concrete column.}
     \label{fig:fixture}
@@ -617,12 +622,12 @@ inertia about the axle is calculated by:
     \centering
     \subfloat[]{
         \label{fig:FwheelTor}
-        \includegraphics[width=3in]{../../../images/CrescendoFwheelTorsionalFirst.jpg}
+        \includegraphics[width=2.75in]{../../../images/CrescendoFwheelTorsionalFirst.jpg}
     }
     \quad
     \subfloat[]{
         \label{fig:wheelIyy}
-        \includegraphics[width=3in]{../../../images/wheelIyy.jpg}
+        \includegraphics[width=2.75in]{../../../images/wheelIyy.jpg}
     }
     \caption{\subref{fig:FwheelTor} The front wheel of the Crescendo hung as a
     torsional pendulum. \subref{fig:wheelIyy} A wheel hung as a compound pendulum.}
@@ -740,41 +745,99 @@ Calculating all three $J_{i}$ allows one to form
 \label{eq:inRel}
 \end{equation}
 and the unknown global inertia tensor can be solved for.
-\begin{figure}[htbp]
-    \begin{center}
-        \includegraphics[width=4in]{../../../images/YellowFrameCompoundFirst.jpg}
-    \end{center}
-    \caption{The rear frame hung as a compound pendulum.}
-    \label{fig:FrameCompound}
+\begin{figure}[tbp]
+    \centering
+    \subfloat[]{
+        \label{fig:frameCompound}
+        \includegraphics[width=2.75in]{../../../images/YellowFrameCompoundFirst.jpg}
+        }
+    \subfloat[]{
+        \label{fig:forkCompound}
+        \includegraphics[width=2.75in]{../../../images/BrowserInsForkCompoundFirst.jpg}
+        }
+        \caption{\subref{fig:frameCompound} The rear frame hung as a compound
+        pendulum. \subref{fig:forkCompound} The Browser fork hung as a
+        compound pendulum.}
+        \label{fig:compound}
 \end{figure}
-
 \subsection{Fork}
-\begin{figure}[htbp]
-    \begin{center}
-        \includegraphics[width=4in]{../../../images/StratosForkTorsionalThird.jpg}
-    \end{center}
-    \caption{The Stratos fork and handlebar assembly hung as a torsional
-    pendulum.}
-    \label{fig:StratosFork}
+\begin{figure}[tbp]
+    \centering
+    \subfloat[]{
+        \label{fig:StratosFork}
+        \includegraphics[width=2.75in]{../../../images/StratosForkTorsionalThird.jpg}
+        }
+    \caption{\subref{fig:StratosFork} The Stratos fork and handlebar assembly hung as a torsional
+        pendulum.}
+    \label{fig:torsional}
 \end{figure}
-\section{Parameters}
-\section{Linear Analysis}
-\subsection{Canonical Matrices}
-The final results are presented in the form used by the benchmark model. These
-can be used to populate the canonical form
-of the linear benchmark equations of motion presented in
-\cite{Meijaard2007}.
-\subsection{Eigenvalues}
-\begin{figure}[htbp]
+\section{LINEAR ANALYSIS}
+Once all of the bicycle parameters have been calculated the canonical matrices
+can be formed and the linear dynamics of the bicycles can be explored. We also
+added the same rigid rider to each bicycle for further comparison.
+\begin{table}[tbp]
+    \centering
+    \caption{Rider parameters}
+    \begin{tabular}{ll}
+        Parameter & Value\\
+        \hline
+        $m_\mathrm{P}$ [kg] & 72\\
+        $x_\mathrm{P}$ [m] & 0.2909\\
+        $z_\mathrm{P}$ [m] & -1.1091\\
+        $I_\mathrm{P}$ [$\mathrm{kg\ m}^2$] &
+            $\left[
+            \begin{array}{ccc}
+                 7.9985 & 0      & -1.9272\\
+                 0      & 8.0689 & 0\\
+                -1.9272 & 0      & 2.3624
+            \end{array}
+            \right]$
+    \end{tabular}
+\end{table}
+
+\subsection{EIGENVALUES}
+\begin{figure}[tbp]
+    \centering
+    \includegraphics[width=4in]{../../../plots/Bike/eig_plot.pdf}
+    \caption{The eigenvalues verus speed for all eight bicycles.}
+    \label{fig:bikeEigPlot}
+\end{figure}
+\begin{figure}[tbp]
     \begin{center}
-        \includegraphics[width=4in]{../../../plots/Bike/CrescendoRootLoci.png}
+        \includegraphics[width=4in]{../../../plots/Bike/CrescendoRootLoci.pdf}
     \end{center}
     \caption{The root loci with speed as the parameter for the Crescendo.}
     \label{fig:rootloci}
 \end{figure}
-
-\subsection{Frequency Response}
+\begin{figure}[tbp]
+    \centering
+    \includegraphics[width=4in]{../../../plots/BikeRider/eig_plot.pdf}
+    \caption{The eigenvalues verus speed for all eight bicycles with the same
+    rider.}
+    \label{fig:bikeRiderEigPlot}
+\end{figure}
+\subsection{FREQUENCY RESPONSE}
 \bibliographystyle{acm}
 \bibliography{bicycle}
+\appendix
+\section{PARAMETERS}
+\subsection{BICYCLE}
+\begin{landscape}
+\subfile{../../../tables/Bike/Parameters/MasterParTable.tex}
+\end{landscape}
+\subsection{BICYCLE WITH RIDER}
+%\begin{landscape}
+%\subfile{../../../tables/Bike/Parameters/MasterParTable.tex}
+%\end{landscape}
+\section{CANONICAL MATRICES}
+\subsection{BICYCLE}
+\begin{landscape}
+\subfile{../../../tables/Bike/Canonical/MasterCanTable.tex}
+\end{landscape}
+\subsection{BICYCLE WITH RIDER}
+%\begin{landscape}
+%\subfile{../../../tables/Bike/Parameters/MasterParTable.tex}
+%\end{landscape}
 \end{document}
+
 
