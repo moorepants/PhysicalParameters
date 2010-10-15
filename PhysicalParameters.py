@@ -206,7 +206,7 @@ def make_tables(typ='Bike'):
     for i, name in enumerate(data['bikes']):
         fname = ''.join(name.split())
         # open the new file
-        f = open('tables/' + 'ParameterTableTemplate.tex', 'r')
+        f = open('tables/ParameterTableTemplate.tex', 'r')
         fn = open(direct + fname + 'Par.tex', 'w')
         for line in f:
             #print line
@@ -248,6 +248,8 @@ def make_tables(typ='Bike'):
     template = open('tables/MasterParTableTemplate.tex', 'r')
     final = open(direct + 'MasterParTable.tex', 'w')
 
+    os.system('cp papers/BMD2010/PhysicalParametersPaper/bmd2010p.cls ' + direct)
+
     abbrev = ['B', 'B*', 'C', 'G', 'P', 'S', 'Y', 'Y*']
     for line in template:
         if line[0] == '%':
@@ -258,7 +260,11 @@ def make_tables(typ='Bike'):
                 if varname == 'bike':
                     fline = fline + ' & \multicolumn{2}{c}{' + abbrev[i] + '}'
                 else:
-                    val, sig = uround(par[varname][i]).split('+/-')
+                    try:
+                        val, sig = uround(par[varname][i]).split('+/-')
+                    except ValueError:
+                        val = str(round(par[varname][i], 3))
+                        sig = '0.0'
                     fline = fline + ' & ' + val + ' & ' + sig
             fline = fline + r'\\' + '\n'
             final.write(fline)
@@ -276,6 +282,8 @@ def make_tables(typ='Bike'):
 
     template = open('tables/MasterCanTableTemplate.tex', 'r')
     final = open(direct + 'MasterCanTable.tex', 'w')
+
+    os.system('cp papers/BMD2010/PhysicalParametersPaper/bmd2010p.cls ' + direct)
 
     abbrev = ['B', 'B*', 'C', 'G', 'P', 'S', 'Y', 'Y*']
     for line in template:
