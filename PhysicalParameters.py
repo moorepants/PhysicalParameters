@@ -860,6 +860,10 @@ def calc_parameters():
     ddU['TFyy'] = com[2]
     ddU['TRyy'] = com[3]
 
+    f = open('data/udata.p', 'w')
+    pickle.dump(ddU, f)
+    f.close()
+
     tRod = avgPer['rodPer']
     # calculate the stiffness of the torsional pendulum
     iRod = tube_inertia(ddU['lRod'], ddU['mRod'], ddU['rRod'], 0.)[1]
