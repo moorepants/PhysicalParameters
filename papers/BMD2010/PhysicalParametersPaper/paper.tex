@@ -472,13 +472,13 @@ frame but the z-intercept is different:
 The moments of inertia of the wheels, frame and fork were measured by taking
 advantage of the assumed symmetry of the parts and by hanging the parts as both
 compound and torsional pendulums and measuring their period of oscillation when
-perturb at small angles. The rate of oscillation was measured was measured
+perturb at small angles. The rate of oscillation was measured
 using a \href{http://www.siliconsensing.com/CRS03}{Silicon Sensing CRS03 100
 deg/s rate gyro}. The rate gyro was sampled at
 1000hz with a
 \href{http://sine.ni.com/nips/cds/view/p/lang/en/nid/14604}{National
 Instruments USB-6008 12 bit data acquisition unit} and
-Matlab. The measurement duration were either 15 or 30 secs and each moment of
+\textsc{Matlab}. The measurement duration were either 15 or 30 secs and each moment of
 inertia measurement was performed three times. No extra care was taken to
 calibrate the rate gyro, maintain a constant power source (i.e. the battery
 drains slowly), or account for drift. The raw voltage signal was used to
@@ -601,7 +601,6 @@ coefficient of elasticity $k$ for the torsional pendulum had previously been
 measured in \cite{Kooijman2006} and found to be $k=5.01\pm0.01$
 $\frac{\textrm{Nm}}{\textrm{rad}}$.
 
-\subsection{Wheels}
 The wheels are assumed to be symmetric laterally and about any radial axis. Thus only two
 moment's of inertia are required. The moment of inertia about the axle was
 measured by hanging the wheel as a compound pendulum. The wheel was hung on a
@@ -745,6 +744,10 @@ Calculating all three $J_{i}$ allows one to form
 \label{eq:inRel}
 \end{equation}
 and the unknown global inertia tensor can be solved for.
+The frame pendulum length is
+\begin{equation}
+    l_B=\sqrt{x_B^2+(z_B+r_R)^2}
+\end{equation}
 \begin{figure}[tbp]
     \centering
     \subfloat[]{
@@ -761,6 +764,10 @@ and the unknown global inertia tensor can be solved for.
         \label{fig:compound}
 \end{figure}
 \subsection{Fork}
+The fork pendulum length is calculated using
+\begin{equation}
+    l_H=\sqrt{(x_H-w)^2+(z_B+rF)^2}
+\end{equation}
 \begin{figure}[tbp]
     \centering
     \subfloat[]{

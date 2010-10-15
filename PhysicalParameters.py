@@ -656,6 +656,7 @@ def tor_com():
     # list of the orientation angles
     fst = ['First', 'Second', 'Third']
     # list of the bicycle parts
+    # this is the order that they are put into tor and com
     fffr = ['Frame', 'Fork', 'Fwheel', 'Rwheel']
     # list of type of pendulums
     tc = ['Torsional', 'Compound']
@@ -845,6 +846,20 @@ def calc_parameters():
     com[2, 7] = com[2, 6]
     com[3, 7] = com[3, 6]
 
+    ddU['TB1'] = tor[0]
+    ddU['TB2'] = tor[1]
+    ddU['TB3'] = tor[2]
+    ddU['TH1'] = tor[3]
+    ddU['TH2'] = tor[4]
+    ddU['TH3'] = tor[5]
+    ddU['TF1'] = tor[6]
+    ddU['TR1'] = tor[9]
+    ddU['TRod'] = avgPer['rodPer']
+    ddU['TByy'] = com[0]
+    ddU['THyy'] = com[1]
+    ddU['TFyy'] = com[2]
+    ddU['TRyy'] = com[3]
+
     tRod = avgPer['rodPer']
     # calculate the stiffness of the torsional pendulum
     iRod = tube_inertia(ddU['lRod'], ddU['mRod'], ddU['rRod'], 0.)[1]
@@ -858,14 +873,15 @@ def calc_parameters():
 
     # calculate the wheel y inertias
     par['g'] = 9.81*np.ones(ddU['forkMass'].shape, dtype=float)
-    par['IRyy'] = com_inertia(par['mR'], par['g'], ddU['rWheelPendLength'], com[3, :])
     par['IFyy'] = com_inertia(par['mF'], par['g'], ddU['fWheelPendLength'], com[2, :])
+    par['IRyy'] = com_inertia(par['mR'], par['g'], ddU['rWheelPendLength'], com[3, :])
 
     # calculate the wheel x/z inertias
-    par['IRxx'] = tor_inertia(k, tor[6, :])
-    par['IFxx'] = tor_inertia(k, tor[9, :])
+    par['IFxx'] = tor_inertia(k, tor[6, :])
+    par['IRxx'] = tor_inertia(k, tor[9, :])
 
     # calculate the y inertias for the frame and fork
+    # the coms may be switched here
     framePendLength = (frameCoM[0, :]**2 + (frameCoM[1, :] + par['rR'])**2)**(0.5)
     par['IByy'] = com_inertia(par['mB'], par['g'], framePendLength, com[0, :])
     forkPendLength = ((forkCoM[0, :] - par['w'])**2 + (forkCoM[1, ] + par['rF'])**2)**(0.5)
