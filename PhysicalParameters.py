@@ -264,7 +264,7 @@ def make_tables(typ='Bike'):
                         val, sig = uround(par[varname][i]).split('+/-')
                     except ValueError:
                         val = str(round(par[varname][i], 3))
-                        sig = '0.0'
+                        sig = 'NA'
                     fline = fline + ' & ' + val + ' & ' + sig
             fline = fline + r'\\' + '\n'
             final.write(fline)
@@ -301,8 +301,8 @@ def make_tables(typ='Bike'):
                     try:
                         val, sig = uround(can[varname][indice[0], indice[1]]).split('+/-')
                     except:
-                        val = str(can[varname][indice[0], indice[1]])
-                        sig = '0.0'
+                        val = str(round(can[varname][indice[0], indice[1]], 3))
+                        sig = 'NA'
                     fline = fline + ' & ' + val + ' & ' + sig
             fline = fline + r'\\' + '\n'
             final.write(fline)
@@ -338,7 +338,7 @@ def bike_bode_plots(typ='Bike', speeds=None):
     f.close()
 
     # figure properties
-    figwidth = 5. # in inches
+    figwidth = 6. # in inches
     goldenMean = (np.sqrt(5)-1.0)/2.0
     figsize = [figwidth, figwidth*goldenMean]
     params = {#'backend': 'ps',
@@ -1858,6 +1858,7 @@ def tor_stiffness(I, T):
 
     '''
     k = 4.*I*pi**2/T**2
+    print k
     return k
 
 def inertia_components(I, alpha):
