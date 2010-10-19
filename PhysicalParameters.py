@@ -404,13 +404,15 @@ def bike_bode_plots(typ='Bike', speeds=None):
     if not os.path.isdir(direct):
         os.system('mkdir ' + direct)
 
+    # set the colors for the lines to match the bike
     for k, v in plots.items():
         print len(v.ax1.lines)
-        v.ax2.legend(data['bikes'], 'lower right')
         for i, line in enumerate(v.ax1.lines):
             print i, colors[i]
             plt.setp(line, color=colors[i])
             plt.setp(v.ax2.lines[i], color=colors[i])
+        # set the legend
+        v.ax2.legend(data['bikes'], 'lower right')
         v.savefig(direct + '/' + k + '.pdf')
 
     return plots
