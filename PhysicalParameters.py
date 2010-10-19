@@ -526,7 +526,7 @@ def bike_eig_plots(typ='Bike', filetype='pdf'):
     plt.legend(loc='lower right')
     plt.ylim((-10, 10))
     plt.xlim((0, 10))
-    plt.title('Eigenvalues vs Speed')
+    plt.title(space_out_camel_case(typ) + ' Eigenvalues vs Speed')
     plt.xlabel('Speed [m/s]')
     plt.ylabel('Real and Imaginary Parts of the Eigenvalue [1/s]')
     try:
