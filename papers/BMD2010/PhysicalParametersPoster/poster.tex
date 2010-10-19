@@ -100,10 +100,9 @@ e-mail: jkmoor@ucdavis.edu, mhubbard@ucdavis.edu
 
   % Info about the model
   \begin{alertblock}{Whipple Bicycle Model}
-    \rmfamily{
+    \small{\rmfamily{
     The linear unforced two degree-of-freedom, $\mathbf{q}$
     = [steer and roll], linear Whipple model takes the form:
-    \small{
     \begin{equation}
         \mathbf{M\ddot{q}}
         +v\mathbf{C}_1\mathbf{\dot{q}}
@@ -112,12 +111,11 @@ e-mail: jkmoor@ucdavis.edu, mhubbard@ucdavis.edu
         =0
         \label{eq:canonical}
     \end{equation}
-    }
     Where the entries to the $\mathbf{M}$, $\mathbf{C}_1$, $\mathbf{K}_0$ and $\mathbf{K}_2$
     matrices are combinations of 25 of the bicycle's physical parameters that
     include the geometry, mass, mass location and mass distribution of the four
     rigid bodies.
-    }
+    }}
   \end{alertblock}
 
 \end{column}
@@ -144,7 +142,7 @@ e-mail: jkmoor@ucdavis.edu, mhubbard@ucdavis.edu
                 + \ldots
         \label{eqn:variance}
     \end{equation}
-    where $s_*$ is the variance and $s_{**}$ is the covariance. If $u$ and $v$ are uncorrelated then $s_{uv}=0$ but the cross correlations
+    where $s_u$ is the variance and $s_{uv}$ is the covariance. If $u$ and $v$ are uncorrelated then $s_{uv}=0$ but the cross correlations
     must be taken into account otherwise.
     }
   \end{block}
@@ -179,46 +177,20 @@ e-mail: jkmoor@ucdavis.edu, mhubbard@ucdavis.edu
 
     \begin{column}{\onecolwid}
 
-        \begin{block}{Measurements}
-            \rmfamily{
-            We attempted to directly measure the trail, wheelbase and wheel
-            diameters with various techniques. We measured the mass centers of
-            the four bodies (fork, frame, and wheels) by hanging the bodies by
-            their mass centers. The moments of inertia were estimated by
-            hanging the bodies as both torsional and compound pendulums and
-            measuring the period of oscillation which is correlated to the
-            inertia.
-            }
-            \begin{center}
-              \includegraphics[width=0.90\onecolwid]{../../../figures/angles.pdf}
-            \end{center}
-        \end{block}
-
-    \end{column}
-\end{columns}
-
-
-
-\end{column}
-
-% Spacer column
-\begin{column}{\sepwid}\end{column} % empty spacer column
-
-% The fourth column
-\begin{column}{\onecolwid}
-  \begin{alertblock}{Bike Eigenanalysis}
+  \begin{alertblock}{Bicycle Eigenanalysis}
     \rmfamily{
     Distinct variation is apparent among the bicycles' eigenvalues. Frequency,
     damping, and the stable speed range can be compared to the physical
-    differences of the bicycles.
+    differences of the bicycles. The bicycles also exhibit a two imaginary root
+    pairs at low speeds.
     }
     \\
     \begin{center}
       \includegraphics[width=.9\onecolwid]{../../../plots/Bike/eig_plot.pdf}
     \end{center}
     \rmfamily{
-    Less variation is seen among the bicycles when the mass and inertia of a
-    rigid rider is added.
+    Less variation is seen among the bicycles when a
+    rigid rider is added, except in the stable sppeed ranges.
     }
     \\
     \begin{center}
@@ -226,6 +198,43 @@ e-mail: jkmoor@ucdavis.edu, mhubbard@ucdavis.edu
     \end{center}
   \end{alertblock}
 
+    \end{column}
+\end{columns}
+\end{column}
+
+% Spacer column
+\begin{column}{\sepwid}\end{column} % empty spacer column
+
+% The fourth column
+\begin{column}{\onecolwid}
+        \begin{block}{Measurements}
+            \rmfamily{
+            We estimated the wheel radii by measuring the distance traveled
+            by the loaded wheels, the trail by directly measuring the fork
+            offset and the wheelbase and headtube angle by direct measurement.
+            We measured the mass of the four bodies (fork, frame, and
+            wheels) directly using an precision scale. We found the location of
+            the mass center by hanging the bodies in multiple orientations
+            through their mass centers.
+            }
+            \\
+            \begin{center}
+              \includegraphics[width=0.8\onecolwid]{../../../figures/angles.pdf}
+            \end{center}
+            \rmfamily{
+            The in- and out-of-symmetric plane moments of inertia were estimated by
+            hanging the bodies as torsional and compound pendulums,
+            respectively. We then estimated the period of oscillation by
+            fitting a decaying osciallation function to a voltage signal from a
+            rate gyro after the pendulums were perturbed. The period can then
+            be correlated to the inertia.
+            }
+            \\
+            \begin{center}
+              \includegraphics[width=0.90\onecolwid]{../../../plots/PendFit/BrowserFrameCompoundFirst1.pdf}
+            \end{center}
+        \end{block}
+
 \end{column}
 
 % Spacer column
@@ -233,22 +242,18 @@ e-mail: jkmoor@ucdavis.edu, mhubbard@ucdavis.edu
 
 \begin{column}{\onecolwid}
   % Frequency Response
-  \begin{block}{Bike Frequency Response}
-    \rmfamily{
+  \begin{alertblock}{Bicycle Frequency Response}
+    \small{\rmfamily{
     The steer torque to roll angle Bode plot reveals up to 10 dB variation
-    among the bikes along the frequencies shown.
+    among the bikes and variation in phase.
+    }}
     \\
     \begin{center}
-      \includegraphics[width=.9\onecolwid]{../../../plots/Bike/Bode/Tdel2phi.pdf}
+      \includegraphics[width=.85\onecolwid]{../../../plots/Bike/Bode/Tdel2phi.pdf}
+      \\
+      \includegraphics[width=.85\onecolwid]{../../../plots/BikeRider/Bode/Tdel2phi.pdf}
     \end{center}
-    }
-  \end{block}
-
-  % Frequency Response
-  \begin{block}{Bike/Rider Frequency Response}
-    \centering
-    \includegraphics[width=.9\onecolwid]{../../../plots/BikeRider/Bode/Tdel2phi.pdf}
-  \end{block}
+  \end{alertblock}
 
   % References
   \begin{block}{References}

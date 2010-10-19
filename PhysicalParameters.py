@@ -365,13 +365,19 @@ def bike_bode_plots(typ='Bike', speeds=None):
               #'#C0C0C0']
 
     plotlist = ['Tdel2phi', 'Tdel2del', 'Tphi2phi', 'Tphi2del']
+    latexlist = ['$T_\delta/\phi$',
+                 '$T_\delta/\delta$',
+                 '$T_\phi/\phi$',
+                 '$T_\phi/\delta$']
 
     plots = {}
 
+    # make figures for each Bode plot
     for i, plot in enumerate(plotlist):
         plots[plot] = plt.figure(num=i, figsize=figsize)
 
     direct = 'data/' + typ + '/Canonical/'
+
     # for each plot
     for j, plot in enumerate(plotlist):
         for i, name in enumerate(data['shortnames']):
@@ -392,12 +398,11 @@ def bike_bode_plots(typ='Bike', speeds=None):
             if plot.split('2')[1] == 'del': CEE = C[3]
             elif plot.split('2')[1] == 'phi': CEE = C[2]
             mag, phase, plots[plot] = bode(ABCD=(A, BEE, CEE, 0.), w=freq,
-                    fig=plots[plot])
+                    fig=plots[plot], title=space_out_camel_case(typ) + ' ' + latexlist[j])
 
     direct = 'plots/' + typ + '/Bode'
     if not os.path.isdir(direct):
         os.system('mkdir ' + direct)
-
 
     for k, v in plots.items():
         print len(v.ax1.lines)
@@ -574,7 +579,7 @@ direct = 'plots/PendFit/'
 if not os.path.isdir(direct):
     os.system('mkdir ' + direct)
 
-def fit_data():
+def fit_data(filetype='.pdf'):
 
     dirs, subdirs, filenames = list(os.walk('data/pendDat/p'))[0]
     periodfile = open('data/period.txt', 'w')
@@ -627,7 +632,7 @@ def fit_data():
             rsqstr = str(rsq)
             m = 5.
         plot_osfit(x, y, lscurve, p1, rsq, T, m=m, fig=fig)
-        plt.savefig(direct + name[:-2] + '.png')
+        plt.savefig(direct + name[:-2] + filetype)
         plt.close()
         # include the notes for the experiment
         try:

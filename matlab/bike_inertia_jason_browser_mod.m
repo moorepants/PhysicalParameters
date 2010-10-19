@@ -132,14 +132,14 @@ ele(26,1:7) = { 20 24 'right lower arm'  'cylinder' 'framex'  cla/2/pi 0      };
 figure(1)
 axis([-rr-0.1 wb+rf+0.1 0 grid(ele{22,1},3)+rh+0.1])
 hold on
-for i = 1:size(ele,1)  
+for i = 1:size(ele,1)
     switch ele{i,4}
         case {'ring','sphere'} % plot circles
             center = [grid(ele{i,1},1);grid(ele{i,1},3)];
             radius = ele{i,6};
             thetaplot = 0:0.001:2*pi;
             xplot = radius*cos(thetaplot)+center(1);
-            yplot = radius*sin(thetaplot)+center(2);            
+            yplot = radius*sin(thetaplot)+center(2);
             plot(xplot,yplot)
         case {'tube','rprism','cylinder'} % plot lines
             if i == 14 % don't plot handle bar
@@ -158,8 +158,8 @@ for i = 1:size(ele,1)
                 z1 = grid(ele{i,2},3);
                 xplot=x1:0.001:x2;
                 yplot=(z2-z1)/(x2-x1).*(xplot-x1)+z1;
-                plot(xplot,yplot)                
-            end                
+                plot(xplot,yplot)
+            end
     end
 end
 hold off
