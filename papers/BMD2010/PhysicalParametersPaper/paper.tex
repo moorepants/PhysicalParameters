@@ -22,7 +22,7 @@
 
 \begin{center}
 \begin{tabular}{c}
-$^*$ Mechanical and Aerospace Engineering\\
+$^*$ Department of Mechanical and Aerospace Engineering\\
 University of California, Davis\\
 One Shields Avenue, Davis, CA, 95616, USA\\
 e-mail: jkmoor@ucdavis.edu, mhubbard@ucdavis.edu\\
@@ -36,25 +36,23 @@ e-mail: a.l.schwab@tudelft.nl, jodikooijman@gmail.com\\
 \end{center}
 \section*{ABSTRACT}
 Accurate measurements of a bicycle's physical parameters are required for
-realistic dynamic simulations and analysis. For the most basic models the
-geometry, mass, mass location and mass distributions must be measured. More complex models
-require measurements of tire characteristics, human characteristics, friction, stiffness, damping, etc. This
-paper concerns the measurement of the minimal bicycle parameters required for
-the benchmark bicycle presented in~\cite{Meijaard2007}. This
+realistic dynamic simulations and analysis. The most basic models require the
+geometry, mass, mass location and mass distributions for the rigid bodies. More
+complex models require estimates of tire characteristics, human
+characteristics, friction, stiffness, damping, etc. In this
+paper we present the measurement of the minimal bicycle parameters required for
+the benchmark Whipple bicycle model presented in~\cite{Meijaard2007}. This
 model is composed of four rigid bodies, has ideal rolling and frictionless joints,
-and is assumed to be laterally symmetric. A set of 25
-parameters is used to describe the geometry, mass, mass location and
-mass distribution of each of the rigid bodies. The experimental methods
-described herein are based primarily on the work
-done in~\cite{Kooijman2006} but have been refined for improved accuracy and
-methodology. Koojiman's work was preceded by \cite{Roland1971} who measured a bicycle in a
+and is laterally symmetric. A set of 25 parameters is used to describe the
+geometry, mass, mass location and mass distribution of each of the rigid
+bodies. The experimental methods used to estimate the parameters described
+herein are based primarily on the work done in~\cite{Kooijman2006} but have
+been refined for improved accuracy and methodology.
+
+Koojiman's work was preceded by \cite{Roland1971} who measured a bicycle in a
 similar fashion and both~\cite{Dohring1953} and~\cite{Singh1971} who have used
-similar techniques with scooters. We measured the characteristics of six
+similar techniques with scooters. We measured the physical characteristics of six
 different bicycles, two of which were set up in two different configurations.
-This is a total of eight different parameter sets that can be used with, but not
-limited to, the benchmark bicycle model. The accuracy of all the measurements
-are presented up through the eigenvalue prediction of the linear model and are
-based on error propagation theory with correlations taken into account.
 
 The six bicycles, chosen for both variety and convenience, are as follows:
 \emph{Batavus Browser}, a Dutch style city bicycle measured with and without
@@ -65,6 +63,11 @@ Bike}, a hardtail mountain bicycle; \emph{Bianchi Pista}, a modern steel frame
 track racing bicycle; and \emph{Yellow Bicycle}, a stripped down aluminum frame
 road bicycle measured in two configurations, the second with the fork rotated
 in the headtube 180 degrees for larger trail.
+
+These eight different parameter sets can be used with, but not
+limited to, the benchmark bicycle model. The accuracy of all the measurements
+are presented up through the eigenvalue prediction of the linear model. The
+accuracies are based on error propagation theory with correlations taken into account.
 \begin{keywords}
 bicycle,
 parameters,
@@ -882,6 +885,8 @@ model~\cite{Meijaard2007}. Then we measure eight different bicycles providing
 both the raw data, parameter sets and linear model coefficient matrices with
 the uncertainties for each value. Then we present a brief comparison of the
 eight bicycles using eigenanalysis and Bode analysis.
+\section{ACKNOWLEDGEMENTS}
+This work was partially funded by the National Science Foundation.
 
 \bibliographystyle{acm}
 \bibliography{bicycle}
