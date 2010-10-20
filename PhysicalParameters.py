@@ -398,7 +398,7 @@ def bike_bode_plots(typ='Bike', speeds=None):
             if plot.split('2')[1] == 'del': CEE = C[3]
             elif plot.split('2')[1] == 'phi': CEE = C[2]
             mag, phase, plots[plot] = bode(ABCD=(A, BEE, CEE, 0.), w=freq,
-                    fig=plots[plot], title=space_out_camel_case(typ) + ' ' + latexlist[j])
+                    fig=plots[plot], title='+'.join(space_out_camel_case(typ).split()) + ' ' + latexlist[j])
 
     direct = 'plots/' + typ + '/Bode'
     if not os.path.isdir(direct):
@@ -528,7 +528,7 @@ def bike_eig_plots(typ='Bike', filetype='pdf'):
     plt.legend(loc='lower right')
     plt.ylim((-10, 10))
     plt.xlim((0, 10))
-    plt.title(space_out_camel_case(typ) + ' Eigenvalues vs Speed')
+    plt.title('+'.join(space_out_camel_case(typ).split()) + ' Eigenvalues vs Speed')
     plt.xlabel('Speed [m/s]')
     plt.ylabel('Real and Imaginary Parts of the Eigenvalue [1/s]')
     try:
