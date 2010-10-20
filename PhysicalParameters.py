@@ -387,7 +387,7 @@ def bike_bode_plots(typ='Bike', speeds=None):
             can = pickle.load(f)
             f.close()
             # calulate the A and B matrices
-            A, B = abMatrix(can['M'], can['C1'], can['K0'], can['K2'], 1., 9.81)
+            A, B = abMatrix(can['M'], can['C1'], can['K0'], can['K2'], 2., 9.81)
             A = unumpy.nominal_values(A)
             B = unumpy.nominal_values(B)
             # y is [phidot, deldot, phi, del]
@@ -398,7 +398,9 @@ def bike_bode_plots(typ='Bike', speeds=None):
             if plot.split('2')[1] == 'del': CEE = C[3]
             elif plot.split('2')[1] == 'phi': CEE = C[2]
             mag, phase, plots[plot] = bode(ABCD=(A, BEE, CEE, 0.), w=freq,
-                    fig=plots[plot], title='+'.join(space_out_camel_case(typ).split()) + ' ' + latexlist[j])
+                    fig=plots[plot],
+                    title='+'.join(space_out_camel_case(typ).split()) + ' ' +
+                    latexlist[j] + ' @ 2 m/s')
 
     direct = 'plots/' + typ + '/Bode'
     if not os.path.isdir(direct):
