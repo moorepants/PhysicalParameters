@@ -43,13 +43,13 @@ characteristics, friction, stiffness, damping, etc. In this
 paper we present the measurement of the minimal bicycle parameters required for
 the benchmark Whipple bicycle model presented in~\cite{Meijaard2007}. This
 model is composed of four rigid bodies, has ideal rolling and frictionless joints,
-and is laterally symmetric. A set of 25 parameters is used to describe the
+and is laterally symmetric. A set of 25 parameters describes the
 geometry, mass, mass location and mass distribution of each of the rigid
 bodies. The experimental methods used to estimate the parameters described
 herein are based primarily on the work done in~\cite{Kooijman2006} but have
 been refined for improved accuracy and methodology. Koojiman's work was
 preceded by \cite{Roland1971} who measured a bicycle in a
-similar fashion and both~\cite{Dohring1953} and~\cite{Singh1971} who have used
+similar fashion and both~\cite{Dohring1953} and~\cite{Singh1971} who used
 similar techniques with scooters.
 
 We measured the physical characteristics of six different bicycles, two of
@@ -64,7 +64,7 @@ track racing bicycle; and \emph{Yellow Bicycle}, a stripped down aluminum frame
 road bicycle measured in two configurations, the second with the fork rotated
 in the headtube 180 degrees for larger trail.
 
-These eight different parameter sets can be used with, but not
+These eight different parameter sets can be used with, but are not
 limited to, the benchmark bicycle model. The accuracy of all the measurements
 are presented up through the eigenvalue prediction of the linear model. The
 accuracies are based on error propagation theory with correlations taken into
@@ -79,25 +79,25 @@ Bode.
 
 \section{INTRODUCTION}
 This work is intended to document the indirect measurement of eight real
-bicycles' physical parameters. The physical parameters measured are those that
-are needed for the benchmark Whipple bicycle model presented in
-\cite{Meijaard2007}. The work is based on the techiques used to measure the
+bicycles' physical parameters. The physical parameters measured are those
+needed for the benchmark Whipple bicycle model presented in
+\cite{Meijaard2007}. The work is based on techniques used to measure the
 instrumented bicycles in \cite{Kooijman2006}, \cite{Kooijman2008} and
 \cite{Moore2009a}. We improve upon these methods by both increasing and reporting
 the accuracies of the measurements and by measuring the complete moments of
-inertia of the frame and fork needed for anaylsis of the nonlinear model.
+inertia of the frame and fork needed for analysis of the nonlinear model.
 Furthermore, very little data exists on the physical parameters of different
 types of bicycles and this work aims to provide a small sample of bicycles.
 
-D\"{o}hring measured the physical parameters of a scooter~\cite{Dohring1953}.
-Singh and Goel measured the physical parameters of a scooter~\cite{Singh1971}.
-Roland and Massing measured the physical parameters of a bicycle in much the
-same was as presented, including calculations of uncertainty from the indirect
-measurement techniques~\cite{Roland1971}. Patterson used a swing to measure the
-inertia of a bicycle and rider~\cite{Patterson2004}. This work is based off of the work
-done by Kooijman~\cite{Kooijman2006}. I worked with Jodi Kooijman for a year and
-was able to use much of the same apparatus and refine the measurement
-technique.
+D\"{o}hring~\cite{Dohring1953} and Singh and Goel~\cite{Singh1971} measured the
+physical parameters of scooters.
+Roland and Massing~\cite{Roland1971} measured the physical parameters of a
+bicycle in much the
+same way as is presented, including calculations of uncertainty from the indirect
+measurement techniques. Patterson~\cite{Patterson2004} used a swing to measure the
+inertia of a bicycle and rider. The present work is based on the work
+done by Kooijman~\cite{Kooijman2006} using much of the same apparatus and
+refining the measurement technique.
 \section{BENCHMARK BICYCLE MODEL}
 Recently, the Whipple bicycle model has been benchmarked~\cite{Meijaard2007}
 and this model is widely used for bicycle dynamics studies. The unforced two
@@ -110,55 +110,56 @@ degree-of-freedom, $\mathbf{q}$ = [steer and roll], model takes the form:
     =0
     \label{eq:canonical}
 \end{equation}
-Where the entries to the $\mathbf{M}$, $\mathbf{C}_1$, $\mathbf{K}_0$ and $\mathbf{K}_2$
-matrices are combinations of 25 of the bicycle's physical parameters that
+where the entries of the $\mathbf{M}$, $\mathbf{C}_1$, $\mathbf{K}_0$ and $\mathbf{K}_2$
+matrices are combinations of 25 bicycle physical parameters that
 include the geometry, mass, mass location and mass distribution of the four
 rigid bodies. The 25 parameters presented in \cite{Meijaard2007} are not
-necessarily a minimun set for the Whipple model, as shown in \cite{Sharp2008},
-but are useful as they represent more easily measurable quantities.
+necessarily a minimum set for the Whipple model, as shown in \cite{Sharp2008},
+but are useful as they represent more intuitively measurable quantities.
 Furthermore, many more parameters are not needed due to the assumptions of the
 Whipple model such as no-slip tires, lateral symmetry, knife edge wheels, etc.
 \section{BICYCLE DESCRIPTIONS}
 We choose to measure the physical parameters of six bicycles
-Figs.~\ref{fig:bicycles}. The three Batavus bicycles were donated by the
+Fig.~\ref{fig:bicycles}. The three Batavus bicycles were donated by the
 manufacturer. We asked for a bicycle that they considered stable and one that
 they did not. They claimed the Browser was a ``stable'' bicycle and that the
 Stratos was ``nervous''. The Fisher and the Pista were chosen to provide some
-variety, a mountatin and road bike. The yellow bike is used to demonstrate
+variety, a mountain and road bike. The yellow bike is used to demonstrate
 bicycle stability.
 \begin{description}
-    \item[Batavus Browser (B, B*)]{The Batavus Browser Fig.~\ref{fig:browser} is an averaged priced Dutch city
+    \item[Batavus Browser (B, B*)]{The Batavus Browser Fig.~\ref{fig:browser}
+        is an average priced Dutch city
         bike. It has a steel frame, a three speed internal rear hub, handle
-        bars for an upright posture and includes various accerories for utility
-        puposes. We measured the physical proprieties of the stock Browser model and
+        bars for an upright posture and includes various accessories for utility
+        purposes. We measured the physical proprieties of the stock Browser model and
         also equipped with the instrumentation used in our other
         experiments~\cite{Kooijman2009}.}
     \item[Batavus Crescendo Deluxe (C)]{The Batavus Crescendo Deluxe
         Fig.~\ref{fig:crescendo} is also a
-        Dutch city bike that is setup for touring. It has an aluminum frame, an
-        eight speed internal hub, upright handlebars, accesories for utility
+        Dutch city bike for touring. It has an aluminum frame, an
+        eight speed internal hub, upright handlebars, accessories for utility
         and a suspension fork and suspension seatpost.}
     \item[Gary Fisher Ziggurat (G)]{The Gary Fisher Ziggurat Fig.~\ref{fig:fisher} is a modern
-        lightweight front suspended mountain bike. It has a ?? frame, large low
-        pressure mountain bike tires, and is setup for racing with few extra accerories.}
+        lightweight front suspended mountain bike. It has a aluminum frame, large low
+        pressure mountain bike tires, and is for racing with few extra accessories.}
     \item[Bianchi Pista (P)]{The Bianchi Pista Fig.~\ref{fig:pista} is a modern lightweight steel track
         bicycle. It has a single gear ratio and minimal extras to keep the
         weight low. It has drop handlebars and high pressure racing tires.}
     \item[Batavus Stratos Deluxe (S)]{The Batavus Stratos Deluxe
         Fig.~\ref{fig:stratos} is a sporty Dutch city bicycle. The frame is
-        made of aluminum and it has a seven speed internal hub. It has mountain
+        aluminum. It has a seven-speed internal hub and mountain
         style handle bars for a less upright seating posture, but also includes
-        accesories for utility such as a rear rack, fenders, light and
+        accessories for utility such as a rear rack, fenders, light and
         chainguard.}
-    \item[Yellow Bicycle (Y, Y*)]{The yellow bicycle Fig.~\ref{fig:yellow} used in the lab to
+    \item[Yellow Bicycle (Y, Y*)]{The yellow bicycle Fig.~\ref{fig:yellow} is used in the lab to
         demonstrate that a bicycle is stable at certain speeds. It is an
-        aluminum road frame of unknown make with the majority of components
+        aluminum road frame of unknown make with the most of components
         removed. The wheels, drop handlebar, seat, seat post and bottom bracket
-        are the only parts on the bike. The bicycle was measured with both the
-        fork in normal position and the fork reversed. The fork was reversed to
+        are the only parts on the bike. This bicycle was measured with both the
+        fork in normal position and reversed. The fork was reversed to
         ''decrease the minimal stable speed``~\cite{Kooijman2006} of the bicycle.}
 \end{description}
-\begin{figure}[tbp]
+\begin{figure}[tb]
     \centering
     \subfloat[Batavus Browser]{
         \label{fig:browser}
@@ -190,15 +191,15 @@ bicycle stability.
     \label{fig:bicycles}
 \end{figure}
 \section{PARAMETERS}
-The 25 parameters can be estimated by many techniques. Where possible we
+The 25 parameters can be estimated using many techniques. Where possible we
 measured the benchmark parameter directly.
 \section{ACCURACY}
-We took great care too improve upon the accuracy and report the accuracy of the
-measurements of the bicycle parameters. Following the vain of
+We took great care to improve and report the accuracy of the
+measurements of the parameters. Following the thrust of
 ~\cite{Roland1971} we used error propagation theory to calculate accuracy of
 the 25 benchmark parameters. We start by estimating the standard deviation of
 the actual measurements taken. If $x$ is a parameter and is a function of
-the measurments, $u,v,\ldots$, then $x$ is a random variable defined as
+the measurements, $u,v,\ldots$, then $x$ is a random variable defined as
 $x=f(u,v,\ldots)$. The sample variance of $x$ is defined as
 \begin{equation}
     s_x^2 =
@@ -209,7 +210,7 @@ $x=f(u,v,\ldots)$. The sample variance of $x$ is defined as
     + \ldots\right]
     \label{eqn:sampleVariance}
 \end{equation}
-Using the definitions for variance and covariance
+Using the definitions for variance and covariance,
 Equation~\ref{eqn:sampleVariance} can be simplified to
 \begin{equation}
     s_x^2 = s_u^2\left(\frac{\partial x}{\partial u}\right)^2 +
@@ -219,7 +220,7 @@ Equation~\ref{eqn:sampleVariance} can be simplified to
     \label{eqn:variance}
 \end{equation}
 If $u$ and $v$ are uncorrelated then $s_{uv}=0$. Most of the calculations
-hereafter have uncorrelate variables but a few do not and the covariance has to
+hereafter have uncorrelated variables but a few do not and the covariance has to
 be taken into account. Equation~\ref{eqn:variance} can be
 used to calculated the variance of all types of functions. Simple addition of
 two random variables may be the most basic example:
@@ -230,11 +231,11 @@ two random variables may be the most basic example:
 \end{eqnarray}
 \section{GEOMETRY}
 \subsection{WHEEL RADII}
-The radius of the front $r_\mathrm{F}$ and rear $r_\mathrm{R}$ wheels were
+The radii of the front $r_\mathrm{F}$ and rear $r_\mathrm{R}$ wheels were
 estimated by measuring the linear distance traversed along the ground through
 either 13 or 14 rotations of the wheel. Each wheel was measured separately and
 the measurements were taken with a 72kg rider seated on the bicycle. A 30 meter
-tape measure (resolution: 2mm) was pulled taught and taped on a flat level smooth floor. The tire
+tape measure (resolution: 2mm) was pulled tight and taped on a flat level smooth floor. The tire
 was marked with chalk and aligned with the tape measure
 Fig.~\ref{fig:tireChalk}. The accuracy of the
 distance measurement is approximately $\pm0.01$m. The tires were pumped to the
@@ -256,8 +257,8 @@ calculated by
 \subsection{HEAD TUBE ANGLE}
 \label{sec:headtube}
 The head tube angle was measured directly using an electronic level with a
-$\pm0.2^{\circ}$ accuracy. The bicycle frame was fixed perdenpicular to the
-ground, the steering angle was set to the nominal, the tire pressures were are
+$\pm0.2^{\circ}$ accuracy. The bicycle frame was fixed perpendicular to the
+ground, the steering angle was set to the nominal, tire pressures were at
 recommended levels and the bicycle was unloaded. The steer axis
 tilt $\lambda$ is the complement to the head tube angle.
 \begin{equation}
@@ -271,7 +272,7 @@ Trail is difficult to measure directly so we instead chose to measure the fork
 offset. The fork offset was measured by clamping the steer tube of the front
 fork into a v-block on a flat table. A ruler was used to measure the height of
 the center of the head tube and the height of the center of the axle axis. The
-fork blades where aligned such that the axle axis was parallel to the table
+fork blades were aligned such that the axle axis was parallel to the table
 surface.
 \begin{equation}
 	c=\frac{r_\mathrm{F}\sin{\lambda}-f_o}{\cos{\lambda}}
@@ -285,12 +286,12 @@ surface.
     \label{eq:TrailVar}
 \end{equation}
 \subsection{WHEELBASE}
-We measured the wheelbase when the bicycle was in the same nominal
-configuration as described in Sec.~\ref{sec:headtube}. We used a tape measure
+We measured the wheelbase with the bicycle in nominal
+configuration described in Sec.~\ref{sec:headtube}. We used a tape measure
 to measure the distance from one wheel axle center to the other with a 0.002 m
 accuracy.
 \section{MASS}
-\begin{figure}[tbp]
+\begin{figure}[tb]
     \begin{center}
         \includegraphics[width=3in]{../../../images/massScale.jpg}
     \end{center}
@@ -321,7 +322,7 @@ the string. The distance $a_\mathrm{B}$ was negative if the string fell to the r
 the rear axle and positive if it fell to the left of the rear axle. These
 measurements allow for the calculation of the center of mass location in the
 global reference frame.
-\begin{figure}[tbp]
+\begin{figure}[tb]
     \centering
     \subfloat[]{\label{fig:angles}\includegraphics[width=3in]{../../../figures/angles.pdf}}
     \subfloat[]{\label{fig:triangle}\includegraphics[width=2.75in]{../../../figures/triangle.pdf}}
@@ -330,12 +331,12 @@ global reference frame.
     $XYZ_P$. \subref{fig:triangle} Exaggerated intersection of the three pendulum axes and the
     location of the center of mass.}
 \end{figure}
-\begin{figure}[tbp]
+\begin{figure}[tb]
     \centering
     \subfloat[]{\label{fig:level}\includegraphics[width=2.75in]{../../../images/YellowFrameTorsionalThird.jpg}}
     \quad
     \subfloat[]{\label{fig:PendDist}\includegraphics[width=2.75in]{../../../images/pendDist.jpg}}
-    \caption{\subref{fig:level} The digital level was mounted to a straight edge that was aligned
+    \caption{\subref{fig:level} The digital level was mounted to a straight edge aligned
     with the headtube of the bicycle frame. This was done without allowing the
     straight edge to touch the frame. The frame wasn't completely stationary so
     this was difficult. The light frame oscillations could be damped out by
@@ -356,7 +357,7 @@ nominal configuration to the hanging orientation, rotated about the $Y$ axis.
 The center of mass can be found by realizing that the pendulum axis $X_P$ is
 simply a line in the nominal bicycle reference frame with a slope $m$ and a
 z-intercept $b$ where the $i$ subscript corresponds the different frame
-orientations~\ref{fig:triangle}. The slope can be shown to be
+orientations Fig.~\ref{fig:triangle}. The slope can be shown to be
 \begin{equation}
 	m_i=-\tan{\beta_i}
 \label{eq:slope}
@@ -376,7 +377,9 @@ The z-intercept can be shown to be
     \sigma_{\beta}^{2}a^{2}\sec^{2}{\beta}\tan^{2}{\beta}
     \label{eq:zIntvar}
 \end{equation}
-Only two lines are required to calculate the center of mass of the laterally
+Theoretically, the center of mass lies on each line but due to experimental
+error, if there are more than two lines, the lines do not cross all at the same point. Only two lines
+are required to calculate the center of mass of the laterally
 symmetric frame, but more orientations increase the center of mass measurement
 accuracy. The three lines are defined as:
 \begin{equation}
@@ -417,11 +420,9 @@ three intersection points.
 \begin{equation}
     z_\mathrm{B} = \frac{z_a + z_b + z_c}{3}
 \end{equation}
-Alternatively the three lines can be treated as an over determined linear
+Alternatively, the three lines can be treated as an over determined linear
 system and the least squares method is used to find a unique solution. This
-solution is not at the centroid of the triangle made by the intersecting lines.
-I am not sure which solution is theoretically the correct one for the location
-of the center of mass.
+solution is not the same as the triangle centroid method.
 \begin{equation}
 	\left[
 	\begin{array}{cc}
@@ -446,6 +447,7 @@ of the center of mass.
 	\right]	
 \label{eq:leastSquares}
 \end{equation}
+The solution with the higher accuracy is the preferred one.
 \subsection{Fork}
 The fork and handlebars are a bit trickier to hang in three different
 orientations. Typically two angles can be obtained by clamping to the steer
@@ -468,20 +470,20 @@ frame but the z-intercept is different:
 \label{sec:moi}
 The moments of inertia of the wheels, frame and fork were measured by taking
 advantage of the assumed symmetry of the parts and by hanging the parts as both
-compound and torsional pendulums and measuring their period of oscillation when
-perturb at small angles. The rate of oscillation was measured
+compound and torsional pendulums and measuring their periods of oscillation when
+perturbed at small angles. The rate of oscillation was measured
 using a \href{http://www.siliconsensing.com/CRS03}{Silicon Sensing CRS03 100
 deg/s rate gyro}. The rate gyro was sampled at
 1000hz with a
 \href{http://sine.ni.com/nips/cds/view/p/lang/en/nid/14604}{National
 Instruments USB-6008 12 bit data acquisition unit} and
-\textsc{Matlab}. The measurement duration were either 15 or 30 secs and each moment of
+\textsc{Matlab}. The measurement durations were either 15 or 30 secs and each moment of
 inertia measurement was performed three times. No extra care was taken to
 calibrate the rate gyro, maintain a constant power source (i.e. the battery
 drains slowly), or account for drift. The raw voltage signal was used to
-determine only the period of oscillation which is need for the moment of inertia
+determine only the period of oscillation which is needed for the moment of inertia
 calculations.
-\begin{figure}[tbp]
+\begin{figure}[tb]
     \begin{center}
         \includegraphics[width=4in]{../../../plots/PendFit/BrowserFrameCompoundFirst1.png}
     \end{center}
@@ -489,8 +491,9 @@ calculations.
     measurement of the oscillation of one of the components.}
     \label{fig:voltage}
 \end{figure}
-The following function Eqn~\ref{eqn:decayOs} was fit to the data using a nonlinear least squares fit
-routine for each experiment.
+The function Eqn~\ref{eqn:decayOs} was fit to the data using a nonlinear least squares fit
+routine for each experiment to determine the quantities $A$, $B$, $C$, $\zeta$,
+and $\omega$.
 \begin{equation}
     f(t) = A + e^{-\zeta\omega t}\left[B\sin{\sqrt{1-\zeta^2}\omega t} +
     C\cos{\sqrt{1-\zeta^2}\omega t}\right]
@@ -510,7 +513,8 @@ example of the beating like phenomena.
     experiments.}
     \label{fig:beating}
 \end{figure}
-The physical phenomena observed for corresponding to data sets such as these were that
+
+The physical phenomenon observed corresponding to data sets such as these was that
 the bicycle frame or fork was perturbed torsionally. After set into motion the
 torsional motion died out and a longitudinal swinging motion increased. The
 motions alternated back and forth with neither ever reaching zero. The
@@ -520,11 +524,11 @@ apparent how dissect the two. We explored fitting to a function such as
     f(t) = A\sin{(\omega_1 t)} + B\sin{(\omega_2 t + \phi)} + C
     \label{eqn:sumSines}
 \end{equation}
-But the fit predicts that $\omega_1$ and $\omega_2$ have very similar
+But the fit predicts that $\omega_1$ and $\omega_2$ are very similar
 frequencies. There was no easy way to choose which of the two $\omega$'s was
 the one associated with the torsional oscillation. Some work was done to model
 the torsional pendulum as a laterally flexible beam to determine this, but we
-thought the improvement in the accuracy of the period calculation would not
+thought accuracy of the period calculation would not
 improve enough for the effort required. Future experiments should simply
 prevent the swinging motion of the pendulum without damping the torsional
 motion.
@@ -533,11 +537,6 @@ The period for a damped oscillation is
 \begin{equation}
     T = \frac{2\pi}{\sqrt{1-\zeta^2}\omega_n}
     \label{eqn:periodDamped}
-\end{equation}
-and for light damping
-\begin{equation}
-    T \approx \frac{2\pi}{\omega_n}
-    \label{eqn:period}
 \end{equation}
 The uncertainty in the period, $T$, can be determined from the fit. Firstly,
 the variance of the fit is
@@ -555,13 +554,13 @@ where $\mathbf{H}$ is the Hessian~\cite{Hubbard1989b}. $\mathbf{U}$ is a $5\time
 variances of each of the five fit parameters along the diagonal.
 The variance of $T$ can be computed using the variance of $\zeta$ and $\omega$. It
 is important to note that the uncertainties in the period are very low
-($<10e-4$), even for the fits with low $r^2$ values.
+($<1e-4$), even for the fits with low $r^2$ values.
 \subsection{TORSIONAL PENDULUM}
-A torsional pendulum was used to measure all of moments of inertia about axes
-in the lateral symmetric plane of each of the wheels, fork and frame. The
+A torsional pendulum was used to measure all moments of inertia about axes
+in the laterally symmetric plane of each of the wheels, fork and frame. The
 pendulum is made up of a rigid mount, an upper clamp, a torsion rod, and
 various lower clamps.
-\begin{figure}[tbp]
+\begin{figure}[tb]
     \begin{center}
         \includegraphics[width=2in]{../../../images/fixture.jpg}
     \end{center}
@@ -572,21 +571,21 @@ A 5 mm diameter, 1 m long mild steel rod was used as the torsion
 spring. A lightweight, low relative moment of inertia clamp was constructed
 that could clamp the rim and the tire. The moments of inertia of the clamps
 were neglected. The wheel was hung freely such that the
-center of mass aligned with the torsional pendulum axis and then it was
-secured. The wheel was then perturbed and it oscillated about the pendulum
-axis. The rate gyro was mounted on the clamp orientated along the pendulum
+center of mass aligned with the torsional pendulum axis and then
+secured. The wheel was then perturbed and oscillated about the pendulum
+axis. The rate gyro was mounted on the clamp oriented along the pendulum
 axis.
 
 The torsional pendulum was calibrated using a known moment of
-inertia~\ref{fig:rod}. A torsional pendulum almost identical to the one used in
-\cite{Kooijman2006} was used to measure the averaged period $\overline{T}_i$ of
+inertia Fig.~\ref{fig:rod}. A torsional pendulum almost identical to the one used in
+\cite{Kooijman2006} was used to measure the average period $\overline{T}_i$ of
 oscillation of the rear frame at three different
 orientation angles $\beta_i$, where $i=1$, $2$, $3$, as shown in
 Fig.~\ref{fig:triangle}. The parts were perturbed lightly, less than 1 degree,
 and allowed to oscillate about the pendulum axis through at least ten periods.
 This was done at least three times for each frame and the recorded periods were
 averaged.
-\begin{figure}[tbp]
+\begin{figure}[tb]
     \begin{center}
         \includegraphics[width=4in]{../../../images/rod.jpg}
     \end{center}
@@ -597,32 +596,33 @@ averaged.
 \end{figure}
 \subsection{WHEELS}
 Finding the full inertia tensors of the wheels is less complex because the wheels
-are assumed symmetric about three orthogonal planes so there are no products of
-inertia. The $I_{xx}=I_{zz}$ moments of inertia were calculated by measuring
+are assumed symmetric about three orthogonal planes so products of
+inertia are zero. The $I_{xx}=I_{zz}$ moments of inertia were calculated by measuring
 the averaged period of oscillation about an axis in the $XZ$-plane using the
-torsional pendulum setup and Eq.~\ref{eq:torPend}.The wheels are assumed to be symmetric laterally and about any radial axis. Thus only two
-moment's of inertia are required for the benchmark parameters set. The moment
+torsional pendulum setup and Eq.~\ref{eq:torPend}.The wheels are assumed to be
+laterally symmetric and about any radial axis. Thus only two
+moments of inertia are required for the set of benchmark parameters. The moment
 of inertia about the axle was measured by hanging the wheel as a compound
 pendulum, Fig.~\ref{fig:wheelIyy}. The wheel was hung on a
 horizontal rod and perturbed to oscillate about the axis of the rod. This rate
-gyro was attached to the spokes near the hub and orientated mostly along the
+gyro was attached to the spokes near the hub and oriented mostly along the
 axle axis. The wheels tended to precess at the contact point about the vertical
-axis whixh added a very low frequency component of rate along the vertical
-radial axis, but should not affect the period estimation about the compound
-pendulum axis. A fixture that prevented the precession would be preferable for
+axis which added a very low frequency component of rate along the vertical
+radial axis, but this should not affect the period estimation about the compound
+pendulum axis. A fixture that prevented precession would be preferable for
 future measurements. The pendulum arm length is the distance
 from the rod/rim contact point to the mass center of the wheel. The inner
 diameter of the rim was measured and divided by two to get $l_\mathrm{F,R}$. The moment of
-inertia about the axle is calculated by:
+inertia about the axle is calculated from:
 \begin{equation}
     I_{\mathrm{R}yy} = \left(\frac{\bar{T}}{2\pi}\right)^2m_\mathrm{R}gl_\mathrm{R} -
     m_\mathrm{R}l^2
     \label{eq:CompoundInertia}
 \end{equation}
-\begin{equation}
-    need the sigma for IRyy
-\end{equation}
-\begin{figure}[tbp]
+%\begin{equation}
+    %need the sigma for IRyy
+%\end{equation}
+\begin{figure}[tb]
     \centering
     \subfloat[]{
         \label{fig:FwheelTor}
@@ -639,14 +639,14 @@ inertia about the axle is calculated by:
 \end{figure}
 The radial moment of inertia was measured by hanging the wheel as a torsional
 pendulum, Fig.~\ref{fig:FwheelTor}. The wheel was hung freely such that the center of mass aligned with
-the torsional pendulum axis and then it was secured in position. The wheel was then
-perturbed and it oscillated about the pendulum axis. The radial moment of inertia can can calculated as such:
+the torsional pendulum axis and then secured. The wheel was then
+perturbed and oscillated about the vertical pendulum axis. The radial moment of inertia can can calculated as such:
 \begin{equation}
     I_{xx} = \frac{k\bar{T}^2}{4\pi^2}
 \end{equation}
-\begin{equation}
-    need the sigma for Ixx
-\end{equation}
+%\begin{equation}
+    %need the sigma for Ixx
+%\end{equation}
 \subsection{FRAME}
 Three measurements were made to estimate the globally referenced moments and
 products of inertia ($I_{xx}$, $I_{xz}$ and $I_{zz}$) of the rear frame. The
@@ -657,8 +657,8 @@ generally less rigid than the frame tube. For best accuracy with only three
 orientation angles, the frame should be hung at three angles that are
 $120^\circ$ apart. The three tubes on the frame generally provide that the
 orientation angles were spread evenly at about $120^\circ$. Furthermore, taking
-data at more orientation angles could improve the accuracy further and
-is generally possible with standard diamond frame bicylces.
+data at more orientation angles could improve the accuracy and
+is generally possible with standard diamond frame bicycles.
 
 Three moments of inertia $J_{i}$ about the pendulum axes were calculated using
 Eq.~\ref{eq:torPend}.
@@ -666,9 +666,9 @@ Eq.~\ref{eq:torPend}.
 	J_i=\frac{k\overline{T}_i^2}{4\pi^2}
 \label{eq:torPend}
 \end{equation}
-\begin{equation}
-    need sigma
-\end{equation}
+%\begin{equation}
+    %need sigma
+%\end{equation}
 The moments and products of inertia of the rear frame and handlebar/fork
 assembly with reference to the benchmark coordinate system were calculated by
 formulating the relationship between inertial frames
@@ -714,7 +714,7 @@ inertia about the pendulum axis and is written explicitly as
 	J_{i}=c^{2}_{\beta i}I_{xx}-2s_{\beta i}c_{\beta i}I_{xz}+s^{2}_{\beta i}I_{zz}\textrm{.}
 \label{eq:inRelComp}
 \end{equation}
-Calculating all three $J_{i}$ allows one to form
+Similarly, calculating all three $J_{i}$ allows one to form
 \begin{equation}
 	\left[
 	\begin{array}{c}
@@ -740,7 +740,7 @@ Calculating all three $J_{i}$ allows one to form
 	\right]
 \label{eq:inRel}
 \end{equation}
-and the unknown global inertia tensor can be solved for.
+and the moments of inertia can be solved for.
 The inertia of the frame about an axis normal to the plane of symmetry was
 estimated by hanging the frame as a compound pendulum at the wheel axis,
 Fig.~\ref{fig:frameCompound}. Equation~\ref{eq:CompoundInertia} is used but
@@ -749,18 +749,18 @@ with the mass of the frame and the frame pendulum length.
     l_B=\sqrt{x_B^2+(z_B+r_R)^2}
     \label{eq:FramePendLength}
 \end{equation}
-\begin{figure}[tbp]
+\begin{figure}[tb]
     \centering
     \subfloat[]{
         \label{fig:frameCompound}
-        \includegraphics[width=2.75in]{../../../images/YellowFrameCompoundFirst.jpg}
+        \includegraphics[width=2in]{../../../images/YellowFrameCompoundFirst.jpg}
         }
     \subfloat[]{
         \label{fig:forkCompound}
-        \includegraphics[width=2.75in]{../../../images/BrowserInsForkCompoundFirst.jpg}
+        \includegraphics[width=2in]{../../../images/BrowserInsForkCompoundFirst.jpg}
         }
-        \caption{\subref{fig:frameCompound} The rear frame hung as a compound
-        pendulum. \subref{fig:forkCompound} The Browser fork hung as a
+        \caption{\subref{fig:frameCompound} Rear frame hung as a compound
+        pendulum. \subref{fig:forkCompound} Browser fork hung as a
         compound pendulum.}
         \label{fig:compound}
 \end{figure}
@@ -770,30 +770,28 @@ hung as both a torsional pendulum, Fig.~\ref{fig:StratosFork}, and as a compound
 Fig.~\ref{fig:forkCompound}. The fork provides fewer mounting options to
 obtain at least three equally spaced orientation angles, especially if there is
 no fender. The torsional calculations follow equations~\ref{eq:torPend} through
-\ref{eq:inRel} and the compound is calculated with
+\ref{eq:inRel} and the compound pendulum calculations is calculated with
 equation~\ref{eq:CompoundInertia}. The fork pendulum length is calculated using
 \begin{equation}
     l_H=\sqrt{(x_H-w)^2+(z_B+rF)^2}
 \end{equation}
-\begin{figure}[tbp]
+\begin{figure}[tb]
     \centering
-    \subfloat[]{
-        \label{fig:StratosFork}
-        \includegraphics[width=2.75in]{../../../images/StratosForkTorsionalThird.jpg}
-        }
-    \caption{\subref{fig:StratosFork} The Stratos fork and handlebar assembly hung as a torsional
+    \includegraphics[width=2.75in]{../../../images/StratosForkTorsionalThird.jpg}
+    \caption{The Stratos fork and handlebar assembly hung as a torsional
         pendulum.}
-    \label{fig:torsional}
+    \label{fig:StratosFork}
 \end{figure}
 \section{LINEAR ANALYSIS}
-Once all of the bicycle parameters have been calculated the canonical matrices
-can be formed and the linear dynamics of the bicycles can be explored. We also
+Once all bicycle parameters have been calculated the canonical matrices
+can be formed and the linear dynamics of the bicycles can be explored. The
+values of the canonical matrices can be found in the second table in Appendix~\ref{sec:partables}. We also
 added the same rigid rider to each bicycle for further comparison. The rigid
-rider was assumed to be in same position and posture for each bicycle relative
+rider was assumed to be in the same position and posture for each bicycle relative
 to the rear wheel contact point.
-\begin{table}[tbp]
+\begin{table}[tb]
     \centering
-    \caption{Mass, center of mass and moment of inertia for the Person relative
+    \caption{Mass, center of mass and moment of inertia for the rider relative
     to the benchmark coordinate system from~\cite{Moore2009a}}
     \begin{tabular}{ll}
         Parameter & Value\\
@@ -816,82 +814,93 @@ to the rear wheel contact point.
 \begin{figure}[tbp]
     \centering
     \includegraphics[width=6in]{../../../plots/Bike/eig_plot.pdf}
-    \caption{The eigenvalues verus speed for all eight bicycles.}
+    \caption{Eigenvalues versus speed for all eight bicycles without the rider.}
     \label{fig:bikeEigPlot}
 \end{figure}
-The eigenvalues can be plotted versus forward speed.
+The eigenvalues of the bicycles with (Fig.~\ref{fig:bikeEigPlot}) and without
+(Fig.~\ref{fig:bikeRiderEigPlot} the rider can be plotted versus forward speed.
 Figure~\ref{fig:bikeEigPlot} shows that the bikes have the typical
-characteristics of the Whipple bicycle model: four real roots at very slow
-speeds, two of which are unstable; a complex pair that is unstable and lower
-speeds and stable at higher speeds; and a root that is sligthly unstable at
-higher speeds. The one noticable difference is that the capsize and caster
-modes colasece into a complex pair between about 0.5 and 3 m/s. The frequency
-of oscillation is similar to that of the weave mode. The root locus in the real
+characteristics of the benchmark bicycle: four real roots at very slow
+speeds, two of which are unstable; a complex pair that is unstable at lower
+speeds and stable at intermediate speeds; and a root that is mildly unstable at
+higher speeds. The one noticeable difference is that the capsize and caster
+modes are contained in a complex pair between about 0.5 and 3 m/s. The frequency
+of oscillation is of comparable magnitude to that of the weave mode. But, the root locus in the real
 and imaginary plane, Fig.~\ref{fig:rootloci}, shows that the mode damps out
 quickly. Examining the eigenvectors reveals that the mode is steer leading
-roll with a 90 degree phase, both of their magitudes being similar,
+roll with a 90 degree phase, both of their magnitudes being similar,
 Fig~\ref{fig:evec}.
-\begin{figure}[tbp]
+\begin{figure}[tb]
     \begin{center}
         \includegraphics[width=6in]{../../../plots/Bike/CrescendoRootLoci.pdf}
     \end{center}
     \caption{The root loci with speed as the parameter for the Crescendo.}
     \label{fig:rootloci}
 \end{figure}
-\begin{figure}[tbp]
+\begin{figure}[tb]
     \begin{center}
         \includegraphics[width=3in]{../../../plots/cres.pdf}
     \end{center}
-    \caption{The eigenvector components for the mode with the second complex
-    pair at low speeds.}
+    \caption{Eigenvector components for the second complex mode
+    pair at low speed.}
     \label{fig:evec}
 \end{figure}
 With the rider added, the second complex pair disappears and the bikes have the
-typical characteristics of the Whipple model. Reversing the fork on the yellow
-bike lowers the weave critical speed. Also the addition of weight to the rear
-rack of the Browser does blank.
+typical characteristics of the benchmark bicycle model. Reversing the fork on the yellow
+bike lowers the weave critical speed and increases the stable speed range.
+Also, the addition of weight to the rear rack of the Browser does little to the
+eigenvalues.
 \begin{figure}[tbp]
     \centering
     \includegraphics[width=6in]{../../../plots/BikeRider/eig_plot.pdf}
-    \caption{The eigenvalues verus speed for all eight bicycles with the same
-    rider.}
+    \caption{Eigenvalues versus speed for all eight bicycles with the same
+    rigid rider.}
     \label{fig:bikeRiderEigPlot}
 \end{figure}
 \subsection{FREQUENCY RESPONSE}
-The frequency response of the bicycles and bicycle with rider also reveal some
-interesting things. In the steer torque to roll Bode diagram the magnitude
-diffence among bicycles can vary up to 10 dB (0.148 radians per newton meter of
-torque). The difference in the frequency response for the bicycle with the
+The frequency response of the bicycles (Fig.~\ref{fig:bikeBode}) and bicycle
+with rider (Fig.~\ref{fig:bikeRiderBode}) also reveal some
+interesting things. In the steer-torque-to-roll Bode diagram the magnitude
+difference among bicycles can vary up to 10 dB (or about 8.5 degrees per Newton-meter of
+torque) for the particular speed shown. The difference in the frequency response for the bicycle with the
 rigid rider shows less variation among the bicycles,
-Fig.~\ref{fig:bikeRiderBode}, as the rider's mass and
-inertia play a bigger roll.
+Fig.~\ref{fig:bikeRiderBode}, as the rider's mass and inertia play a larger roll.
 \begin{figure}[tbp]
     \centering
     \includegraphics[width=6in]{../../../plots/Bike/Bode/Tdel2phi.pdf}
-    \caption{The eigenvalues verus speed for all eight bicycles with the same
-    rider.}
+    \caption{The frequency response for steer-torque-to-roll for all eight
+    bicycles without the rider at 2 m/s.}
     \label{fig:bikeBode}
 \end{figure}
 \begin{figure}[tbp]
     \centering
     \includegraphics[width=6in]{../../../plots/BikeRider/Bode/Tdel2phi.pdf}
-    \caption{The eigenvalues verus speed for all eight bicycles with the same
-    rider.}
+    \caption{The frequency response for steer-torque-to-roll for all eight
+    bicycles with the same rigid rider at 2 m/s.}
     \label{fig:bikeRiderBode}
 \end{figure}
 \section{CONCLUSION}
-We present a detailed method of accurately estimating the physical parameters
-of a bicycle need for the benchmarked Whipple bicycle
-model~\cite{Meijaard2007}. Then we measure eight different bicycles providing
-both the raw data, parameter sets and linear model coefficient matrices with
-the uncertainties for each value. Then we present a brief comparison of the
-eight bicycles using eigenanalysis and Bode analysis.
+We have presented a detailed method to accurately estimate the physical parameters
+of a bicycle needed for the benchmarked Whipple bicycle
+model~\cite{Meijaard2007}. We measured eight different bicycles providing
+both the parameter sets and linear model coefficient matrices
+for the bicycles alone and the bicycles with the same
+rigid rider. The uncertainties in the parameters and matrix coefficients are
+included for the bicycle alone. Finally, we have presented a brief comparison of the
+eight bicycles using eigenanalysis and Bode frequency response.
 \section{ACKNOWLEDGEMENTS}
-This work was partially funded by the National Science Foundation.
+This material is based upon work partially supported by the National Science
+Foundation under Grant No. 0928339.
 
 \bibliographystyle{acm}
 \bibliography{bicycle}
 \appendix
+\section{PARAMETER TABLES}
+\label{sec:partables}
+The tabulated values for the both the physical parameters and the canonical matrix
+coefficients are shown in the following four tables. The uncertainties in the
+estimations of both the parameters and coefficients are also shown for the
+bicycle without a rider.
 %\section{RAW DATA}
 %\begin{landscape}
 %\subfile{../../../tables/Bike/Parameters/MasterParTable.tex}
@@ -899,21 +908,33 @@ This work was partially funded by the National Science Foundation.
 %\section{PARAMETERS}
 %\subsection{BICYCLE}
 \begin{landscape}
+
+\begin{table}[tb]
+\caption{The parameters for the eight bicycles with uncertainties in the
+estimations.}
 \subfile{../../../tables/Bike/Parameters/MasterParTable.tex}
-%\end{landscape}
-%\subsection{BICYCLE WITH RIDER}
-%\begin{landscape}
-\subfile{../../../tables/BikeRider/Parameters/MasterParTable.tex}
-%\end{landscape}
-%\section{CANONICAL MATRICES}
-%\subsection{BICYCLE}
-%\begin{landscape}
+\label{tab:bicyclePar}
+\end{table}
+
+\begin{table}[tb]
+\caption{The canonical matrix coefficients for the eight bicycles with the
+uncertainty in the estimations.}
 \subfile{../../../tables/Bike/Canonical/MasterCanTable.tex}
-%\end{landscape}
-%\subsection{BICYCLE WITH RIDER}
-%\begin{landscape}
+\label{tab:bicycleCan}
+\end{table}
+
+\begin{table}[tb]
+\caption{The parameters for the eight bicycles with the same rigid rider.}
+\subfile{../../../tables/BikeRider/Parameters/MasterParTable.tex}
+\label{tab:bicycleRiderPar}
+\end{table}
+
+\begin{table}[tb]
+\caption{The canonical matrix coefficients for the eight bicycles with the
+rigid rider.}
 \subfile{../../../tables/BikeRider/Canonical/MasterCanTable.tex}
+\label{tab:bicycleRiderCan}
+\end{table}
+
 \end{landscape}
 \end{document}
-
-
