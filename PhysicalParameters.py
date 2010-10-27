@@ -1867,7 +1867,6 @@ def tor_stiffness(I, T):
 
     '''
     k = 4.*I*pi**2/T**2
-    print k
     return k
 
 def inertia_components(I, alpha):
