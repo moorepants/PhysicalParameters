@@ -113,30 +113,30 @@ def mat2dic():
     pickle.dump(ddU, f)
     f.close()
 
-    ###dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
-    ###filenames.sort()
-    ###for name in filenames:
-        ###pendDat = {}
-        ###mio.loadmat('data/pendDat/' + name, mdict=pendDat)
-        ####clean up the matlab imports
-        ###del(pendDat['__globals__'], pendDat['__header__'], pendDat['__version__'])
-        ###for k, v in pendDat.items():
-            ###try:
-                 ####change to an ascii string
-                ###pendDat[k] = v[0].encode('ascii')
-            ###except:
-                 ####if an array of a single number
-                ###if np.shape(v)[0] == 1:
-                    ###pendDat[k] = v[0][0]
-                 ####else if the notes are empty
-                ###elif np.shape(v)[0] == 0:
-                    ###pendDat[k] = ''
-                 ####else it is the data which is formatted correctly
-                ###else:
-                    ###pendDat[k] = v
-        ###f = open('data/pendDat/p/' + name[:-4] + '.p', 'w')
-        ###pickle.dump(pendDat, f, protocol=2)
-        ###f.close()
+    dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
+    filenames.sort()
+    for name in filenames:
+        pendDat = {}
+        mio.loadmat('data/pendDat/' + name, mdict=pendDat)
+        #clean up the matlab imports
+        del(pendDat['__globals__'], pendDat['__header__'], pendDat['__version__'])
+        for k, v in pendDat.items():
+            try:
+                 #change to an ascii string
+                pendDat[k] = v[0].encode('ascii')
+            except:
+                 #if an array of a single number
+                if np.shape(v)[0] == 1:
+                    pendDat[k] = v[0][0]
+                 #else if the notes are empty
+                elif np.shape(v)[0] == 0:
+                    pendDat[k] = ''
+                 #else it is the data which is formatted correctly
+                else:
+                    pendDat[k] = v
+        f = open('data/pendDat/p/' + name[:-4] + '.p', 'w')
+        pickle.dump(pendDat, f, protocol=2)
+        f.close()
 
     def plot_raw_data():
         # make a list of the folder contents
@@ -716,28 +716,28 @@ def calc_parameters():
     f.close()
 
     # the number of different bikes
-    nBk = len(ddU['bikes'])
+    nBk = len(ddU['names'])
 
     # make a list of the bikes' names
-    bikeNames = ddU['bikes']
+    bikeNames = ddU['names']
 
     # calculate all the benchmark parameters
     par = {}
 
     # calculate the wheel radii
-    par['rR'] = ddU['rearWheelDist']/2./pi/ddU['rearWheelRot']
-    par['rF'] = ddU['frontWheelDist']/2./pi/ddU['frontWheelRot']
+    par['rR'] = ddU['dR']/2./pi/ddU['nR']
+    par['rF'] = ddU['dF']/2./pi/ddU['nF']
 
     # steer axis tilt in radians
-    par['lambda'] = pi/180.*(90. - ddU['headTubeAngle'])
+    par['lambda'] = pi/180.*(90. - ddU['gamma'])
 
     # calculate the front wheel trail
-    forkOffset = ddU['forkOffset']
+    forkOffset = ddU['f']
     par['c'] = (par['rF']*unumpy.sin(par['lambda'])
                   - forkOffset)/unumpy.cos(par['lambda'])
 
     # wheelbase
-    par['w'] = ddU['wheelbase']
+    par['w'] = ddU['w']
 
     # calculate the dees
     par['d1'] = unumpy.cos(par['lambda'])*(par['c']+par['w']-par['rR']*unumpy.tan(par['lambda']))
@@ -746,7 +746,7 @@ def calc_parameters():
     # calculate the frame rotation angle
     # alpha is the angle between the negative z pendulum (horizontal) and the
     # positive (up) steer axis, rotation about positive y
-    alphaFrame = ddU['frameAngle']
+    alphaFrame = ddU['alphaB']
     # beta is the angle between the x bike frame and the x pendulum frame, rotation
     # about positive y
     betaFrame = par['lambda'] - alphaFrame*pi/180
@@ -756,18 +756,18 @@ def calc_parameters():
 
     # calculate the z-intercept of the CoM line
     # frameMassDist is positive according to the pendulum ref frame
-    frameMassDist = ddU['frameMassDist']
+    frameMassDist = ddU['aB']
     cb = unumpy.cos(betaFrame)
     frameB = -frameMassDist/cb - par['rR']
 
     # calculate the fork rotation angle
-    betaFork = par['lambda'] - ddU['forkAngle']*pi/180.
+    betaFork = par['lambda'] - ddU['alphaH']*pi/180.
 
     # calculate the slope of the fork CoM line
     forkM = -unumpy.tan(betaFork)
 
     # calculate the z-intercept of the CoM line
-    forkMassDist = ddU['forkMassDist']
+    forkMassDist = ddU['aH']
     cb = unumpy.cos(betaFork)
     tb = unumpy.tan(betaFork)
     forkB = - par['rF'] - forkMassDist/cb + par['w']*tb
@@ -883,19 +883,19 @@ def calc_parameters():
 
     tRod = avgPer['rodPer']
     # calculate the stiffness of the torsional pendulum
-    iRod = tube_inertia(ddU['lRod'], ddU['mRod'], ddU['rRod'], 0.)[1]
+    iRod = tube_inertia(ddU['lC'], ddU['mC'], ddU['dC']/2., 0.)[1]
     k = tor_stiffness(iRod, tRod)
 
     # masses
-    par['mR'] = ddU['rearWheelMass']
-    par['mF'] = ddU['frontWheelMass']
-    par['mB'] = ddU['frameMass']
-    par['mH'] = ddU['forkMass']
+    par['mR'] = ddU['mR']
+    par['mF'] = ddU['mF']
+    par['mB'] = ddU['mB']
+    par['mH'] = ddU['mH']
 
     # calculate the wheel y inertias
-    par['g'] = 9.81*np.ones(ddU['forkMass'].shape, dtype=float)
-    par['IFyy'] = com_inertia(par['mF'], par['g'], ddU['fWheelPendLength'], com[2, :])
-    par['IRyy'] = com_inertia(par['mR'], par['g'], ddU['rWheelPendLength'], com[3, :])
+    par['g'] = 9.81*np.ones(ddU['mH'].shape, dtype=float)
+    par['IFyy'] = com_inertia(par['mF'], par['g'], ddU['lF'], com[2, :])
+    par['IRyy'] = com_inertia(par['mR'], par['g'], ddU['lR'], com[3, :])
 
     # calculate the wheel x/z inertias
     par['IFxx'] = tor_inertia(k, tor[6, :])
