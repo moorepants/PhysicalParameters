@@ -51,7 +51,7 @@ def mat2dic():
 
     # make a list of the bikes' names
     bikeNames = []
-    for bike in d['names']:
+    for bike in d['bikes']:
         # get rid of the weird matlab unicoding
         bikeNames.append(bike[0][0].encode('ascii'))
 
@@ -113,30 +113,30 @@ def mat2dic():
     pickle.dump(ddU, f)
     f.close()
 
-    #dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
-    #filenames.sort()
-    #for name in filenames:
-        #pendDat = {}
-        #mio.loadmat('data/pendDat/' + name, mdict=pendDat)
-         clean up the matlab imports
-        #del(pendDat['__globals__'], pendDat['__header__'], pendDat['__version__'])
-        #for k, v in pendDat.items():
-            #try:
-                 change to an ascii string
-                #pendDat[k] = v[0].encode('ascii')
-            #except:
-                 if an array of a single number
-                #if np.shape(v)[0] == 1:
-                    #pendDat[k] = v[0][0]
-                 else if the notes are empty
-                #elif np.shape(v)[0] == 0:
-                    #pendDat[k] = ''
-                 else it is the data which is formatted correctly
-                #else:
-                    #pendDat[k] = v
-        #f = open('data/pendDat/p/' + name[:-4] + '.p', 'w')
-        #pickle.dump(pendDat, f, protocol=2)
-        #f.close()
+    ###dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
+    ###filenames.sort()
+    ###for name in filenames:
+        ###pendDat = {}
+        ###mio.loadmat('data/pendDat/' + name, mdict=pendDat)
+        ####clean up the matlab imports
+        ###del(pendDat['__globals__'], pendDat['__header__'], pendDat['__version__'])
+        ###for k, v in pendDat.items():
+            ###try:
+                 ####change to an ascii string
+                ###pendDat[k] = v[0].encode('ascii')
+            ###except:
+                 ####if an array of a single number
+                ###if np.shape(v)[0] == 1:
+                    ###pendDat[k] = v[0][0]
+                 ####else if the notes are empty
+                ###elif np.shape(v)[0] == 0:
+                    ###pendDat[k] = ''
+                 ####else it is the data which is formatted correctly
+                ###else:
+                    ###pendDat[k] = v
+        ###f = open('data/pendDat/p/' + name[:-4] + '.p', 'w')
+        ###pickle.dump(pendDat, f, protocol=2)
+        ###f.close()
 
     def plot_raw_data():
         # make a list of the folder contents
