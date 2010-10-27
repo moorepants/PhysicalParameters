@@ -51,7 +51,7 @@ def mat2dic():
 
     # make a list of the bikes' names
     bikeNames = []
-    for bike in d['bikes']:
+    for bike in d['names']:
         # get rid of the weird matlab unicoding
         bikeNames.append(bike[0][0].encode('ascii'))
 
@@ -65,7 +65,7 @@ def mat2dic():
                        'Yellowrev']
 
     # clean up the matlab imports
-    d['bikes'] = bikeNames
+    d['names'] = bikeNames
     del(d['__globals__'], d['__header__'], d['__version__'])
     for k, v in d.items():
         if np.shape(v)[0] == 1:
@@ -92,7 +92,7 @@ def mat2dic():
         if ddU[k].shape[0] > 8:
             ddU[k] = ddU[k].reshape((ddU[k].shape[0]/8, -1))
 
-    ddU['bikes'] = d['bikes']
+    ddU['names'] = d['names']
     ddU['shortnames'] = d['shortnames']
 
     # bring in the calibration rod data
@@ -113,30 +113,30 @@ def mat2dic():
     pickle.dump(ddU, f)
     f.close()
 
-    dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
-    filenames.sort()
-    for name in filenames:
-        pendDat = {}
-        mio.loadmat('data/pendDat/' + name, mdict=pendDat)
-        # clean up the matlab imports
-        del(pendDat['__globals__'], pendDat['__header__'], pendDat['__version__'])
-        for k, v in pendDat.items():
-            try:
-                # change to an ascii string
-                pendDat[k] = v[0].encode('ascii')
-            except:
-                # if an array of a single number
-                if np.shape(v)[0] == 1:
-                    pendDat[k] = v[0][0]
-                # else if the notes are empty
-                elif np.shape(v)[0] == 0:
-                    pendDat[k] = ''
-                # else it is the data which is formatted correctly
-                else:
-                    pendDat[k] = v
-        f = open('data/pendDat/p/' + name[:-4] + '.p', 'w')
-        pickle.dump(pendDat, f, protocol=2)
-        f.close()
+    #dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
+    #filenames.sort()
+    #for name in filenames:
+        #pendDat = {}
+        #mio.loadmat('data/pendDat/' + name, mdict=pendDat)
+         clean up the matlab imports
+        #del(pendDat['__globals__'], pendDat['__header__'], pendDat['__version__'])
+        #for k, v in pendDat.items():
+            #try:
+                 change to an ascii string
+                #pendDat[k] = v[0].encode('ascii')
+            #except:
+                 if an array of a single number
+                #if np.shape(v)[0] == 1:
+                    #pendDat[k] = v[0][0]
+                 else if the notes are empty
+                #elif np.shape(v)[0] == 0:
+                    #pendDat[k] = ''
+                 else it is the data which is formatted correctly
+                #else:
+                    #pendDat[k] = v
+        #f = open('data/pendDat/p/' + name[:-4] + '.p', 'w')
+        #pickle.dump(pendDat, f, protocol=2)
+        #f.close()
 
     def plot_raw_data():
         # make a list of the folder contents
