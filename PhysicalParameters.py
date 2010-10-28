@@ -13,6 +13,9 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 def cres_evec():
+    '''Makes of plot of the eigenvector associated with the new weird eigenmode
+
+    '''
     f = open('data/cres.p', 'r')
     cres = pickle.load(f)
     f.close()
@@ -44,6 +47,9 @@ def cres_evec():
     plt.savefig('plots/cres.pdf')
 
 def mat2dic():
+    '''Converts the original matlab mat file with the raw data to python files.
+
+    '''
 
     # load the main data file into a dictionary
     d = {}
@@ -138,23 +144,24 @@ def mat2dic():
         pickle.dump(pendDat, f, protocol=2)
         f.close()
 
-    def plot_raw_data():
-        # make a list of the folder contents
-        dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
-        print filenames
-        i = 0
-        while i < len(filenames):
-            d = {}
-            mio.loadmat('data/pendDat/' + filenames[i], mdict=d)
-            print 'Plotting', filenames[i]
-            plt.plot(d['data'])
-            plt.title(filenames[i])
-            plt.show()
-            raw_input()
-            plt.close()
-            i += 1
+def plot_raw_data():
+    # make a list of the folder contents
+    dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
+    print filenames
+    i = 0
+    while i < len(filenames):
+        d = {}
+        mio.loadmat('data/pendDat/' + filenames[i], mdict=d)
+        print 'Plotting', filenames[i]
+        plt.plot(d['data'])
+        plt.title(filenames[i])
+        plt.show()
+        raw_input()
+        plt.close()
+        i += 1
 
 def plot_evecs():
+    '''3D visualization of eigenvectors'''
 
     f = open('data/bikeRiderCanonical/BianchiPistaRiderCan.p')
     can = pickle.load(f)
@@ -203,7 +210,7 @@ def make_tables(typ='Bike'):
     if not os.path.isdir(direct):
         os.system('mkdir ' + direct)
 
-    for i, name in enumerate(data['bikes']):
+    for i, name in enumerate(data['names']):
         fname = ''.join(name.split())
         # open the new file
         f = open('tables/ParameterTableTemplate.tex', 'r')
@@ -256,7 +263,7 @@ def make_tables(typ='Bike'):
             varname, fline = line[1:].split('%')
             # remove the \n
             fline = fline[:-1]
-            for i, bike in enumerate(data['bikes']):
+            for i, bike in enumerate(data['names']):
                 if varname == 'bike':
                     fline = fline + ' & \multicolumn{2}{c}{' + abbrev[i] + '}'
                 else:
@@ -352,7 +359,7 @@ def bike_bode_plots(typ='Bike', speeds=None):
         }
     plt.rcParams.update(params)
 
-    nBk = len(data['bikes'])
+    nBk = len(data['names'])
 
     colors = ['k', 'r', 'b', 'g', 'y', 'm', 'c', 'orange', 'red']
     #colors = ['#000000',
@@ -414,7 +421,7 @@ def bike_bode_plots(typ='Bike', speeds=None):
             plt.setp(line, color=colors[i])
             plt.setp(v.ax2.lines[i], color=colors[i])
         # set the legend
-        v.ax2.legend(data['bikes'], 'lower right')
+        v.ax2.legend(data['names'], 'lower right')
         v.savefig(direct + '/' + k + '.pdf')
 
     return plots
@@ -441,7 +448,7 @@ def bike_eig_plots(typ='Bike', filetype='pdf'):
     data = pickle.load(f)
     f.close()
 
-    nBk = len(data['bikes']) # number of bikes
+    nBk = len(data['names']) # number of bikes
 
     # one color for each bike
     colors = ['k', 'r', 'b', 'g', 'y', 'm', 'c', 'orange']
@@ -503,7 +510,7 @@ def bike_eig_plots(typ='Bike', filetype='pdf'):
         plt.plot(vel, np.real(cas['evals']), color='green', label='Real Caster')
         plt.ylim((-10, 10))
         plt.xlim((0, 10))
-        plt.title('{name}\nEigenvalues vs Speed'.format(name=data['bikes'][i]))
+        plt.title('{name}\nEigenvalues vs Speed'.format(name=data['names'][i]))
         plt.xlabel('Speed [m/s]')
         plt.ylabel('Real and Imaginary Parts of the Eigenvalue [1/s]')
         plt.savefig(directp + '/' + name + 'EigPlot.' + filetype)
@@ -516,14 +523,14 @@ def bike_eig_plots(typ='Bike', filetype='pdf'):
         plt.colorbar()
         plt.grid()
         plt.axis('equal')
-        plt.title('{name}\nEigenvalues vs Speed'.format(name=data['bikes'][i]))
+        plt.title('{name}\nEigenvalues vs Speed'.format(name=data['names'][i]))
         plt.savefig(directp + '/' + name + 'RootLoci.' + filetype)
         # plot all bikes on the same plot
         plt.figure(2*nBk + 1)
         plt.plot(vel, np.abs(np.imag(wea['evals'])), color=colors[i], label='_nolegend_', linestyle='--')
         plt.plot(vel, np.abs(np.imag(cap['evals'])), color=colors[i], label='_nolegend_', linestyle='--')
         plt.plot(vel, np.real(wea['evals']), color=colors[i], label='_nolegend_')
-        plt.plot(vel, np.real(cap['evals']), color=colors[i], label=data['bikes'][i])
+        plt.plot(vel, np.real(cap['evals']), color=colors[i], label=data['names'][i])
         plt.plot(vel, np.real(cas['evals']), color=colors[i], label='_nolegend_')
         plt.plot(vel, np.zeros_like(vel), 'k-', label='_nolegend_', linewidth=1.5)
     # plot the bike names on the eigenvalue plot
@@ -546,7 +553,7 @@ def bike_eig_plots(typ='Bike', filetype='pdf'):
     plt.plot(vw, bike, '|', markersize=50, linewidth=6)
     plt.plot(vc - vw, bike)
     plt.legend([r'$v_d$', r'$v_c$', r'$v_w$', 'stable speed range'])
-    plt.yticks(np.arange(8), tuple(data['bikes']))
+    plt.yticks(np.arange(8), tuple(data['names']))
     plt.savefig(directp + '/critical_speeds.' + filetype)
 
 def hunch_angle():
@@ -1009,7 +1016,7 @@ def calc_canon(typ='Bike',speeds=None):
         par = pickle.load(f)
         f.close()
 
-        nBk = len(data['bikes'])
+        nBk = len(data['names'])
 
         # remove the uncertainties
         par_n = {}
@@ -1064,7 +1071,7 @@ def calc_canon(typ='Bike',speeds=None):
         pickle.dump(par_n, f)
         f.close()
 
-    #data['bikes'].append('Jodi Bike')
+    #data['names'].append('Jodi Bike')
 
     # write the matrix files
     for i, name in enumerate(data['shortnames']):
