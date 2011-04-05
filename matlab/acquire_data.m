@@ -1,10 +1,16 @@
-% File: acquireData.m
-% Date: May 27, 2009
+% File: acquire_data.m
+% Creation Date: May 27, 2009
 % Author: Jason Moore
 % Description: Takes data from a single rate sensor and saves it.
 clear all
 close all
 clc
+
+validBicycles = {'Rigid', 'Flexible', 'Pista', 'Gary', 'Browser', 'Browserins',
+                 'Yellow', 'Yellowrev', 'Stratos', 'Crescendo'};
+validParts = {'Rwheel', 'Fwheel', 'Fork', 'Frame'}
+validAngles = {'First', 'Second', 'Third', 'Fourth', 'Fifth'};
+
 bicycle = input('Enter the short name of the bicycle.', 's');
 part = input('What part are you measuring? ', 's');
 pendulum = input('What pendulum are you using? ', 's');
