@@ -5,7 +5,7 @@
 clear all
 close all
 clc
-bicycle = input('What is the bicycle? ', 's');
+bicycle = input('Enter the short name of the bicycle.', 's');
 part = input('What part are you measuring? ', 's');
 pendulum = input('What pendulum are you using? ', 's');
 angle = input('Which angle are you measuring at? ', 's');
@@ -22,7 +22,7 @@ ai=analoginput('nidaq','Dev1'); % set the analog input
 duration=30; % the sample time in seconds
 set(ai,'SampleRate',1000) % set the sample rate
 ActualRate = get(ai,'SampleRate');
-set(ai,'SamplesPerTrigger',duration*ActualRate) % 
+set(ai,'SamplesPerTrigger',duration*ActualRate) %
 set(ai,'TriggerType','Manual')
 chan = addchannel(ai,0);
 start(ai)
@@ -33,4 +33,4 @@ plot(data,'.-')
 delete(ai)
 clear ai chan
 filename = [bicycle part pendulum angle trial];
-save(filename) 
+save(filename)
