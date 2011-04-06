@@ -7,6 +7,11 @@ function acquire_data()
 
 clear all;close all;clc;
 
+% make sure the analog input was properly deleted
+if exist('ai')
+    delete(ai)
+end
+
 sd = struct;
 
 validText = '\nValid options are:\n';
@@ -55,7 +60,6 @@ display(sprintf('This is the filename: %s', sd.filename))
 directory = ['..' filesep 'data' filesep 'pendDat'];
 dirInfo = what(directory);
 matFiles = dirInfo.mat;
-overWrite = 'n';
 % if the file exists ask the user if they want to overwrite it
 if ismember(sd.filename, matFiles)
     overWrite = input(sprintf(['%s already exists, are you sure you want' ...
@@ -75,19 +79,22 @@ if strcmp(overWrite, 'y')
     pause
 
     ai = analoginput('nidaq','Dev1'); % set the analog input
-
-    sd.duration = 30; % the sample time in seconds
+    set(ai, 'InputType', 'SingleEnded') % Differential is default
+    sd.duration = 10; % the sample time in seconds
     set(ai, 'SampleRate', 500) % set the sample rate
     sd.actualRate = get(ai, 'SampleRate');
     set(ai, 'SamplesPerTrigger', sd.duration * sd.actualRate) %
     set(ai, 'TriggerType', 'Manual')
-
-    chan = addchannel(ai, 0);
-
+    
+    % steer rate gyro is in channel 5
+    chan = addchannel(ai, 5);
+    % set all the input ranges
+    set(chan, 'InputRange', [-5 5])
+    
     start(ai)
-    sd.timeStamp = datestr(clock)
+    sd.timeStamp = datestr(clock);
     trigger(ai)
-    wait(ai, duration + 1)
+    wait(ai, sd.duration + 1)
 
     sd.data = getdata(ai);
     plot(sd.data,'.-')
@@ -95,7 +102,7 @@ if strcmp(overWrite, 'y')
     delete(ai)
     clear ai chan
 
-    save(filename, '-struct', sd)
+    save([directory filesep sd.filename], '-struct', 'sd')
 
 elseif strcmp(overWrite, 'n')
     display('No Data Taken, Start Over')
