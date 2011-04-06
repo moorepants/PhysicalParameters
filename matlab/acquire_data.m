@@ -1,99 +1,139 @@
+function acquire_data()
 % File: acquire_data.m
 % Creation Date: May 27, 2009
 % Author: Jason Moore
 % Description: Data collection script for the moment of inertia measurments of
 % a bicycle. Takes data from a single rate sensor and saves it.
 
-function acquire_data()
+clear all;close all;clc;
 
-    clear all;close all;clc;
+sd = struct;
 
-    validText = '\nValid options are:\n';
+validText = '\nValid options are:\n';
 
-    validBicycles = {'Rigid', 'Flexible', 'Pista', 'Gary', 'Browser', ...
-                     'Browserins', 'Yellow', 'Yellowrev', 'Stratos', ...
-                     'Crescendo', 'Rod'};
-    bicycleQuestion = ['Enter the short name of the bicycle.' validText];
-    bicycle = check_input(validBicycles, bicycleQuestion);
+% ask which bicycle is being measured
+validBicycles = {'Rigid', 'Flexible', 'Pista', 'Gary', 'Browser', ...
+                 'Browserins', 'Yellow', 'Yellowrev', 'Stratos', ...
+                 'Crescendo', 'Rod'};
+bicycleQuestion = ['Enter the short name of the bicycle.' validText];
+sd.bicycle = check_input(validBicycles, bicycleQuestion);
 
-    validParts = {'Rwheel', 'Fwheel', 'Fork', 'Frame', 'Rod'};
-    partQuestion = ['What part are you measuring?' validText];
-    part = check_input(validParts, partQuestion);
+% ask which part is being measured
+validParts = {'Rwheel', 'Fwheel', 'Fork', 'Frame', 'Rod'};
+partQuestion = ['What part are you measuring?' validText];
+sd.part = check_input(validParts, partQuestion);
 
-    validPendulums = {'Torsional', 'Compound'};
-    pendulumQuestion = ['What pendulum are you using?' validText];
-    pendulum = check_input(validPendulums, pendulumQuestion);
+% ask which type of pendulum
+validPendulums = {'Torsional', 'Compound'};
+pendulumQuestion = ['What pendulum are you using?' validText];
+sd.pendulum = check_input(validPendulums, pendulumQuestion);
 
-    validAngleOrders = {'First', 'Second', 'Third', 'Fourth', 'Fifth', 'Six'};
-    angleOrderQuestion = ['Which angle order is this?' validText];
-    angleOrder = check_input(validAngleOrders, angleOrderQuestion);
+% ask which order of the angle it is
+validAngleOrders = {'First', 'Second', 'Third', 'Fourth', 'Fifth', 'Six'};
+angleOrderQuestion = ['Which angle order is this?' validText];
+sd.angleOrder = check_input(validAngleOrders, angleOrderQuestion);
 
-    % the trial should be an integer
-    trial = input('What is the trial number?\n', 's');
+% the trial should be an integer
+sd.trial = input('What is the trial number?\n', 's');
 
-    if strcmp(pendulum, torsional) && ...
-       (strcmp(part, 'Fork') || strcmp(part, 'Frame')
-        angle = input(sprintf('What is the orientation angle of the %s?', part))
-        distance = input('What is the wheel to cg distance?')
-    end
+% get the angle and distance measurement for the fork and frame torsional
+% measurements
+if strcmp(sd.pendulum, 'Torsional') && ...
+   (strcmp(sd.part, 'Fork') || strcmp(sd.part, 'Frame'))
+    sd.angle = input(sprintf('What is the orientation angle of the %s?\n', ...
+                             sd.part));
+    sd.distance = input('What is the wheel to cg distance?\n');
+end
 
-    notes = input('Any additional info?\n','s');
+sd.notes = input('Any additional info?\n','s');
 
-    filename = [bicycle part pendulum angleOrder trial '.m'];
-    display(sprintf('This is the filename: %s', filename))
+% build the filename
+sd.filename = [sd.bicycle sd.part sd.pendulum sd.angleOrder sd.trial '.mat'];
+display(sprintf('This is the filename: %s', sd.filename))
 
-    % check to make sure you aren't overwriting a file
-    directory = ['..' filesep 'data' filesep 'pendDat'];
-    dirInfo = what(directory)
-    matFiles = dirInfo.mat
-    overWrite = 'n'
-    if ismember(filename, matFiles)
-        overWrite = input(sprintf(['Are you sure you want' ...
-                                  ' to overwrite %s (y or n)'], ...
-                                  filename), 's')
-    end
+% check to make sure you aren't overwriting a file
+directory = ['..' filesep 'data' filesep 'pendDat'];
+dirInfo = what(directory);
+matFiles = dirInfo.mat;
+overWrite = 'n';
+% if the file exists ask the user if they want to overwrite it
+if ismember(sd.filename, matFiles)
+    overWrite = input(sprintf(['%s already exists, are you sure you want' ...
+                              ' to overwrite it? (y or n)\n'], ...
+                              sd.filename), 's');
+   if strcmp(overWrite, 'y')
+       overWrite = input('Are you really sure? (y or n)\n', 's');
+   end
+else
+    overWrite = 'y';
+end
 
-        if strcmp(overWrite, 'y')
-        else if strcmp(overWrite, 'n')
-
-    end
-
+% if overwrite is true or the file doesn't exist, then take the data and save
+% the file
+if strcmp(overWrite, 'y')
     disp('Press any key to start recording')
     pause
 
     ai = analoginput('nidaq','Dev1'); % set the analog input
 
-    duration = 30; % the sample time in seconds
+    sd.duration = 30; % the sample time in seconds
     set(ai, 'SampleRate', 500) % set the sample rate
-    actualRate = get(ai, 'SampleRate');
-    set(ai, 'SamplesPerTrigger', duration * actualRate) %
+    sd.actualRate = get(ai, 'SampleRate');
+    set(ai, 'SamplesPerTrigger', sd.duration * sd.actualRate) %
     set(ai, 'TriggerType', 'Manual')
 
     chan = addchannel(ai, 0);
 
     start(ai)
+    sd.timeStamp = datestr(clock)
     trigger(ai)
     wait(ai, duration + 1)
 
-    data = getdata(ai);
-    plot(data,'.-')
+    sd.data = getdata(ai);
+    plot(sd.data,'.-')
 
     delete(ai)
     clear ai chan
 
-    save(filename)
+    save(filename, '-struct', sd)
+
+elseif strcmp(overWrite, 'n')
+    display('No Data Taken, Start Over')
+end
 
 function userInput = check_input(validList, question)
+% Returns the user keyboard input as long as it is in the valid list of
+% answers.
+%
+% Parameters
+% ----------
+% validList : cell array of strings
+%   A list of valid answers for the question.
+% question : string
+%   A question to ask the user.
+%
+% Returns
+% -------
+% userInput : string
+%   The valid keyboard input of the user.
 
-    for i = 1:length(validList)
-        question = [question validList{i} ','];
-    end
+% append the valid options to the question
+for i = 1:length(validList)
+    question = [question validList{i} ','];
+end
+question = [question(1:end-1) '\n'];
 
-    userInput = input(sprintf([question(1:end-1) '\n']), 's');
+% ask the question
+userInput = input(sprintf(question), 's');
 
-    if ~ismember(userInput, validList)
-        while ~ismember(userInput, validList)
-            display('Invalid response, try again')
-            userInput = input(sprintf([question(1:end-1) '\n']), 's');
+% ask the question until the user types a valid answer or 'q'
+if ~ismember(userInput, validList)
+    while ~ismember(userInput, validList)
+        display('Invalid response, try again or q for quit')
+        userInput = input(sprintf(question), 's');
+        if strcmp(userInput, 'q')
+            % raise an error
+            doodoo
         end
     end
+end
