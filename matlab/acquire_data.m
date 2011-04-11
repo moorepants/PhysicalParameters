@@ -85,12 +85,12 @@ if strcmp(overWrite, 'y')
     sd.actualRate = get(ai, 'SampleRate');
     set(ai, 'SamplesPerTrigger', sd.duration * sd.actualRate) %
     set(ai, 'TriggerType', 'Manual')
-    
+
     % steer rate gyro is in channel 5
     chan = addchannel(ai, 5);
     % set all the input ranges
     set(chan, 'InputRange', [-5 5])
-    
+
     start(ai)
     sd.timeStamp = datestr(clock);
     trigger(ai)
