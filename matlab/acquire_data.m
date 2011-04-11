@@ -12,14 +12,14 @@ sd = struct;
 validText = '\nValid options are:\n';
 
 % ask which bicycle is being measured
-validBicycles = {'Rigid', 'Flexible', 'Pista', 'Gary', 'Browser', ...
+validBicycles = {'Rigid', 'Flexible', 'Pista', 'Fisher', 'Browser', ...
                  'Browserins', 'Yellow', 'Yellowrev', 'Stratos', ...
-                 'Crescendo', 'Rod'};
+                 'Crescendo', 'Rod', 'Gyro'};
 bicycleQuestion = ['Enter the short name of the bicycle.' validText];
 sd.bicycle = check_input(validBicycles, bicycleQuestion);
 
 % ask which part is being measured
-validParts = {'Rwheel', 'Fwheel', 'Fork', 'Frame', 'Rod'};
+validParts = {'Rwheel', 'Fwheel', 'Fork', 'Frame', 'Flywheel', 'Rod'};
 partQuestion = ['What part are you measuring?' validText];
 sd.part = check_input(validParts, partQuestion);
 
