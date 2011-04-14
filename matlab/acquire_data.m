@@ -19,9 +19,16 @@ validText = '\nValid options are:\n';
 % ask which bicycle is being measured
 validBicycles = {'Rigid', 'Flexible', 'Pista', 'Fisher', 'Browser', ...
                  'Browserins', 'Yellow', 'Yellowrev', 'Stratos', ...
-                 'Crescendo', 'Rod', 'Gyro'};
+                 'Crescendo', 'Rod', 'Ucdrod', 'Gyro'};
 bicycleQuestion = ['Enter the short name of the bicycle.' validText];
 sd.bicycle = check_input(validBicycles, bicycleQuestion);
+
+% ask which calibration rod was used
+if ~strcmp(sd.bicycle, 'Rod') && ~strcmp(sd.bicycle, 'Ucdrod')
+    validRods = {'Rod', 'Ucdrod'};
+    rodQuestion = ['Which calibration rod was used with this bicycle?' validText];
+    sd.rod = check_input(validRods, rodQuestion);
+end
 
 % ask which part is being measured
 validParts = {'Rwheel', 'Fwheel', 'Fork', 'Frame', 'Flywheel', 'Rod'};
@@ -77,6 +84,7 @@ end
 if strcmp(overWrite, 'y')
     disp('Press any key to start recording')
     pause
+    disp('Recording...')
 
     ai = analoginput('nidaq','Dev1'); % set the analog input
     set(ai, 'InputType', 'SingleEnded') % Differential is default
@@ -95,6 +103,7 @@ if strcmp(overWrite, 'y')
     trigger(ai)
     sd.timeStamp = datestr(clock);
     wait(ai, sd.duration + 1)
+    display('Finished recording.')
 
     sd.data = getdata(ai);
     plot(sd.data,'.-')
