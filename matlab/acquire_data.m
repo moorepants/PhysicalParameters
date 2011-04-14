@@ -135,12 +135,19 @@ function userInput = check_input(validList, question)
 
 % append the valid options to the question
 for i = 1:length(validList)
-    question = [question validList{i} ','];
+    question = [question num2str(i) ' : ' validList{i} '\n'];
 end
 question = [question(1:end-1) '\n'];
 
 % ask the question
 userInput = input(sprintf(question), 's');
+
+% see if they entered a number
+if str2num(userInput)
+    userInput = validList{str2num(userInput)};
+end
+
+display(sprintf('You entered: %s', userInput))
 
 % ask the question until the user types a valid answer or 'q'
 if ~ismember(userInput, validList)
@@ -148,6 +155,7 @@ if ~ismember(userInput, validList)
         display('Invalid response, try again or q for quit')
         userInput = input(sprintf(question), 's');
         if strcmp(userInput, 'q')
+            display('You get doodoo!')
             % raise an error
             doodoo
         end
