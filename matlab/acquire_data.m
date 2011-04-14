@@ -82,8 +82,8 @@ if strcmp(overWrite, 'y')
     set(ai, 'InputType', 'SingleEnded') % Differential is default
     sd.duration = 10; % the sample time in seconds
     set(ai, 'SampleRate', 500) % set the sample rate
-    sd.actualRate = get(ai, 'SampleRate');
-    set(ai, 'SamplesPerTrigger', sd.duration * sd.actualRate) %
+    sd.sampleRate = get(ai, 'SampleRate');
+    set(ai, 'SamplesPerTrigger', sd.duration * sd.sampleRate) %
     set(ai, 'TriggerType', 'Manual')
 
     % steer rate gyro is in channel 5
@@ -92,8 +92,8 @@ if strcmp(overWrite, 'y')
     set(chan, 'InputRange', [-5 5])
 
     start(ai)
-    sd.timeStamp = datestr(clock);
     trigger(ai)
+    sd.timeStamp = datestr(clock);
     wait(ai, sd.duration + 1)
 
     sd.data = getdata(ai);
