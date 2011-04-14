@@ -22,6 +22,9 @@ validBicycles = {'Rigid', 'Flexible', 'Pista', 'Fisher', 'Browser', ...
                  'Crescendo', 'Rod', 'Ucdrod', 'Gyro'};
 bicycleQuestion = ['Enter the short name of the bicycle.' validText];
 sd.bicycle = check_input(validBicycles, bicycleQuestion);
+if strcmp(sd.bicycle, 'q')
+    return
+end
 
 % ask which calibration rod was used
 if ~strcmp(sd.bicycle, 'Rod') && ~strcmp(sd.bicycle, 'Ucdrod')
@@ -29,21 +32,33 @@ if ~strcmp(sd.bicycle, 'Rod') && ~strcmp(sd.bicycle, 'Ucdrod')
     rodQuestion = ['Which calibration rod was used with this bicycle?' validText];
     sd.rod = check_input(validRods, rodQuestion);
 end
+if strcmp(sd.rod, 'q')
+    return
+end
 
 % ask which part is being measured
 validParts = {'Rwheel', 'Fwheel', 'Fork', 'Frame', 'Flywheel', 'Rod'};
 partQuestion = ['What part are you measuring?' validText];
 sd.part = check_input(validParts, partQuestion);
+if strcmp(sd.part, 'q')
+    return
+end
 
 % ask which type of pendulum
 validPendulums = {'Torsional', 'Compound'};
 pendulumQuestion = ['What pendulum are you using?' validText];
 sd.pendulum = check_input(validPendulums, pendulumQuestion);
+if strcmp(sd.pendulum, 'q')
+    return
+end
 
 % ask which order of the angle it is
 validAngleOrders = {'First', 'Second', 'Third', 'Fourth', 'Fifth', 'Six'};
 angleOrderQuestion = ['Which angle order is this?' validText];
 sd.angleOrder = check_input(validAngleOrders, angleOrderQuestion);
+if strcmp(sd.angleOrder, 'q')
+    return
+end
 
 % the trial should be an integer
 sd.trial = input('What is the trial number?\n', 's');
@@ -139,25 +154,23 @@ for i = 1:length(validList)
 end
 question = [question(1:end-1) '\n'];
 
-% ask the question
-userInput = input(sprintf(question), 's');
-
-% see if they entered a number
-if str2num(userInput)
-    userInput = validList{str2num(userInput)};
-end
-
-display(sprintf('You entered: %s', userInput))
-
-% ask the question until the user types a valid answer or 'q'
-if ~ismember(userInput, validList)
-    while ~ismember(userInput, validList)
+while 1
+    % ask the question
+    userInput = input(sprintf(question), 's');
+            
+    % if they entered 'q' then break from the while loop
+    if strcmp(userInput, 'q')
+        display('You get doodoo!')
+        userInput = 'q';
+        break
+    % if the input is in validList then break from the while loop
+    elseif ismember(userInput, validList)
+        break
+    % if the input is a number and is in the validList then break
+    elseif ismember(str2num(userInput), 1:length(validList))
+        userInput = validList{str2num(userInput)};
+        break
+    else
         display('Invalid response, try again or q for quit')
-        userInput = input(sprintf(question), 's');
-        if strcmp(userInput, 'q')
-            display('You get doodoo!')
-            % raise an error
-            doodoo
-        end
     end
 end
