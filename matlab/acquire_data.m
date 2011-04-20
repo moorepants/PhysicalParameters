@@ -27,7 +27,8 @@ if strcmp(sd.bicycle, 'q')
 end
 
 % ask which part is being measured
-validParts = {'Rwheel', 'Fwheel', 'Fork', 'Frame', 'Flywheel', 'Rod'};
+validParts = {'Rwheel', 'Fwheel', 'Fork', 'Frame', 'Flywheel', 'Rod', ...
+              'Handlebar'};
 partQuestion = ['What part are you measuring?' validText];
 sd.part = check_input(validParts, partQuestion);
 if strcmp(sd.part, 'q')
