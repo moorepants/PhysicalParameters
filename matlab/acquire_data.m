@@ -69,7 +69,7 @@ sd.trial = input('What is the trial number?\n', 's');
 % get the angle and distance measurement for the fork and frame torsional
 % measurements
 if strcmp(sd.pendulum, 'Torsional') && ...
-   (strcmp(sd.part, 'Fork') || strcmp(sd.part, 'Frame'))
+   (strcmp(sd.part, 'Fork') || strcmp(sd.part, 'Frame') || strcmp(sd.part, 'Handlebar'))
     sd.angle = input(sprintf('What is the orientation angle of the %s?\n', ...
                              sd.part));
     sd.distance = input('What is the wheel to cg distance?\n');

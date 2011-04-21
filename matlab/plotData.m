@@ -1,4 +1,5 @@
-plot(t,data,'*')
+function plotData(t, data, estimates, model)
+plot(t, data ,'*')
 hold on
 [sse, FittedCurve] = model(estimates);
 plot(t, FittedCurve, 'r')

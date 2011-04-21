@@ -1,5 +1,5 @@
 function [estimates,model] = fitData(t,data)
-start_point = [rand(1, 3) 0.5 3.8] ;
+start_point = [2.5 1.5 1.5 0.01 41.9] ;
 model = @dampOscFun;
 estimates = fminsearch(model, start_point);
 % expfun accepts curve parameters as inputs, and outputs sse,
