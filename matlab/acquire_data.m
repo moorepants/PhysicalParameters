@@ -26,18 +26,9 @@ if strcmp(sd.bicycle, 'q')
     return
 end
 
-% ask which calibration rod was used
-if ~strcmp(sd.bicycle, 'Rod') && ~strcmp(sd.bicycle, 'Ucdrod')
-    validRods = {'Rod', 'Ucdrod'};
-    rodQuestion = ['Which calibration rod was used with this bicycle?' validText];
-    sd.rod = check_input(validRods, rodQuestion);
-end
-if strcmp(sd.rod, 'q')
-    return
-end
-
 % ask which part is being measured
-validParts = {'Rwheel', 'Fwheel', 'Fork', 'Frame', 'Flywheel', 'Rod'};
+validParts = {'Rwheel', 'Fwheel', 'Fork', 'Frame', 'Flywheel', 'Rod', ...
+              'Handlebar'};
 partQuestion = ['What part are you measuring?' validText];
 sd.part = check_input(validParts, partQuestion);
 if strcmp(sd.part, 'q')
@@ -50,6 +41,18 @@ pendulumQuestion = ['What pendulum are you using?' validText];
 sd.pendulum = check_input(validPendulums, pendulumQuestion);
 if strcmp(sd.pendulum, 'q')
     return
+end
+
+if strcmp(sd.pendulum, 'Torsional')
+    % ask which calibration rod was used
+    if ~strcmp(sd.bicycle, 'Rod') && ~strcmp(sd.bicycle, 'Ucdrod')
+        validRods = {'Rod', 'Ucdrod'};
+        rodQuestion = ['Which calibration rod was used with this bicycle?' validText];
+        sd.rod = check_input(validRods, rodQuestion);
+    end
+    if strcmp(sd.rod, 'q')
+        return
+    end
 end
 
 % ask which order of the angle it is
@@ -66,11 +69,14 @@ sd.trial = input('What is the trial number?\n', 's');
 % get the angle and distance measurement for the fork and frame torsional
 % measurements
 if strcmp(sd.pendulum, 'Torsional') && ...
-   (strcmp(sd.part, 'Fork') || strcmp(sd.part, 'Frame'))
+   (strcmp(sd.part, 'Fork') || strcmp(sd.part, 'Frame') || strcmp(sd.part, 'Handlebar'))
     sd.angle = input(sprintf('What is the orientation angle of the %s?\n', ...
                              sd.part));
     sd.distance = input('What is the wheel to cg distance?\n');
 end
+
+% the sample time in seconds
+sd.duration = input('Enter the total sample duration in secs?\n'); 
 
 sd.notes = input('Any additional info?\n','s');
 
@@ -103,7 +109,6 @@ if strcmp(overWrite, 'y')
 
     ai = analoginput('nidaq','Dev1'); % set the analog input
     set(ai, 'InputType', 'SingleEnded') % Differential is default
-    sd.duration = 10; % the sample time in seconds
     set(ai, 'SampleRate', 500) % set the sample rate
     sd.sampleRate = get(ai, 'SampleRate');
     set(ai, 'SamplesPerTrigger', sd.duration * sd.sampleRate) %
@@ -112,12 +117,12 @@ if strcmp(overWrite, 'y')
     % steer rate gyro is in channel 5
     chan = addchannel(ai, 5);
     % set all the input ranges
-    set(chan, 'InputRange', [-5 5])
+    set(chan, 'InputRange', [-10 10])
 
     start(ai)
     trigger(ai)
     sd.timeStamp = datestr(clock);
-    wait(ai, sd.duration + 1)
+    wait(ai, sd.duration + 2)
     display('Finished recording.')
 
     sd.data = getdata(ai);
