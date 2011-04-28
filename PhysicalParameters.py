@@ -140,7 +140,10 @@ def mat2dic():
                  #else it is the data which is formatted correctly
                 else:
                     pendDat[k] = v
-        f = open('data/pendDat/p/' + name[:-4] + '.p', 'w')
+        pdir = os.path.join('data', 'pendDat', 'p')
+        if not os.path.exists(pdir):
+            os.makedirs(pdir)
+        f = open(os.path.join(pdir, name[:-4] + '.p'), 'w')
         pickle.dump(pendDat, f, protocol=2)
         f.close()
 
