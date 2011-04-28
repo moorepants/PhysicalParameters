@@ -19,32 +19,30 @@ subdirectories:
 
 /data -- put general data files here (data.mat and MeasUncert.txt)
 /data/pendDat -- all the pendulum measurement .mat files go here
-/data/pendDat/graphs -- a place for the graphs to go
+/tables
+/plots
 
-I'll hopefully have this more user friendly in the future, but for now you can
-run physical_parameters.py to run everything sequentially or run things
-individually.
+Run each of these functions in order to build the plots and tables:
 
-To run individually run these files sequentially:
+1. mat2dic : converts all the raw data files into python pickled types
 
-1. fit_data.py: Calculates the period of each moment of inertia oscillation
-experiment.
+2. fit_data: Calculates the period of each moment of inertia oscillation
+experiment. Takes a while.
 
-2. tor_com.py: This averages the periods and tries to format them a little better
-for use in processData.py. (this should be combined with fitData.py)
+3. tor_com: This averages the periods and tries to format them a little better.
 
-3. calc_parameters.py: This does all the calculations and outputs the
+4. calc_parameters: This does all the calculations and outputs the
 parameters in text and pickled files.
 
-4. calc_canon.py: calculates the benchmark canonical matrics for each bike
+5. calc_canon: calculates the benchmark canonical matrics for each bike, also
+for a bike with rider and a bike with lower torso
 
-5. calc_JasonOnBikes.py: calculates the parameters and canonical matrics with a
-rider on each bike (same position relative to the benchmark coordinates)
-
-6. bike_eig.py: calculates eigenvalues and critical speeds for an upright
+6. bike_eig_plots: calculates eigenvalues and critical speeds for an upright
 steady speed configuration, makes a couple of plots
 
-7. bike_bode.py: makes bode plots of various SISO transfer functions
+7. bike_bode: makes bode plots of various SISO transfer functions
+
+8. make_tables: makes tables of the results
 
 To Do List
 ----------
@@ -54,11 +52,9 @@ To Do List
 - add more bode plots
 - clean up the bode plots
 - convert more things to functions
-
+- seems to be a bug when trying to do bike_eig_plots of multiple types in a row
 
 Contact
 -------
 Jason Moore
 moorepants@gmail.com
-
-1. mat2dic

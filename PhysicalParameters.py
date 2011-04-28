@@ -47,10 +47,17 @@ def cres_evec():
     plt.savefig('plots/cres.pdf')
 
 def mat2dic():
-    '''Converts the original matlab mat file with the raw data to python files.
+    '''Converts all of the raw data files to python pickled files for future
+    use. This is the first function to run.
+
+    List of raw data files:
+    data/data.mat
+    data/MeasUncert.txt
+    data/CalibrationRod.txt
+    data/pendDat/*.mat
 
     '''
-
+    print "Loading data/data.mat"
     # load the main data file into a dictionary
     d = {}
     mio.loadmat('data/data.mat', mdict=d)
@@ -77,6 +84,7 @@ def mat2dic():
         if np.shape(v)[0] == 1:
             d[k] = v[0]
 
+    print "Loading data/MeasUncert.txt"
     # make a dictionary for the measurement standard deviations
     dU = {}
     f = open('data/MeasUncert.txt', 'r')
@@ -102,6 +110,7 @@ def mat2dic():
     ddU['shortnames'] = d['shortnames']
 
     # bring in the calibration rod data
+    print "Loading data/CalibrationRod.txt"
     f = open('data/CalibrationRod.txt', 'r')
     for line in f:
         var, val, unc = line.split(',')
@@ -109,11 +118,13 @@ def mat2dic():
         ddU[var] = ufloat((float(val), float(unc)))
     f.close()
 
+    print "Pickling data/data.p"
     # pickle the data dictionary
     f = open('data/data.p', 'w')
     pickle.dump(d, f)
     f.close()
 
+    print "Pickling data/udata.p"
     # pickle the data with the uncertainties
     f = open('data/udata.p', 'w')
     pickle.dump(ddU, f)
@@ -122,8 +133,10 @@ def mat2dic():
     dirs, subdirs, filenames = list(os.walk('data/pendDat'))[0]
     filenames.sort()
     for name in filenames:
+        pathToFile = 'data/pendDat/' + name
+        print "Loading", pathToFile
         pendDat = {}
-        mio.loadmat('data/pendDat/' + name, mdict=pendDat)
+        mio.loadmat(pathToFile, mdict=pendDat)
         #clean up the matlab imports
         del(pendDat['__globals__'], pendDat['__header__'], pendDat['__version__'])
         for k, v in pendDat.items():
@@ -142,8 +155,11 @@ def mat2dic():
                     pendDat[k] = v
         pdir = os.path.join('data', 'pendDat', 'p')
         if not os.path.exists(pdir):
+            print pdir, "not found, so creating"
             os.makedirs(pdir)
-        f = open(os.path.join(pdir, name[:-4] + '.p'), 'w')
+        pathToPickledFile = os.path.join(pdir, name[:-4] + '.p')
+        print "Pickling", pathToPickledFile, '\n'
+        f = open(pathToPickledFile, 'w')
         pickle.dump(pendDat, f, protocol=2)
         f.close()
 
@@ -200,24 +216,35 @@ def make_tables(typ='Bike'):
     '''
 
     # load in the base data file
-    f = open('data/data.p', 'r')
+    pathToDataP = os.path.join('data', 'data.p')
+    f = open(pathToDataP, 'r')
     data = pickle.load(f)
     f.close()
 
     # load in the parameter data file
-    f = open('data/' + typ + '/Parameters/par.p', 'r')
+    pathToParFile = os.path.join('data', typ, 'Parameters', 'par.p')
+    f = open(pathToParFile, 'r')
     par = pickle.load(f)
     f.close()
 
-    direct = 'tables/' + typ + '/Parameters/'
+    typDir = os.path.join('tables', typ)
+    if not os.path.isdir(typDir):
+        os.mkdir(typDir)
+        print "Created", typDir
+
+    direct = os.path.join(typDir, 'Parameters')
     if not os.path.isdir(direct):
-        os.system('mkdir ' + direct)
+        os.mkdir(direct)
+        print "Created", direct
 
     for i, name in enumerate(data['names']):
         fname = ''.join(name.split())
         # open the new file
-        f = open('tables/ParameterTableTemplate.tex', 'r')
-        fn = open(direct + fname + 'Par.tex', 'w')
+        pathToParTemplate = os.path.join('tables',
+                'ParameterTableTemplate.tex')
+        f = open(pathToParTemplate, 'r')
+        pathToParTex = os.path.join(direct, fname + 'Par.tex')
+        fn = open(pathToParTex, 'w')
         for line in f:
             #print line
             # find all of the matches in the line
@@ -252,7 +279,7 @@ def make_tables(typ='Bike'):
             fn.write(line)
         f.close()
         fn.close()
-        os.system('pdflatex -output-directory=' + direct[:-1] + ' ' + direct + fname + 'Par.tex')
+        os.system('pdflatex -output-directory=' + direct + ' ' + pathToParTex)
 
     # make the master parameter table
     template = open('tables/MasterParTableTemplate.tex', 'r')
@@ -283,7 +310,7 @@ def make_tables(typ='Bike'):
 
     template.close()
     final.close()
-    os.system('pdflatex -output-directory=' + direct[:-1] + ' ' + direct + 'MasterParTable.tex')
+    os.system('pdflatex -output-directory=' + direct + ' ' + direct + 'MasterParTable.tex')
 
     # make the master canonical matrix table
     direct = 'tables/' + typ + '/Canonical/'
@@ -321,7 +348,7 @@ def make_tables(typ='Bike'):
 
     template.close()
     final.close()
-    os.system('pdflatex -output-directory=' + direct[:-1] + ' ' + direct + 'MasterCanTable.tex')
+    os.system('pdflatex -output-directory=' + direct + ' ' + direct + 'MasterCanTable.tex')
 
     os.system('rm tables/' + typ + '/Parameters/*.aux')
     os.system('rm tables/' + typ + '/Parameters/*.log')
@@ -490,6 +517,7 @@ def bike_eig_plots(typ='Bike', filetype='pdf'):
 
     for i, name in enumerate(data['shortnames']):
         fname = ''.join(name.split()) + fend
+        print "Making plots for:", fname, '\n'
         f = open(direct + fname)
         can = pickle.load(f)
         f.close()
@@ -594,9 +622,19 @@ if not os.path.isdir(direct):
     os.system('mkdir ' + direct)
 
 def fit_data(filetype='.pdf'):
+    '''Goes through every pendulum data file, fits the data to the decaying
+    oscillation function and calculates the period and its uncertainty.
+
+    Parameters
+    ----------
+    filetype : string
+        Type of file type matplotlib should produce the graphics in.
+
+    '''
 
     dirs, subdirs, filenames = list(os.walk('data/pendDat/p'))[0]
     periodfile = open('data/period.txt', 'w')
+    print "Created data/period.txt"
     filenames.sort()
     period = {}
     #for name in ['YellowRevForkTorsionalFirst1.p']:
@@ -605,7 +643,9 @@ def fit_data(filetype='.pdf'):
     #for name in ['YellowFwheelCompoundFirst1.p']:
     #for name in ['StratosFrameCompoundFirst2.p']:
     for name in filenames:
-        df = open('data/pendDat/p/' + name)
+        pathToFile = 'data/pendDat/p/' + name
+        print "Fitting", pathToFile
+        df = open(pathToFile)
         pendDat = pickle.load(df)
         df.close()
         y = pendDat['data'].ravel()
@@ -638,7 +678,7 @@ def fit_data(filetype='.pdf'):
         f = wd/2./pi
         T = 1./f
         fig = plt.figure(1)
-        # add a star in the R value is low
+        # add a star if the R value is low
         if rsq <= 0.99:
             rsqstr = str(rsq) + '*'
             m = max(x)
@@ -655,7 +695,11 @@ def fit_data(filetype='.pdf'):
             note = ''
         line = name + ',' + str(T) + ',' + rsqstr + ',' + str(sigma) + ',' + str(note) + '\n'
         periodfile.write(line)
-        print line
+        print "Successfully fit:"
+        print "Filename:", name
+        print "Period:", str(T)
+        print "r Squared:", rsqstr
+        print "sigma:", str(sigma), '\n'
         # if the filename is already in the period dictionary...
         if name[:-3] in period.keys():
             # append the period to the list
@@ -696,13 +740,17 @@ def tor_com():
         print desc
         if desc[0] == 'Rod':
             rodPeriod = np.mean(v)
+            print '\n'
+        elif desc[0] not in bN:
+            print "Skipped", desc, '\n'
+            pass
         else:
             # if torsional, put it in the torsional matrix
             if desc[2] == tc[0]:
                 r = fffr.index(desc[1])*3 + fst.index(desc[3])
                 c = bN.index(desc[0])
                 tor[r, c] = np.mean(v)
-                print 'Added torsional to [', r, ',', c, ']'
+                print 'Added torsional to [', r, ',', c, ']\n'
             # if compound, put in in the compound matrix
             elif desc[2] == tc[1]:
                 com[fffr.index(desc[1]), bN.index(desc[0])] = np.mean(v)
