@@ -952,6 +952,7 @@ def calc_parameters():
 
     # calculate the wheel y inertias
     par['g'] = 9.81*np.ones(ddU['mH'].shape, dtype=float)
+    print 'period compound fwheel', com[2, :]
     par['IFyy'] = com_inertia(par['mF'], par['g'], ddU['lF'], com[2, :])
     par['IRyy'] = com_inertia(par['mR'], par['g'], ddU['lR'], com[3, :])
 
