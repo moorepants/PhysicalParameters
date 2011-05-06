@@ -972,7 +972,6 @@ def calc_parameters():
     par['IHxx'] = []
     par['IHxz'] = []
     par['IHzz'] = []
-    print "This the fork"
     for i, row in enumerate(Ipend[3:6, :].T):
         Imat = inertia_components_uncert(row, betaFork[:, i])
         par['IHxx'].append(Imat[0, 0])
@@ -986,7 +985,6 @@ def calc_parameters():
     par['IBxx'] = []
     par['IBxz'] = []
     par['IBzz'] = []
-    print "This is the frame"
     for i, row in enumerate(Ipend[:3, :].T):
         Imat = inertia_components_uncert(row, betaFrame[:, i])
         par['IBxx'].append(Imat[0, 0])
@@ -1979,17 +1977,12 @@ def inertia_components_uncert(I, alpha):
     Inew : An inertia tensor
 
     '''
-    print "I", I
-    print "Beta", alpha
     sa = unumpy.sin(alpha)
     ca = unumpy.cos(alpha)
     A = unumpy.matrix(np.vstack((ca**2, -2*sa*ca, sa**2)).T)
-    print "betaMat\n", A
-    print "betaMat.I\n", A.I
     Iorth = np.dot(A.I, I)
     Iorth = np.array([Iorth[0, 0], Iorth[0, 1], Iorth[0, 2]], dtype='object')
     Inew = np.array([[Iorth[0], Iorth[1]], [Iorth[1], Iorth[2]]])
-    print "eye", Inew
     return Inew
 
 def parallel_axis(Ic, m, d):
