@@ -19,7 +19,7 @@ validText = '\nValid options are:\n';
 % ask which bicycle is being measured
 validBicycles = {'Rigid', 'Flexible', 'Pista', 'Fisher', 'Browser', ...
                  'Browserins', 'Yellow', 'Yellowrev', 'Stratos', ...
-                 'Crescendo', 'Rod', 'Ucdrod', 'Gyro'};
+                 'Crescendo', 'Rod', 'Ucdrod', 'Gyro', 'Rigidcl'};
 bicycleQuestion = ['Enter the short name of the bicycle.' validText];
 sd.bicycle = check_input(validBicycles, bicycleQuestion);
 if strcmp(sd.bicycle, 'q')
